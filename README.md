@@ -1,6 +1,6 @@
 # Dash.DB
 
-AppSRE Dashboards Database: a repository of metrics and statistics abput the services we run.
+AppSRE Dashboards Database: a repository of metrics and statistics about the services we run.
 
 # Quickstart
 
