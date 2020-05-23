@@ -28,12 +28,15 @@ setup(name='dashdotdb',
             'tabulate ~= 0.8',
             'psycopg2-binary ~= 2.8',
       ],
-      entry_points={
+      entry_points=
+      {
             'console_scripts': [
                   'dashdotdb = dashdotdb.cli.dashdotdb:main',
                   'dashdotdb-admin = dashdotdb.cli.dashdotdb_admin:main',
             ],
             'plugins': [
                   'imagemanifestvuln = dashdotdb.cli.plugins.imagemanifestvuln:ImageManifestVuln',
-            ]}
+                  'dummy = dashdotdb.cli.plugins.dummy:Dummy',
+            ]
+      }
       )

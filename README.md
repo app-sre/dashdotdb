@@ -6,19 +6,19 @@ AppSRE Dashboards Database: a repository of metrics and statistics about the ser
 
 Run a PostgreSQL instance:
 
-```shell script
+```
 $ docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
 Export the `DASHDOTDB_DATABASE_URL`:
 
-```shell script
+```
 $ export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
 ```
 
 Install the package:
 
-```shell script
+```
 $ python -m venv venv
 $ source venv/bin/activate
 $ python setup.py develop
@@ -26,7 +26,7 @@ $ python setup.py develop
 
 Initialize the Database:
 
-```shell script
+```
 $ dashdotdb-admin resetdb
 (re)Creating tables
 (re)Creating stored procedures
@@ -34,7 +34,7 @@ $ dashdotdb-admin resetdb
 
 Apply `imagemanifestvuln` example data:
 
-```shell script
+```
 $ dashdotdb apply imagemanifestvuln -c cluster-01 -f examples/imagemanifestvuln.json
 token created
 cluster cluster-01 created
@@ -48,7 +48,7 @@ vulnerability RHSA-2020:1916 created
 
 Query vulnerabilities:
 
-```shell script
+```
 $ dashdotdb get imagemanifestvuln -c cluster-01 -n cso -s High
 REPOSITORY              NAME      MANIFEST          AFFECTED_PODS  VULNERABILITY    SEVERITY    PACKAGE                   CURRENT_VERSION    FIXED_IN_VERSION     LINK
 ----------------------  --------  --------------  ---------------  ---------------  ----------  ------------------------  -----------------  -------------------  -----------------------------------------------
@@ -70,7 +70,7 @@ The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards wi
 instance to query data from. Because those queries can be complex, we create stored procedures to simplify the
 execution of those queries.
 
-The stored procedures may be found here: [dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
+The stored procedures can be found here: [dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
 
 ## Examples
 
@@ -98,6 +98,181 @@ We can use this query:
 SELECT * FROM get_vulnerabilities('$cluster','$namespace');
 ```
 
-# Entity Relationship Diagram
+# Database Model
+
+The current Entity Relationship Diagram looks like this:
 
 ![](docs/dashdotdb.png)
+
+To change the database, start by editing the [ERD ".dia" file](/docs/dashdotdb.dia) using
+[Gnome Dia](https://wiki.gnome.org/Apps/Dia/).
+
+Then reflect the changes to the ERD in the database model:
+[dashdotdb/db/model.py](/dashdotdb/db/model.py).
+
+Last but not least, apply your changes to the database using:
+
+```
+$ dashdotdb-admin initdb
+```
+
+This will create all new tables defined in the Model.
+
+Alternatively, you might want to use:
+
+```
+$ dashdotdb-admin resetdb
+```
+
+This will remove all the tables and recreate them according to the Model.
+
+At the moment, there's no upgrade strategy. In the future, database upgrades shall be implemented
+using [Alembic](https://alembic.sqlalchemy.org/).
+
+# Extending the CLI
+
+The `dashdotdb` Command Line Interface is pluggable and easily extensible. It is composed of three
+parts:
+
+```
+$ dashdotdb apply imagemanifestvuln -c cluster-01 -f manifest.json
+              │           │         │                             │
+              │           │         └────── PLUGIN OPTIONS ───────┘
+              │           │
+              │           └── PLUGIN
+              │
+              └── ACTION
+```
+
+To create a new plugin, first you have to create a new Python file in the
+[plugins directory](dashdotdb/cli/plugins/):
+
+```python
+from dashdotdb.cli.plugins_interface import Cmd
+
+
+class Dummy(Cmd):
+
+    description = 'Dummy Plugin for Demonstration'
+
+    def configure_apply(self, parser):
+        parser = super().configure_apply(parser)
+        parser.add_argument('-o', '--option', type=str,
+                            required=True, help='dummy apply option')
+
+    def configure_get(self, parser):
+        parser = super().configure_get(parser)
+        parser.add_argument('-d', '--debug', type=str,
+                            help='dummy get option')
+
+    def apply(self, args):
+        self.log.info('Applying!')
+
+    def get(self, args):
+        self.log.info('Getting!')
+```
+
+Then, you have to add your new plugin to the [setup.py](setup.py):
+
+```
+            'plugins': [
+                  'imagemanifestvuln = dashdotdb.cli.plugins.imagemanifestvuln:ImageManifestVuln',
+                  'dummy = dashdotdb.cli.plugins.dummy:Dummy',
+            ]
+```
+
+And last but not lease, you have to (re)install the Python package:
+
+```
+$ python setup.py develop
+```
+
+Checking the `apply` help:
+
+```
+$ dashdotdb apply -h
+usage: dashdotdb apply [-h] {dummy,imagemanifestvuln} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+plugins:
+  {dummy,imagemanifestvuln}
+                        help
+    dummy               Dummy Plugin for Demonstration
+    imagemanifestvuln   Image Manifest Vulnerability
+
+```
+
+Checking the `apply dummy` help:
+
+```
+$ dashdotdb apply dummy -h
+usage: dashdotdb apply dummy [-h] -o OPTION
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OPTION, --option OPTION
+                        dummy apply option
+```
+
+Running:
+
+```
+$ dashdotdb apply dummy -o foo
+Applying!
+```
+
+```
+$ dashdotdb get dummy -d bar
+Getting!
+```
+
+# Accessing the Database
+
+Using the `dummy` plugin we created in the previous step, let's run a simple query:
+
+```python
+from tabulate import tabulate
+
+from dashdotdb import Session
+from dashdotdb import Pod
+
+from dashdotdb.cli.plugins_interface import Cmd
+
+
+class Dummy(Cmd):
+
+    description = 'Dummy Plugin for Demonstration'
+
+    def configure_apply(self, parser):
+        parser = super().configure_apply(parser)
+        parser.add_argument('-o', '--option', type=str,
+                            required=True, help='dummy apply option')
+
+    def configure_get(self, parser):
+        parser = super().configure_get(parser)
+        parser.add_argument('-d', '--debug', type=str,
+                            help='dummy get option')
+
+    def apply(self, args):
+        self.log.info('Applying!')
+
+    def get(self, args):
+        pods = Session.query(Pod).distinct(Pod.name)
+        result = {'PODS': [pod.name for pod in pods]}
+        self.log.info(tabulate(result, headers=result.keys()))
+```
+
+Running:
+
+```
+$ dashdotdb get dummy
+PODS
+---------------------------
+cso/sleep2-65844c6b58-2q2s5
+cso/sleep2-65844c6b58-qlng8
+cso/sleep-6f84df5847-4bn9p
+cso/sleep-6f84df5847-bctxz
+cso/sleep-6f84df5847-dh9l8
+```

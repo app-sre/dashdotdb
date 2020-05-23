@@ -4,7 +4,8 @@ import sys
 
 from dashdotdb import Session
 from dashdotdb.db.db import engine
-from dashdotdb.db.stored_procedures import VULNERABILITIES
+from dashdotdb.db.stored_procedures import VULNERABILITIES_DROP
+from dashdotdb.db.stored_procedures import VULNERABILITIES_CREATE
 from dashdotdb.db.model import Base
 
 
@@ -23,17 +24,26 @@ class DashDotDBAdmin:
                                             help='subcommand help',
                                             dest='subcommand')
 
+        subcommands.add_parser('initdb')
         subcommands.add_parser('resetdb')
 
         self.args = parser.parse_args()
 
     def run(self):
         if self.args.subcommand == 'resetdb':
+            APP_LOG.info('Creating tables')
+            Base.metadata.create_all(engine)
+            APP_LOG.info('Creating stored procedures')
+            Session.execute(VULNERABILITIES_CREATE)
+            Session.commit()
+
+        if self.args.subcommand == 'resetdb':
             APP_LOG.info('(re)Creating tables')
             Base.metadata.drop_all(engine)
             Base.metadata.create_all(engine)
             APP_LOG.info('(re)Creating stored procedures')
-            Session.execute(VULNERABILITIES)
+            Session.execute(VULNERABILITIES_DROP)
+            Session.execute(VULNERABILITIES_CREATE)
             Session.commit()
 
 

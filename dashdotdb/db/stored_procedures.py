@@ -1,6 +1,10 @@
-VULNERABILITIES = """
+VULNERABILITIES_DROP = """
 DROP FUNCTION IF EXISTS get_vulnerabilities(cluster_name text, namespace_name text);
-CREATE FUNCTION get_vulnerabilities(cluster_name text, namespace_name text)
+DROP FUNCTION IF EXISTS get_severity_count(cluster_name text, namespace_name text, severity_name text);
+"""
+
+VULNERABILITIES_CREATE = """
+CREATE OR REPLACE FUNCTION get_vulnerabilities(cluster_name text, namespace_name text)
     RETURNS TABLE(repository VARCHAR,
                   name VARCHAR,
                   manifest TEXT,
@@ -68,8 +72,7 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS get_severity_count(cluster_name text, namespace_name text, severity_name text);
-CREATE FUNCTION get_severity_count(cluster_name text, namespace_name text, severity_name text)
+CREATE OR REPLACE FUNCTION get_severity_count(cluster_name text, namespace_name text, severity_name text)
     RETURNS TABLE(vulnerability VARCHAR,
                   feature VARCHAR,
                   severity TEXT)
