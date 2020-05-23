@@ -6,19 +6,19 @@ AppSRE Dashboards Database: a repository of metrics and statistics about the ser
 
 Run a PostgreSQL instance:
 
-```
-docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+```shell script
+$ docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
 Export the `DASHDOTDB_DATABASE_URL`:
 
-```
+```shell script
 $ export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
 ```
 
 Install the package:
 
-```
+```shell script
 $ python -m venv venv
 $ source venv/bin/activate
 $ python setup.py develop
@@ -26,7 +26,7 @@ $ python setup.py develop
 
 Initialize the Database:
 
-```
+```shell script
 $ dashdotdb-admin resetdb
 (re)Creating tables
 (re)Creating stored procedures
@@ -34,7 +34,7 @@ $ dashdotdb-admin resetdb
 
 Apply `imagemanifestvuln` example data:
 
-```
+```shell script
 $ dashdotdb apply imagemanifestvuln -c cluster-01 -f examples/imagemanifestvuln.json
 token created
 cluster cluster-01 created
@@ -48,7 +48,7 @@ vulnerability RHSA-2020:1916 created
 
 Query vulnerabilities:
 
-```
+```shell script
 $ dashdotdb get imagemanifestvuln -c cluster-01 -n cso -s High
 REPOSITORY              NAME      MANIFEST          AFFECTED_PODS  VULNERABILITY    SEVERITY    PACKAGE                   CURRENT_VERSION    FIXED_IN_VERSION     LINK
 ----------------------  --------  --------------  ---------------  ---------------  ----------  ------------------------  -----------------  -------------------  -----------------------------------------------
@@ -64,6 +64,40 @@ quay.io/app-sre/centos  centos:7  sha256:a42f741                2  RHSA-2019:036
 ...
 ```
 
-# Entity Relashioship Diagram
+# Stored Procedures
+
+The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards will directly access PostgreSQL
+instance to query data from. Because those queries can be complex, we create stored procedures to simplify the
+execution of those queries.
+
+The stored procedures may be found here: [dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
+
+## Examples
+
+To create this gauge:
+
+![](docs/grafana1.png)
+
+We can use this query:
+
+```sql
+SELECT now() AS time,
+       count(feature) as value,
+       severity as metric
+FROM get_severity_count('$cluster','$namespace', 'High')
+GROUP BY severity;
+```
+
+To create this table:
+
+![](docs/grafana2.png)
+
+We can use this query:
+
+```sql
+SELECT * FROM get_vulnerabilities('$cluster','$namespace');
+```
+
+# Entity Relationship Diagram
 
 ![](docs/dashdotdb.png)
