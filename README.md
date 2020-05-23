@@ -64,71 +64,6 @@ quay.io/app-sre/centos  centos:7  sha256:a42f741                2  RHSA-2019:036
 ...
 ```
 
-# Stored Procedures
-
-The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards will directly access PostgreSQL
-instance to query data from. Because those queries can be complex, we create stored procedures to simplify the
-execution of those queries.
-
-The stored procedures can be found here: [dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
-
-## Examples
-
-To create this gauge:
-
-![](docs/grafana1.png)
-
-We can use this query:
-
-```sql
-SELECT now() AS time,
-       count(feature) as value,
-       severity as metric
-FROM get_severity_count('$cluster','$namespace', 'High')
-GROUP BY severity;
-```
-
-To create this table:
-
-![](docs/grafana2.png)
-
-We can use this query:
-
-```sql
-SELECT * FROM get_vulnerabilities('$cluster','$namespace');
-```
-
-# Database Model
-
-The current Entity Relationship Diagram looks like this:
-
-![](docs/dashdotdb.png)
-
-To change the database, start by editing the [ERD ".dia" file](/docs/dashdotdb.dia) using
-[Gnome Dia](https://wiki.gnome.org/Apps/Dia/).
-
-Then reflect the changes to the ERD in the database model:
-[dashdotdb/db/model.py](/dashdotdb/db/model.py).
-
-Last but not least, apply your changes to the database using:
-
-```
-$ dashdotdb-admin initdb
-```
-
-This will create all new tables defined in the Model.
-
-Alternatively, you might want to use:
-
-```
-$ dashdotdb-admin resetdb
-```
-
-This will remove all the tables and recreate them according to the Model.
-
-At the moment, there's no upgrade strategy. In the future, database upgrades shall be implemented
-using [Alembic](https://alembic.sqlalchemy.org/).
-
 # Extending the CLI
 
 The `dashdotdb` Command Line Interface is pluggable and easily extensible. It is composed of three
@@ -180,7 +115,7 @@ Then, you have to add your new plugin to the [setup.py](setup.py):
             ]
 ```
 
-And last but not lease, you have to (re)install the Python package:
+And finally you have to (re)install the Python package:
 
 ```
 $ python setup.py develop
@@ -274,4 +209,69 @@ cso/sleep2-65844c6b58-qlng8
 cso/sleep-6f84df5847-4bn9p
 cso/sleep-6f84df5847-bctxz
 cso/sleep-6f84df5847-dh9l8
+```
+
+# Changing the Database Model
+
+The current Entity Relationship Diagram looks like this:
+
+![](docs/dashdotdb.png)
+
+To change the database, start by editing the [ERD ".dia" file](/docs/dashdotdb.dia) using
+[Gnome Dia](https://wiki.gnome.org/Apps/Dia/).
+
+Then reflect the changes to the ERD in the database model:
+[dashdotdb/db/model.py](/dashdotdb/db/model.py).
+
+Last but not least, apply your changes to the database using:
+
+```
+$ dashdotdb-admin initdb
+```
+
+This will create all new tables defined in the Model.
+
+Alternatively, you might want to use:
+
+```
+$ dashdotdb-admin resetdb
+```
+
+This will remove all the tables and recreate them according to the Model.
+
+At the moment, there's no upgrade strategy. In the future, database upgrades shall be implemented
+using [Alembic](https://alembic.sqlalchemy.org/).
+
+# Stored Procedures
+
+The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards will directly access PostgreSQL
+instance to query data from. Because those queries can be complex, we create stored procedures to simplify the
+execution of those queries.
+
+The stored procedures can be found here: [dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
+
+## Examples
+
+To create this gauge:
+
+![](docs/grafana1.png)
+
+We can use this query:
+
+```sql
+SELECT now() AS time,
+       count(feature) as value,
+       severity as metric
+FROM get_severity_count('$cluster','$namespace', 'High')
+GROUP BY severity;
+```
+
+To create this table:
+
+![](docs/grafana2.png)
+
+We can use this query:
+
+```sql
+SELECT * FROM get_vulnerabilities('$cluster','$namespace');
 ```
