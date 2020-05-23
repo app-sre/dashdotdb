@@ -246,7 +246,7 @@ using [Alembic](https://alembic.sqlalchemy.org/).
 
 The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards will directly access PostgreSQL
 instance to query data from. Because those queries can be complex, we create stored procedures to simplify the
-execution of those queries.
+execution of them.
 
 The stored procedures can be found here: [dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
 
