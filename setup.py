@@ -9,7 +9,6 @@ setup(name='dashdotdb',
       description='',
       python_requires='>=3.6',
       license="GPLv2+",
-      package_data={'': ['schemas/swagger.yaml']},
       classifiers=[
             'Development Status :: 2 - Pre-Alpha',
             'Environment :: Web Environment',
@@ -36,7 +35,6 @@ setup(name='dashdotdb',
             ],
             'plugins': [
                   'imagemanifestvuln = dashdotdb.cli.plugins.imagemanifestvuln:ImageManifestVuln',
-                  'dummy = dashdotdb.cli.plugins.dummy:Dummy',
             ]
       }
       )
