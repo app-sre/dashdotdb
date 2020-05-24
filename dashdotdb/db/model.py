@@ -60,7 +60,7 @@ class Image(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(64), index=True, unique=False)
     manifest = Column(String(1000), index=True, unique=False)
-    features = relationship('Feature', secondary='imagefeature', cascade="all,delete")
+    features = relationship('Feature', secondary='imagefeature')
     pods = relationship('Pod', backref='image')
 
 
@@ -73,7 +73,7 @@ class Feature(Base):
     namespacename = Column(String(64), index=True, unique=False)
     version = Column(String(64), index=True, unique=False)
     versionformat = Column(String(64), index=True, unique=False)
-    images = relationship('Image', secondary='imagefeature', cascade="all,delete")
+    images = relationship('Image', secondary='imagefeature')
     vulnerabilities = relationship('Vulnerability', backref='feature')
 
 

@@ -1,9 +1,10 @@
 import argparse
-import datetime
 import json
 import sys
 
 from collections import defaultdict
+from datetime import datetime
+from datetime import timedelta
 
 from tabulate import tabulate
 
@@ -26,12 +27,15 @@ class ImageManifestVuln(Cmd):
 
     def configure_apply(self, parser):
         parser = super().configure_apply(parser)
-        parser.add_argument('-f', '--filename', type=argparse.FileType('r'), nargs='?', default=None,
+        parser.add_argument('-f', '--filename', type=argparse.FileType('r'),
+                            nargs='?', default=None,
                             help='that contains the configuration to apply')
-        parser.add_argument('infile', type=argparse.FileType('r'), nargs='?', default=None,
+        parser.add_argument('infile', type=argparse.FileType('r'), nargs='?',
+                            default=None,
                             help='that contains the configuration to apply')
         parser.add_argument('-c', '--cluster', type=str, required=True,
-                            help='name of the cluster to reference the configuration')
+                            help='name of the cluster to reference the '
+                                 'configuration')
         parser.add_argument('--delta', type=int, default=2,
                             help='delta time in minutes')
 
@@ -62,49 +66,55 @@ class ImageManifestVuln(Cmd):
 
     def insert_to_database(self, args, manifest):
         if 'kind' not in manifest:
-            self.log.error(f'skipping manifest: key "kind" not found')
+            self.log.error('skipping manifest: key "kind" not found')
             return
 
         if manifest['kind'] != 'ImageManifestVuln':
-            self.log.info(f'skipping kind "{manifest["kind"]}"')
+            self.log.info('skipping kind "%s"', manifest["kind"])
             return
 
-        expire = datetime.datetime.now() - datetime.timedelta(minutes=args.delta)
-        db_token = Session.query(Token).filter(Token.timestamp > expire).first()
+        expire = datetime.now() - timedelta(minutes=args.delta)
+        db_token = Session.query(Token) \
+            .filter(Token.timestamp > expire).first()
         if db_token is None:
-            Session.add(Token(timestamp=datetime.datetime.now()))
+            Session.add(Token(timestamp=datetime.now()))
             Session.commit()
             self.log.info('token created')
-        db_token = Session.query(Token).filter(Token.timestamp > expire).first()
+        db_token = Session.query(Token) \
+            .filter(Token.timestamp > expire).first()
 
         cluster_name = args.cluster
-        db_cluster = Session.query(Cluster).filter_by(name=cluster_name).first()
+        db_cluster = Session.query(Cluster) \
+            .filter_by(name=cluster_name).first()
         if db_cluster is None:
             Session.add(Cluster(name=cluster_name))
             Session.commit()
             self.log.info('cluster %s created', cluster_name)
-        db_cluster = Session.query(Cluster).filter_by(name=cluster_name).first()
+        db_cluster = Session.query(Cluster) \
+            .filter_by(name=cluster_name).first()
 
         namespace_name = manifest['metadata']['namespace']
-        db_namespace = Session.query(Namespace).filter_by(name=namespace_name,
-                                                          cluster_id=db_cluster.id).first()
+        db_namespace = Session.query(Namespace) \
+            .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
             Session.add(Namespace(name=namespace_name,
                                   cluster_id=db_cluster.id))
             Session.commit()
             self.log.info('namespace %s created', namespace_name)
-        db_namespace = Session.query(Namespace).filter_by(name=namespace_name,
-                                                          cluster_id=db_cluster.id).first()
+        db_namespace = Session.query(Namespace) \
+            .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
 
         image_name = manifest['spec']['image']
         image_manifest = manifest['spec']['manifest']
-        db_image = Session.query(Image).filter_by(name=image_name, manifest=image_manifest).first()
+        db_image = Session.query(Image) \
+            .filter_by(name=image_name, manifest=image_manifest).first()
         if db_image is None:
             Session.add(Image(name=image_name,
                               manifest=image_manifest))
             Session.commit()
             self.log.info('image %s created', image_name)
-        db_image = Session.query(Image).filter_by(name=image_name, manifest=image_manifest).first()
+        db_image = Session.query(Image) \
+            .filter_by(name=image_name, manifest=image_manifest).first()
 
         features = manifest['spec']['features']
         for feature in features:
@@ -112,10 +122,11 @@ class ImageManifestVuln(Cmd):
             feature_namespacename = feature['namespaceName']
             feature_version = feature['version']
             feature_versionformat = feature['versionformat']
-            db_feature = Session.query(Feature).filter_by(name=feature_name,
-                                                          namespacename=feature_namespacename,
-                                                          version=feature_version,
-                                                          versionformat=feature_versionformat).first()
+            db_feature = Session.query(Feature) \
+                .filter_by(name=feature_name,
+                           namespacename=feature_namespacename,
+                           version=feature_version,
+                           versionformat=feature_versionformat).first()
             if db_feature is None:
                 Session.add(Feature(name=feature_name,
                                     namespacename=feature_namespacename,
@@ -124,40 +135,46 @@ class ImageManifestVuln(Cmd):
                                     images=[db_image]))
                 Session.commit()
                 self.log.info('feature %s created ', feature_name)
-            db_feature = Session.query(Feature).filter_by(name=feature_name,
-                                                          namespacename=feature_namespacename,
-                                                          version=feature_version,
-                                                          versionformat=feature_versionformat).first()
+            db_feature = Session.query(Feature) \
+                .filter_by(name=feature_name,
+                           namespacename=feature_namespacename,
+                           version=feature_version,
+                           versionformat=feature_versionformat).first()
 
             vulnerabilities = feature['vulnerabilities']
             for vulnerability in vulnerabilities:
                 vulnerability_name = vulnerability['name']
-                vulnerability_description = vulnerability['description']
+                vulnerability_descr = vulnerability['description']
                 vulnerability_link = vulnerability['link']
                 vulnerability_fixedby = vulnerability['fixedby']
                 vulnerability_severity = vulnerability['severity']
-                db_severity = Session.query(Severity).filter_by(name=vulnerability_severity).first()
+                db_severity = Session.query(Severity) \
+                    .filter_by(name=vulnerability_severity).first()
                 if db_severity is None:
                     Session.add(Severity(name=vulnerability_severity))
                     Session.commit()
-                    self.log.info('severity %s created ', vulnerability_severity)
-                db_severity = Session.query(Severity).filter_by(name=vulnerability_severity).first()
+                    self.log.info('severity %s created ',
+                                  vulnerability_severity)
+                db_severity = Session.query(Severity) \
+                    .filter_by(name=vulnerability_severity).first()
 
-                db_vulnerability = Session.query(Vulnerability).filter_by(name=vulnerability_name,
-                                                                          description=vulnerability_description,
-                                                                          fixedby=vulnerability_fixedby,
-                                                                          link=vulnerability_link,
-                                                                          severity_id=db_severity.id,
-                                                                          feature_id=db_feature.id).first()
+                db_vulnerability = Session.query(Vulnerability) \
+                    .filter_by(name=vulnerability_name,
+                               description=vulnerability_descr,
+                               fixedby=vulnerability_fixedby,
+                               link=vulnerability_link,
+                               severity_id=db_severity.id,
+                               feature_id=db_feature.id).first()
                 if db_vulnerability is None:
                     Session.add(Vulnerability(name=vulnerability_name,
-                                              description=vulnerability_description,
+                                              description=vulnerability_descr,
                                               fixedby=vulnerability_fixedby,
                                               link=vulnerability_link,
                                               severity_id=db_severity.id,
                                               feature_id=db_feature.id))
                     Session.commit()
-                    self.log.info('vulnerability %s created ', vulnerability_name)
+                    self.log.info('vulnerability %s created ',
+                                  vulnerability_name)
 
         pods = manifest['status']['affectedPods'].keys()
         for pod in pods:
@@ -176,16 +193,21 @@ class ImageManifestVuln(Cmd):
     def get(self, args):
         if args.cluster is None:
             clusters = Session.query(Cluster).all()
-            result = {'CLUSTERS': [cluster.name for cluster in clusters]}
+            result = {
+                'CLUSTERS': [cluster.name for cluster in clusters]
+            }
             self.log.info(tabulate(result, headers=result.keys()))
             self.log.info('')
             self.log.info('Please use "--cluster" to select a cluster')
             sys.exit()
 
         if args.namespace is None:
-            namespaces = Session.query(Namespace).filter(Namespace.cluster_id == Cluster.id,
-                                                         Cluster.name == args.cluster).all()
-            result = {'NAMESPACES': [namespace.name for namespace in namespaces]}
+            namespaces = Session.query(Namespace) \
+                .filter(Namespace.cluster_id == Cluster.id,
+                        Cluster.name == args.cluster).all()
+            result = {
+                'NAMESPACES': [namespace.name for namespace in namespaces]
+            }
             self.log.info(tabulate(result, headers=result.keys()))
             self.log.info('')
             self.log.info('Please use "--namespace" to select a namespace')
@@ -204,12 +226,13 @@ class ImageManifestVuln(Cmd):
             self.log.info('No results')
             sys.exit()
 
-        images = Session.query(Image).filter(Image.id == Pod.image_id,
-                                             Pod.token_id == token.id,
-                                             Pod.namespace_id == Namespace.id,
-                                             Namespace.name == args.namespace,
-                                             Namespace.cluster_id == Cluster.id,
-                                             Cluster.name == args.cluster).all()
+        images = Session.query(Image) \
+            .filter(Image.id == Pod.image_id,
+                    Pod.token_id == token.id,
+                    Pod.namespace_id == Namespace.id,
+                    Namespace.name == args.namespace,
+                    Namespace.cluster_id == Cluster.id,
+                    Cluster.name == args.cluster).all()
 
         result = defaultdict(list)
         for image in images:
@@ -217,7 +240,8 @@ class ImageManifestVuln(Cmd):
                 for vulnerability in feature.vulnerabilities:
 
                     if args.severity is not None:
-                        if vulnerability.severity.name != args.severity:
+                        if (vulnerability.severity.name.lower() !=
+                                args.severity.lower()):
                             continue
 
                     result['REPOSITORY'].append(image.name)

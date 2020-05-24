@@ -1,6 +1,7 @@
 import logging
-import pkg_resources
 import sys
+
+import pkg_resources
 
 from dashdotdb.cli.parser import Parser
 
@@ -31,7 +32,8 @@ class DashDotDB:
             for choice in self.parser.actions.choices:
                 # The configure_* methods are the interface for the plugins to
                 # extend the action (apply, get, ...) command line arguments
-                configure_func = getattr(plugins[entry_point.name], f'configure_{choice}')
+                configure_func = getattr(plugins[entry_point.name],
+                                         f'configure_{choice}')
                 configure_func(self.parser)
 
         args, _ = self.parser.application.parse_known_args()
