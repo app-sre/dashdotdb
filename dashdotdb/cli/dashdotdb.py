@@ -12,6 +12,11 @@ APP_LOG_HANDLER.setFormatter(logging.Formatter(fmt='%(message)s'))
 APP_LOG.addHandler(APP_LOG_HANDLER)
 APP_LOG.setLevel(logging.INFO)
 
+PLUGIN_LOG = logging.getLogger('plugin')
+PLUGIN_LOG_HANDLER = logging.StreamHandler(sys.stdout)
+PLUGIN_LOG_HANDLER.setFormatter(logging.Formatter(fmt='%(message)s'))
+PLUGIN_LOG.addHandler(PLUGIN_LOG_HANDLER)
+PLUGIN_LOG.setLevel(logging.INFO)
 
 class DashDotDB:
     def __init__(self):
