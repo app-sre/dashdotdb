@@ -61,8 +61,13 @@ class ImageManifestVuln(Cmd):
             self.insert_to_database(args=args, manifest=data)
 
     def insert_to_database(self, args, manifest):
+        if 'kind' not in manifest:
+            self.log.error(f'skipping manifest: key "kind" not found')
+            return
+
         if manifest['kind'] != 'ImageManifestVuln':
             self.log.info(f'skipping kind "{manifest["kind"]}"')
+            return
 
         expire = datetime.datetime.now() - datetime.timedelta(minutes=args.delta)
         db_token = Session.query(Token).filter(Token.timestamp > expire).first()
