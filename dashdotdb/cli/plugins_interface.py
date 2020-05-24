@@ -1,5 +1,6 @@
 import abc
 import logging
+import sys
 
 
 class Cmd(metaclass=abc.ABCMeta):
@@ -7,7 +8,7 @@ class Cmd(metaclass=abc.ABCMeta):
     description = ''
 
     def __init__(self):
-        self.log = logging.getLogger('app')
+        self.log = logging.getLogger('plugin')
 
     def configure_apply(self, parser):
         return parser.apply_subparsers.add_parser(self.__class__.__name__.lower(),
@@ -17,16 +18,6 @@ class Cmd(metaclass=abc.ABCMeta):
         return parser.get_subparsers.add_parser(self.__class__.__name__.lower(),
                                                 help=self.description)
 
-    @abc.abstractmethod
-    def apply(self, args):
-        """
-        :param args:
-        :return:
-        """
-
-    @abc.abstractmethod
-    def get(self, args):
-        """
-        :param args:
-        :return:
-        """
+    def __getattr__(self, item):
+        self.log.error('Not implemented')
+        sys.exit(1)
