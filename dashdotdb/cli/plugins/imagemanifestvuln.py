@@ -240,7 +240,8 @@ class ImageManifestVuln(Cmd):
                 for vulnerability in feature.vulnerabilities:
 
                     if args.severity is not None:
-                        if vulnerability.severity.name != args.severity:
+                        if (vulnerability.severity.name.lower() !=
+                                args.severity.lower()):
                             continue
 
                     result['REPOSITORY'].append(image.name)
