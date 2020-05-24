@@ -71,7 +71,7 @@ parts:
 
 ```
 $ dashdotdb apply imagemanifestvuln -c cluster-01 -f manifest.json
-              │           │        └────── PLUGIN OPTIONS ─────┘
+              │           │        └─────── PLUGIN OPTIONS ───────┘
               │           │
               │           └── PLUGIN
               │
