@@ -11,11 +11,13 @@ class Cmd(metaclass=abc.ABCMeta):
         self.log = logging.getLogger('plugin')
 
     def configure_apply(self, parser):
-        return parser.apply_subparsers.add_parser(self.__class__.__name__.lower(),
+        parser_name = self.__class__.__name__.lower()
+        return parser.apply_subparsers.add_parser(parser_name,
                                                   help=self.description)
 
     def configure_get(self, parser):
-        return parser.get_subparsers.add_parser(self.__class__.__name__.lower(),
+        parser_name = self.__class__.__name__.lower()
+        return parser.get_subparsers.add_parser(parser_name,
                                                 help=self.description)
 
     def __getattr__(self, item):

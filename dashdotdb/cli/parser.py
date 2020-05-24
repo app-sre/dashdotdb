@@ -7,8 +7,10 @@ class Parser:
 
     def __init__(self):
         self.args = argparse.Namespace()
-        self.application = argparse.ArgumentParser(prog='dashdotdb', description='DashDotDB CLI')
-        self.application.add_argument('-v', '--version', action='version', version='dashdotdb %s' % VERSION)
+        self.application = argparse.ArgumentParser(prog='dashdotdb',
+                                                   description='DashDotDB CLI')
+        self.application.add_argument('-v', '--version', action='version',
+                                      version='dashdotdb %s' % VERSION)
         self.actions = self.application.add_subparsers(title='actions',
                                                        help='actions help',
                                                        dest='action',
