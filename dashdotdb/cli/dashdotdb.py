@@ -1,6 +1,7 @@
 import logging
-import pkg_resources
 import sys
+
+import pkg_resources
 
 from dashdotdb.cli.parser import Parser
 

@@ -70,7 +70,7 @@ class ImageManifestVuln(Cmd):
             return
 
         if manifest['kind'] != 'ImageManifestVuln':
-            self.log.info(f'skipping kind "{manifest["kind"]}"')
+            self.log.info('skipping kind "%s"', manifest["kind"])
             return
 
         expire = datetime.now() - timedelta(minutes=args.delta)

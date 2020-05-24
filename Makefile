@@ -21,4 +21,5 @@ develop: clean
 
 check:
 	. venv/bin/activate && \
-	flake8 dashdotdb
+	flake8 dashdotdb && \
+	pylint dashdotdb
