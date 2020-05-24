@@ -1,4 +1,3 @@
-import json
 import logging
 import pkg_resources
 import sys
@@ -17,6 +16,7 @@ PLUGIN_LOG_HANDLER = logging.StreamHandler(sys.stdout)
 PLUGIN_LOG_HANDLER.setFormatter(logging.Formatter(fmt='%(message)s'))
 PLUGIN_LOG.addHandler(PLUGIN_LOG_HANDLER)
 PLUGIN_LOG.setLevel(logging.INFO)
+
 
 class DashDotDB:
     def __init__(self):
