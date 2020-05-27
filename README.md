@@ -13,6 +13,9 @@ expose the relevant insights via Grafana Dashboards and monthly reports.
 
 ![](docs/arch.png)
 
+In the image above, `CR` is the `ImageManifestVuln` CustomResource created by
+the [Container Security Operator](https://github.com/quay/container-security-operator).
+More sources of information will be included as this project grows.
 
 # Quickstart
 
@@ -55,6 +58,16 @@ image quay.io/app-sre/centos created
 feature platform-python-pip created
 severity Medium created
 vulnerability RHSA-2020:1916 created
+...
+```
+
+Or, if you already have a live cluster:
+
+```
+$ oc get imagemanifestvuln --all-namespaces -o json | dashdotdb apply imagemanifestvuln -c appsre-crc-test-01 -
+token created
+cluster appsre-crc-test-01 created
+namespace deafault created
 ...
 ```
 
