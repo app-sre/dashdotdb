@@ -4,8 +4,7 @@ The AppSRE Dashboards Database is a repository of metrics and statistics about
 the services we run.
 
 The Dash.DB tool is a Command Line Interface created to implement the Database
-Model and to read/write data to/from
-the Database.
+Model and to read/write data from/to the Database.
 
 It's a building block - and a central part - in the architecture created to
 extract information from multiples sources, place them into the Database and
