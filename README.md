@@ -1,6 +1,18 @@
 # Dash.DB
 
-AppSRE Dashboards Database: a repository of metrics and statistics about the services we run.
+The AppSRE Dashboards Database is a repository of metrics and statistics about
+the services we run.
+
+The Dash.DB tool is a Command Line Interface created to implement the Database
+Model and to read/write data to/from
+the Database.
+
+It's a building block - and a central part - in the architecture created to
+extract information from multiples sources, place them into the Database and
+expose the relevant insights via Grafana Dashboards and monthly reports.
+
+![](docs/arch.png)
+
 
 # Quickstart
 
@@ -66,8 +78,8 @@ quay.io/app-sre/centos  centos:7  sha256:a42f741                2  RHSA-2019:036
 
 # Extending the CLI
 
-The `dashdotdb` Command Line Interface is pluggable and easily extensible. It is composed of three
-parts:
+The `dashdotdb` Command Line Interface is pluggable and easily extensible. It
+is composed of three parts:
 
 ```
 $ dashdotdb apply imagemanifestvuln -c cluster-01 -f manifest.json
@@ -164,7 +176,8 @@ Getting!
 
 # Accessing the Database
 
-Using the `dummy` plugin we created in the previous step, let's run a simple query:
+Using the `dummy` plugin we created in the previous step, let's run a simple
+query:
 
 ```python
 from tabulate import tabulate
@@ -217,7 +230,8 @@ The current Entity Relationship Diagram looks like this:
 
 ![](docs/dashdotdb.png)
 
-To change the database, start by editing the [ERD ".dia" file](/docs/dashdotdb.dia) using
+To change the database, start by editing the
+[ERD ".dia" file](/docs/dashdotdb.dia) using
 [Gnome Dia](https://wiki.gnome.org/Apps/Dia/).
 
 Then reflect the changes to the ERD in the database model:
@@ -239,16 +253,18 @@ $ dashdotdb-admin resetdb
 
 This will remove all the tables and recreate them according to the Model.
 
-At the moment, there's no upgrade strategy. In the future, database upgrades shall be implemented
-using [Alembic](https://alembic.sqlalchemy.org/).
+At the moment, there's no upgrade strategy. In the future, database upgrades
+shall be implemented using [Alembic](https://alembic.sqlalchemy.org/).
 
 # Stored Procedures
 
-The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards will directly access PostgreSQL
-instance to query data from. Because those queries can be complex, we create stored procedures to simplify the
-execution of them.
+The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards
+will directly access PostgreSQL instance to query data from. Because those
+queries can be complex, we create stored procedures to simplify the execution
+of them.
 
-The stored procedures can be found here: [dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
+The stored procedures can be found here:
+[dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
 
 ## Examples
 
