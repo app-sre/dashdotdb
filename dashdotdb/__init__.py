@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import os
 
 from flask import Flask
@@ -29,8 +27,4 @@ class DashDotDb(App):
 conn_app = DashDotDb(__name__, specification_dir='schemas')
 conn_app.add_api('swagger.yaml',
                  resolver=RestyResolver('dashdotdb.controllers'))
-app = conn_app.app
-
-
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True, port=8080)
+app = conn_app.app  # pylint: disable=unused-variable
