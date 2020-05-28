@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 setup(name='dashdotdb',
@@ -23,18 +23,12 @@ setup(name='dashdotdb',
             'Programming Language :: Python :: 3.8',
       ],
       install_requires=[
-            'sqlalchemy ~= 1.3',
-            'tabulate ~= 0.8',
+            'connexion[swagger-ui] ~= 2.7',
+            'Flask ~= 1.1',
+            'Flask-Migrate ~= 2.5',
+            'Flask-SQLAlchemy ~= 2.4',
             'psycopg2-binary ~= 2.8',
+            'prometheus-client ~= 0.8',
+            'gunicorn ~= 20.0'
       ],
-      entry_points=
-      {
-            'console_scripts': [
-                  'dashdotdb = dashdotdb.cli.dashdotdb:main',
-                  'dashdotdb-admin = dashdotdb.cli.dashdotdb_admin:main',
-            ],
-            'plugins': [
-                  'imagemanifestvuln = dashdotdb.cli.plugins.imagemanifestvuln:ImageManifestVuln',
-            ]
-      }
       )
