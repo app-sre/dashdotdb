@@ -3,7 +3,7 @@
 The AppSRE Dashboards Database is a repository of metrics and statistics about
 the services we run.
 
-The Dash.DB tool is a service created to implement the Database Model and to
+The Dash.DB is a service created to implement the Database Model and to
 read/write data from/to the Database.
 
 It's a building block - and a central part - in the architecture created to
