@@ -3,34 +3,22 @@
 The AppSRE Dashboards Database is a repository of metrics and statistics about
 the services we run.
 
-The Dash.DB tool is a Command Line Interface created to implement the Database
-Model and to read/write data from/to the Database.
+The Dash.DB tool is a service created to implement the Database Model and to
+read/write data from/to the Database.
 
 It's a building block - and a central part - in the architecture created to
 extract information from multiples sources, place them into the Database and
 expose the relevant insights via Grafana Dashboards and monthly reports.
-
-![](docs/arch.png)
-
-In the image above, `CR` is the `ImageManifestVuln` CustomResource created by
-the [Container Security Operator](https://github.com/quay/container-security-operator).
-More sources of information will be included as this project grows.
 
 # Quickstart
 
 Run a PostgreSQL instance:
 
 ```
-$ docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+$ docker run --rm --it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
-Export the `DASHDOTDB_DATABASE_URL`:
-
-```
-$ export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
-```
-
-Install the package:
+Open a new terminal. Install the package:
 
 ```
 $ python -m venv venv
@@ -38,202 +26,92 @@ $ source venv/bin/activate
 $ python setup.py develop
 ```
 
+Export the `FLASK_APP` and the `DASHDOTDB_DATABASE_URL`:
+
+```
+$ export FLASK_APP=dashdotdb
+$ export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
+```
+
 Initialize the Database:
 
 ```
-$ dashdotdb-admin resetdb
-(re)Creating tables
-(re)Creating stored procedures
+$ flask db upgrade
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> c4f641d56546, Initial migration.
 ```
 
-Apply `imagemanifestvuln` example data:
+Run the service:
 
 ```
-$ dashdotdb apply imagemanifestvuln -c cluster-01 -f examples/imagemanifestvuln.json
-token created
-cluster cluster-01 created
-namespace cso created
-image quay.io/app-sre/centos created
-feature platform-python-pip created
-severity Medium created
-vulnerability RHSA-2020:1916 created
-...
+$ flask run --debugger --port 8080
+```
+
+Open a new terminal. Apply `imagemanifestvuln` example data:
+
+```
+$ curl --request POST \
+--header "Content-Type: application/json" \
+--data @examples/imagemanifestvuln.json \
+localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
 ```
 
 Or, if you already have a live cluster:
 
 ```
-$ oc get imagemanifestvuln --all-namespaces -o json | dashdotdb apply imagemanifestvuln -c appsre-crc-test-01 -
-token created
-cluster appsre-crc-test-01 created
-namespace deafault created
+$ oc get imagemanifestvuln --all-namespaces -o json | $ curl --request POST \
+--header "Content-Type: application/json" \
+--data @- \
+"localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
 ...
 ```
 
 Query vulnerabilities:
 
 ```
-$ dashdotdb get imagemanifestvuln -c cluster-01 -n cso -s High
-REPOSITORY              NAME      MANIFEST          AFFECTED_PODS  VULNERABILITY    SEVERITY    PACKAGE                   CURRENT_VERSION    FIXED_IN_VERSION     LINK
-----------------------  --------  --------------  ---------------  ---------------  ----------  ------------------------  -----------------  -------------------  -----------------------------------------------
-quay.io/app-sre/centos  centos:8  sha256:9e0c275                3  RHSA-2020:0273   High        sqlite-libs               3.26.0-3.el8       0:3.26.0-4.el8_1     https://access.redhat.com/errata/RHSA-2020:0273
-quay.io/app-sre/centos  centos:8  sha256:9e0c275                3  RHSA-2020:0229   High        sqlite-libs               3.26.0-3.el8       0:3.26.0-4.el8_0     https://access.redhat.com/errata/RHSA-2020:0229
-quay.io/app-sre/centos  centos:8  sha256:9e0c275                3  RHSA-2020:0575   High        systemd-udev              239-18.el8_1.1     0:239-18.el8_1.4     https://access.redhat.com/errata/RHSA-2020:0575
-quay.io/app-sre/centos  centos:8  sha256:9e0c275                3  RHSA-2020:0575   High        systemd-libs              239-18.el8_1.1     0:239-18.el8_1.4     https://access.redhat.com/errata/RHSA-2020:0575
-quay.io/app-sre/centos  centos:8  sha256:9e0c275                3  RHSA-2020:0575   High        systemd                   239-18.el8_1.1     0:239-18.el8_1.4     https://access.redhat.com/errata/RHSA-2020:0575
-quay.io/app-sre/centos  centos:8  sha256:9e0c275                3  RHSA-2020:0271   High        libarchive                3.3.2-7.el8        0:3.3.2-8.el8_1      https://access.redhat.com/errata/RHSA-2020:0271
-quay.io/app-sre/centos  centos:8  sha256:9e0c275                3  RHSA-2020:0575   High        systemd-pam               239-18.el8_1.1     0:239-18.el8_1.4     https://access.redhat.com/errata/RHSA-2020:0575
-quay.io/app-sre/centos  centos:7  sha256:a42f741                2  RHSA-2018:1700   High        procps-ng                 3.3.10-10.el7      0:3.3.10-17.el7_5.2  https://access.redhat.com/errata/RHSA-2018:1700
-quay.io/app-sre/centos  centos:7  sha256:a42f741                2  RHSA-2019:0368   High        systemd-libs              219-30.el7_3.6     0:219-62.el7_6.5     https://access.redhat.com/errata/RHSA-2019:0368
+$ curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespace=cso"
+[
+  {
+    "affected_pods": 3,
+    "current_version": "9.0.3-15.el8",
+    "fixed_in_version": "0:9.0.3-16.el8",
+    "link": "https://access.redhat.com/errata/RHSA-2020:1916",
+    "manifest": "sha256:9e0c275",
+    "name": "centos:8",
+    "package": "platform-python-pip",
+    "repository": "quay.io/app-sre/centos",
+    "severity": "Medium",
+    "vulnerability": "RHSA-2020:1916"
+  },
+  {
+    "affected_pods": 3,
+    "current_version": "8.3.1-4.5.el8",
+    "fixed_in_version": "0:8.3.1-5.el8",
+    "link": "https://access.redhat.com/errata/RHSA-2020:1864",
+    "manifest": "sha256:9e0c275",
+    "name": "centos:8",
+    "package": "libstdc++",
+    "repository": "quay.io/app-sre/centos",
+    "severity": "Medium",
+    "vulnerability": "RHSA-2020:1864"
+  },
 ...
 ```
 
-# Extending the CLI
-
-The `dashdotdb` Command Line Interface is pluggable and easily extensible. It
-is composed of three parts:
+Prometheus metrics endpoint:
 
 ```
-$ dashdotdb apply imagemanifestvuln -c cluster-01 -f manifest.json
-              │           │        └─────── PLUGIN OPTIONS ───────┘
-              │           │
-              │           └── PLUGIN
-              │
-              └── ACTION
-```
-
-To create a new plugin, first you have to create a new Python file in the
-[plugins directory](dashdotdb/cli/plugins/):
-
-```python
-from dashdotdb.cli.plugins_interface import Cmd
-
-
-class Dummy(Cmd):
-
-    description = 'Dummy Plugin for Demonstration'
-
-    def configure_apply(self, parser):
-        parser = super().configure_apply(parser)
-        parser.add_argument('-o', '--option', type=str,
-                            required=True, help='dummy apply option')
-
-    def configure_get(self, parser):
-        parser = super().configure_get(parser)
-        parser.add_argument('-d', '--debug', type=str,
-                            help='dummy get option')
-
-    def apply(self, args):
-        self.log.info('Applying!')
-
-    def get(self, args):
-        self.log.info('Getting!')
-```
-
-Then, you have to add your new plugin to the [setup.py](setup.py):
-
-```
-            'plugins': [
-                  'imagemanifestvuln = dashdotdb.cli.plugins.imagemanifestvuln:ImageManifestVuln',
-                  'dummy = dashdotdb.cli.plugins.dummy:Dummy',
-            ]
-```
-
-And finally you have to (re)install the Python package:
-
-```
-$ python setup.py develop
-```
-
-Checking the `apply` help:
-
-```
-$ dashdotdb apply -h
-usage: dashdotdb apply [-h] {dummy,imagemanifestvuln} ...
-
-optional arguments:
-  -h, --help            show this help message and exit
-
-plugins:
-  {dummy,imagemanifestvuln}
-                        help
-    dummy               Dummy Plugin for Demonstration
-    imagemanifestvuln   Image Manifest Vulnerability
-
-```
-
-Checking the `apply dummy` help:
-
-```
-$ dashdotdb apply dummy -h
-usage: dashdotdb apply dummy [-h] -o OPTION
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -o OPTION, --option OPTION
-                        dummy apply option
-```
-
-Running:
-
-```
-$ dashdotdb apply dummy -o foo
-Applying!
-```
-
-```
-$ dashdotdb get dummy -d bar
-Getting!
-```
-
-# Accessing the Database
-
-Using the `dummy` plugin we created in the previous step, let's run a simple
-query:
-
-```python
-from tabulate import tabulate
-
-from dashdotdb import Session
-from dashdotdb import Pod
-
-from dashdotdb.cli.plugins_interface import Cmd
-
-
-class Dummy(Cmd):
-
-    description = 'Dummy Plugin for Demonstration'
-
-    def configure_apply(self, parser):
-        parser = super().configure_apply(parser)
-        parser.add_argument('-o', '--option', type=str,
-                            required=True, help='dummy apply option')
-
-    def configure_get(self, parser):
-        parser = super().configure_get(parser)
-        parser.add_argument('-d', '--debug', type=str,
-                            help='dummy get option')
-
-    def apply(self, args):
-        self.log.info('Applying!')
-
-    def get(self, args):
-        pods = Session.query(Pod).distinct(Pod.name)
-        result = {'PODS': [pod.name for pod in pods]}
-        self.log.info(tabulate(result, headers=result.keys()))
-```
-
-Running:
-
-```
-$ dashdotdb get dummy
-PODS
----------------------------
-cso/sleep2-65844c6b58-2q2s5
-cso/sleep2-65844c6b58-qlng8
-cso/sleep-6f84df5847-4bn9p
-cso/sleep-6f84df5847-bctxz
-cso/sleep-6f84df5847-dh9l8
+$ curl "localhost:8080/api/v1/metrics"
+...
+# HELP imagemanifestvuln_total Vulnerabilities total per severity
+# TYPE imagemanifestvuln_total counter
+imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Medium"} 86.0
+imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="High"} 43.0
+imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Low"} 20.0
+imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Unknown"} 5.0
+imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Critical"} 4.0
+...
 ```
 
 # Changing the Database Model
@@ -247,7 +125,7 @@ To change the database, start by editing the
 [Gnome Dia](https://wiki.gnome.org/Apps/Dia/).
 
 Then reflect the changes to the ERD in the database model:
-[dashdotdb/db/model.py](/dashdotdb/db/model.py).
+[dashdotdb/db/model.py](/dashdotdb/models/imagemanifestvuln.py).
 
 Last but not least, apply your changes to the database using:
 
@@ -276,7 +154,7 @@ queries can be complex, we create stored procedures to simplify the execution
 of them.
 
 The stored procedures can be found here:
-[dashdotdb/db/stored_procedures.py](dashdotdb/db/stored_procedures.py)
+[dashdotdb/db/stored_procedures.py](dashdotdb/storedprocedures/imagemanifestvuln.py)
 
 ## Examples
 
