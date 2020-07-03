@@ -36,7 +36,7 @@ $ export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/post
 Initialize the Database:
 
 ```
-$ flask db upgrade
+$ FLASK_APP=dashdotdb flask db upgrade
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> c4f641d56546, Initial migration.

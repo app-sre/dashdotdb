@@ -88,7 +88,8 @@ class ImageManifestVuln:
                 .filter_by(name=feature_name,
                            namespacename=feature_namespacename,
                            version=feature_version,
-                           versionformat=feature_versionformat).first()
+                           versionformat=feature_versionformat) \
+                .filter(Feature.images.any(id=db_image.id)).first()
             if db_feature is None:
                 db.session.add(Feature(name=feature_name,
                                        namespacename=feature_namespacename,
@@ -97,11 +98,13 @@ class ImageManifestVuln:
                                        images=[db_image]))
                 db.session.commit()
                 self.log.info('feature %s created ', feature_name)
+
             db_feature = db.session.query(Feature) \
                 .filter_by(name=feature_name,
                            namespacename=feature_namespacename,
                            version=feature_version,
-                           versionformat=feature_versionformat).first()
+                           versionformat=feature_versionformat) \
+                .filter(Feature.images.any(id=db_image.id)).first()
 
             vulnerabilities = feature['vulnerabilities']
             for vulnerability in vulnerabilities:
@@ -198,27 +201,37 @@ class ImageManifestVuln:
 
     @staticmethod
     def get_vulnerabilities_summary():
-        token = db.session.query(Token) \
-            .filter(Pod.token_id == Token.id,
-                    Pod.namespace_id == Namespace.id,
-                    Namespace.cluster_id == Cluster.id) \
-            .order_by(Token.timestamp.desc()) \
-            .limit(1) \
-            .first()
-        if token is None:
-            return []
+        """
+        select cluster.name, max(token.id)
+        from token, pod, namespace, cluster
+        where token.id = pod.token_id
+        and pod.namespace_id = namespace.id
+        and namespace.cluster_id = cluster.id
+        group by cluster.name
+        """
+        tokens = (db.session.query(Cluster.id.label('cluster_id'),
+                                   db.func.max(Token.id).label('token_id'))
+                  .filter(Pod.token_id == Token.id,
+                          Pod.namespace_id == Namespace.id,
+                          Namespace.cluster_id == Cluster.id)
+                  .group_by(Cluster.id))
+        results = []
 
-        query_results = db.session.query(Cluster,
-                                         Namespace,
-                                         Vulnerability,
-                                         Severity) \
-            .filter(Image.id == Pod.image_id,
-                    Pod.token_id == token.id,
-                    Pod.namespace_id == Namespace.id,
-                    Namespace.cluster_id == Cluster.id,
-                    Image.id == ImageFeature.image_id,
-                    ImageFeature.feature_id == Feature.id,
-                    Feature.id == Vulnerability.feature_id,
-                    Vulnerability.severity_id == Severity.id).all()
-
-        return query_results
+        for item in tokens:
+            vulnerabilities = (db.session.query(Cluster,
+                                                Namespace,
+                                                Feature,
+                                                Vulnerability,
+                                                Severity).filter
+                               (Token.id == item.token_id,
+                                Pod.token_id == Token.id,
+                                Image.id == Pod.image_id,
+                                Pod.namespace_id == Namespace.id,
+                                Namespace.cluster_id == Cluster.id,
+                                Image.id == ImageFeature.image_id,
+                                ImageFeature.feature_id == Feature.id,
+                                Feature.id == Vulnerability.feature_id,
+                                Vulnerability.severity_id == Severity.id)
+                               .distinct())
+            results.extend(vulnerabilities)
+        return results
