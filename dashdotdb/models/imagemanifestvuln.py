@@ -15,7 +15,7 @@ class Pod(db.Model):
     __tablename__ = 'pod'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, unique=False)
+    name = db.Column(db.String(256), index=True, unique=False)
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
     image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))

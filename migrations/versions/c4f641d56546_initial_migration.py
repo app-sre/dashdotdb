@@ -88,7 +88,7 @@ def upgrade():
     op.create_index(op.f('ix_vulnerability_name'), 'vulnerability', ['name'], unique=False)
     op.create_table('pod',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=64), nullable=True),
+    sa.Column('name', sa.String(length=256), nullable=True),
     sa.Column('namespace_id', sa.Integer(), nullable=True),
     sa.Column('image_id', sa.Integer(), nullable=True),
     sa.Column('token_id', sa.Integer(), nullable=True),
