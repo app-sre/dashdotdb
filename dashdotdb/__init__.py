@@ -7,7 +7,6 @@ from connexion.resolver import RestyResolver
 
 from dashdotdb.models.base import db
 from dashdotdb.models import imagemanifestvuln  # type: ignore  # noqa: F401
-from dashdotdb.utils import gen_access_token
 
 
 DATABASE_HOST = os.environ['DATABASE_HOST']
@@ -15,8 +14,7 @@ DATABASE_PORT = os.environ['DATABASE_PORT']
 DATABASE_USERNAME = os.environ['DATABASE_USERNAME']
 DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
 DATABASE_NAME = os.environ['DATABASE_NAME']
-
-ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN', gen_access_token())
+ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 
 
 class DashDotDb(App):
