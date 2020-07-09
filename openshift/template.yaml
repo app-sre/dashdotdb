@@ -76,7 +76,7 @@ objects:
         targetPort: 8080
         name: dashdotdb
     selector:
-  app: dashdotdb
+      app: dashdotdb
 parameters:
 - name: IMAGE
   value: quay.io/app-sre/dashdotdb
