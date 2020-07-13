@@ -111,7 +111,7 @@ class ImageManifestVuln:
                 vulnerability_name = vulnerability['name']
                 vulnerability_descr = vulnerability['description']
                 vulnerability_link = vulnerability['link']
-                vulnerability_fixedby = vulnerability['fixedby']
+                vulnerability_fixedby = vulnerability.get('fixedby')
                 vulnerability_severity = vulnerability['severity']
                 db_severity = db.session.query(Severity) \
                     .filter_by(name=vulnerability_severity).first()
