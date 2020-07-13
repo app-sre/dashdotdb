@@ -109,8 +109,8 @@ class ImageManifestVuln:
             vulnerabilities = feature['vulnerabilities']
             for vulnerability in vulnerabilities:
                 vulnerability_name = vulnerability['name']
-                vulnerability_descr = vulnerability['description']
-                vulnerability_link = vulnerability['link']
+                vulnerability_descr = vulnerability.get('description')
+                vulnerability_link = vulnerability.get('link')
                 vulnerability_fixedby = vulnerability.get('fixedby')
                 vulnerability_severity = vulnerability['severity']
                 db_severity = db.session.query(Severity) \
