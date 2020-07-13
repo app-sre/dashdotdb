@@ -7,7 +7,7 @@ from dashdotdb.services.imagemanifestvuln import ImageManifestVuln
 
 def post(cluster, body):
     authorization = request.headers.get('Authorization')
-    if authorization != f'token: {current_app.config["ACCESS_TOKEN"]}':
+    if authorization != f'token {current_app.config["ACCESS_TOKEN"]}':
         return jsonify(message='Access denied'), 401
 
     imv = ImageManifestVuln(cluster=cluster)
@@ -17,7 +17,7 @@ def post(cluster, body):
 
 def search(cluster, namespace):
     authorization = request.headers.get('Authorization')
-    if authorization != f'token: {current_app.config["ACCESS_TOKEN"]}':
+    if authorization != f'token {current_app.config["ACCESS_TOKEN"]}':
         return jsonify(message='Access denied'), 401
 
     imv = ImageManifestVuln(cluster, namespace)
