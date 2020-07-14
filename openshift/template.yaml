@@ -33,7 +33,7 @@ objects:
             - name: ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: ${tokenSecret}
+                  name: ${dashdotdbSecret}
                   key: ACCESS_TOKEN
             - name: DATABASE_HOST
               valueFrom:
@@ -84,5 +84,5 @@ parameters:
   value: latest
 - name: databaseSecret
   value: dashdotdb-rds
-- name: tokenSecret
-  value: access-token
+- name: dashdotdbSecret
+  value: dashdotdb
