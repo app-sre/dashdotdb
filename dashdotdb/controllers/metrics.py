@@ -25,7 +25,7 @@ def search():
     for result in results:
         counter.labels(cluster=result.Cluster.name,
                        namespace=result.Namespace.name,
-                       severity=result.Severity.name).inc()
+                       severity=result.Severity.name).inc(result.Count)
 
     headers = {'Content-type': 'text/plain'}
     return Response(generate_latest(registry=registry), 200, headers)
