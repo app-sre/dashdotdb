@@ -3,6 +3,8 @@ import logging
 from datetime import datetime
 from datetime import timedelta
 
+from sqlalchemy import func
+
 from dashdotdb.models.imagemanifestvuln import db
 from dashdotdb.models.imagemanifestvuln import Token
 from dashdotdb.models.imagemanifestvuln import Cluster
@@ -209,29 +211,32 @@ class ImageManifestVuln:
         and namespace.cluster_id = cluster.id
         group by cluster.name
         """
-        tokens = (db.session.query(Cluster.id.label('cluster_id'),
-                                   db.func.max(Token.id).label('token_id'))
-                  .filter(Pod.token_id == Token.id,
-                          Pod.namespace_id == Namespace.id,
-                          Namespace.cluster_id == Cluster.id)
-                  .group_by(Cluster.id))
-        results = []
 
-        for item in tokens:
-            vulnerabilities = (db.session.query(Cluster,
-                                                Namespace,
-                                                Feature,
-                                                Vulnerability,
-                                                Severity).filter
-                               (Token.id == item.token_id,
-                                Pod.token_id == Token.id,
-                                Image.id == Pod.image_id,
-                                Pod.namespace_id == Namespace.id,
-                                Namespace.cluster_id == Cluster.id,
-                                Image.id == ImageFeature.image_id,
-                                ImageFeature.feature_id == Feature.id,
-                                Feature.id == Vulnerability.feature_id,
-                                Vulnerability.severity_id == Severity.id)
-                               .distinct())
-            results.extend(vulnerabilities)
+        token = db.session.query(
+            db.func.max(Token.id).label('token_id')
+        ).filter(
+            Token.id == Pod.token_id,
+            Pod.namespace_id == Namespace.id,
+            Namespace.cluster_id == Cluster.id
+        )
+
+        results = db.session.query(
+            Cluster,
+            Namespace,
+            Severity,
+            func.count(Vulnerability.name).label('Count')
+        ).filter(
+            Vulnerability.severity_id == Severity.id,
+            Vulnerability.feature_id == Feature.id,
+            Feature.id == ImageFeature.feature_id,
+            ImageFeature.image_id == Image.id,
+            Image.id == Pod.image_id,
+            Pod.token_id == Token.id,
+            Pod.namespace_id == Namespace.id,
+            Namespace.cluster_id == Cluster.id,
+            Token.id == token[0].token_id
+        ).group_by(
+            Severity, Namespace, Cluster
+        )
+
         return results
