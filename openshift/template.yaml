@@ -29,6 +29,13 @@ objects:
         - image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: dashdotdb
+          resources:
+            requests:
+              memory: 200Mi
+              cpu: 500m
+            limits:
+              memory: 300Mi
+              cpu: 800m
           env:
             - name: ACCESS_TOKEN
               valueFrom:
