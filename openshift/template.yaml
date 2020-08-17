@@ -31,9 +31,9 @@ objects:
           name: dashdotdb-auth-proxy
           env:
           - name: FORWARD_HOST
-            value: 0.0.0.0:8080
+            value: "0.0.0.0:8080"
           - name: LISTEN_PORT
-            value: 8000
+            value: "8000"
           - name: BASIC_AUTH_USERNAME
             valueFrom:
               secretKeyRef:
