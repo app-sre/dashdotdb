@@ -28,7 +28,7 @@ objects:
         containers:
         - image: quay.io/app-sre/nginx-gate:32317a8
           imagePullPolicy: Always
-          name: dashdotdb-auth-proxy
+          name: auth-proxy
           env:
           - name: FORWARD_HOST
             value: "0.0.0.0:8080"
@@ -52,7 +52,7 @@ objects:
               memory: 300Mi
               cpu: 800m
           ports:
-          - name: dashdotdb-auth-proxy
+          - name: auth-proxy
             containerPort: 8000
         - image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
@@ -104,7 +104,7 @@ objects:
       - protocol: TCP
         port: 80
         targetPort: 8000
-        name: dashdotdb-auth-proxy
+        name: auth-proxy
     selector:
       app: dashdotdb
 parameters:
