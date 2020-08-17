@@ -37,11 +37,6 @@ objects:
               memory: 300Mi
               cpu: 800m
           env:
-            - name: ACCESS_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: ${dashdotdbSecret}
-                  key: ACCESS_TOKEN
             - name: DATABASE_HOST
               valueFrom:
                  secretKeyRef:
@@ -91,5 +86,3 @@ parameters:
   value: latest
 - name: databaseSecret
   value: dashdotdb-rds
-- name: dashdotdbSecret
-  value: dashdotdb

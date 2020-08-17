@@ -5,12 +5,10 @@ from prometheus_client import CollectorRegistry
 from prometheus_client import ProcessCollector
 from prometheus_client import generate_latest
 
-
 from dashdotdb.services.imagemanifestvuln import ImageManifestVuln
 
 
 def search():
-
     imv = ImageManifestVuln()
     results = imv.get_vulnerabilities_summary()
 
