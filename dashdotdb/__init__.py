@@ -14,7 +14,6 @@ DATABASE_PORT = os.environ['DATABASE_PORT']
 DATABASE_USERNAME = os.environ['DATABASE_USERNAME']
 DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
 DATABASE_NAME = os.environ['DATABASE_NAME']
-ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 
 
 class DashDotDb(App):
@@ -27,7 +26,6 @@ class DashDotDb(App):
                   f'{DATABASE_HOST}:'
                   f'{DATABASE_PORT}/'
                   f'{DATABASE_NAME}')
-        app.config['ACCESS_TOKEN'] = ACCESS_TOKEN
         app.config['SQLALCHEMY_DATABASE_URI'] = db_url
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         db.init_app(app)
