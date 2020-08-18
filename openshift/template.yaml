@@ -107,6 +107,20 @@ objects:
         name: auth-proxy
     selector:
       app: dashdotdb
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: internal
+    labels:
+      app: dashdotdb
+  spec:
+    ports:
+      - protocol: TCP
+        port: 80
+        targetPort: 8080
+        name: dashdotdb
+    selector:
+      app: dashdotdb
 parameters:
 - name: IMAGE
   value: quay.io/app-sre/dashdotdb
