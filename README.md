@@ -120,64 +120,33 @@ The current Entity Relationship Diagram looks like this:
 
 ![](docs/dashdotdb.png)
 
+## ERD
+
 To change the database, start by editing the
 [ERD ".dia" file](/docs/dashdotdb.dia) using
 [Gnome Dia](https://wiki.gnome.org/Apps/Dia/).
 
-Then reflect the changes to the ERD in the database model:
-[dashdotdb/db/model.py](/dashdotdb/models/imagemanifestvuln.py).
+## Model
 
-Last but not least, apply your changes to the database using:
+Reflect the changes to the ERD in the database model, either by updating an
+existing model or by creating new ones. Models are placed
+[here](/dashdotdb/models/).
 
-```
-$ dashdotdb-admin initdb
-```
+## DB Upgrade
 
-This will create all new tables defined in the Model.
-
-Alternatively, you might want to use:
+Create the upgrade route executing the command:
 
 ```
-$ dashdotdb-admin resetdb
+$ FLASK_APP=dashdotdb flask db migrate
 ```
 
-This will remove all the tables and recreate them according to the Model.
+That will create a new migration file in the
+[migrations](/migrations/versions/) directory.
 
-At the moment, there's no upgrade strategy. In the future, database upgrades
-shall be implemented using [Alembic](https://alembic.sqlalchemy.org/).
+For the deployed environments, the [entrypoint.sh](entrypoint.sh) will
+execute the migration before running the service. To execute the migration
+on your own database instance, run:
 
-# Stored Procedures
-
-The CLI uses SQLAlchemy to interact with the Database, but Grafana Dashboards
-will directly access PostgreSQL instance to query data from. Because those
-queries can be complex, we create stored procedures to simplify the execution
-of them.
-
-The stored procedures can be found here:
-[dashdotdb/db/stored_procedures.py](dashdotdb/storedprocedures/imagemanifestvuln.py)
-
-## Examples
-
-To create this gauge:
-
-![](docs/grafana1.png)
-
-We can use this query:
-
-```sql
-SELECT now() AS time,
-       count(feature) as value,
-       severity as metric
-FROM get_severity_count('$cluster','$namespace', 'High')
-GROUP BY severity;
 ```
-
-To create this table:
-
-![](docs/grafana2.png)
-
-We can use this query:
-
-```sql
-SELECT * FROM get_vulnerabilities('$cluster','$namespace');
+FLASK_APP=dashdotdb flask db upgrade
 ```
