@@ -134,7 +134,7 @@ existing model or by creating new ones. Models are placed
 
 ## DB Upgrade
 
-Create the upgrade route executing the command:
+Create the upgrade routine executing the command:
 
 ```
 $ FLASK_APP=dashdotdb flask db migrate
