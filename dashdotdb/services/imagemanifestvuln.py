@@ -25,16 +25,12 @@ class ImageManifestVuln:
         self.namespace = namespace
 
     def insert(self, manifest):
-        for item in manifest['items']:
-            self._insert(item)
-
-    def _insert(self, item):
-        if 'kind' not in item:
+        if 'kind' not in manifest:
             self.log.error('skipping manifest: key "kind" not found')
             return
 
-        if item['kind'] != 'ImageManifestVuln':
-            self.log.info('skipping kind "%s"', item["kind"])
+        if manifest['kind'] != 'ImageManifestVuln':
+            self.log.info('skipping kind "%s"', manifest["kind"])
             return
 
         expire = datetime.now() - timedelta(minutes=60)
@@ -57,7 +53,7 @@ class ImageManifestVuln:
         db_cluster = db.session.query(Cluster) \
             .filter_by(name=cluster_name).first()
 
-        namespace_name = item['metadata']['namespace']
+        namespace_name = manifest['metadata']['namespace']
         db_namespace = db.session.query(Namespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
@@ -68,8 +64,8 @@ class ImageManifestVuln:
         db_namespace = db.session.query(Namespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
 
-        image_name = item['spec']['image']
-        image_manifest = item['spec']['manifest']
+        image_name = manifest['spec']['image']
+        image_manifest = manifest['spec']['manifest']
         db_image = db.session.query(Image) \
             .filter_by(name=image_name, manifest=image_manifest).first()
         if db_image is None:
@@ -80,7 +76,7 @@ class ImageManifestVuln:
         db_image = db.session.query(Image) \
             .filter_by(name=image_name, manifest=image_manifest).first()
 
-        features = item['spec']['features']
+        features = manifest['spec']['features']
         for feature in features:
             feature_name = feature['name']
             feature_namespacename = feature['namespaceName']
@@ -145,7 +141,7 @@ class ImageManifestVuln:
                     self.log.info('vulnerability %s created ',
                                   vulnerability_name)
 
-        pods = item['status']['affectedPods'].keys()
+        pods = manifest['status']['affectedPods'].keys()
         for pod in pods:
             db_pod = db.session.query(Pod) \
                 .filter_by(name=pod,
