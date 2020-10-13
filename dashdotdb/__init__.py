@@ -9,11 +9,18 @@ from dashdotdb.models.base import db
 from dashdotdb.models import imagemanifestvuln  # type: ignore  # noqa: F401
 
 
-DATABASE_HOST = os.environ['DATABASE_HOST']
-DATABASE_PORT = os.environ['DATABASE_PORT']
-DATABASE_USERNAME = os.environ['DATABASE_USERNAME']
-DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
-DATABASE_NAME = os.environ['DATABASE_NAME']
+DATABASE_URL = os.environ.get('DASHDOTDB_DATABASE_URL')
+if DATABASE_URL is None:
+    DATABASE_HOST = os.environ['DATABASE_HOST']
+    DATABASE_PORT = os.environ['DATABASE_PORT']
+    DATABASE_USERNAME = os.environ['DATABASE_USERNAME']
+    DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
+    DATABASE_NAME = os.environ['DATABASE_NAME']
+    DATABASE_URL = (f'postgresql://{DATABASE_USERNAME}:'
+                    f'{DATABASE_PASSWORD}@'
+                    f'{DATABASE_HOST}:'
+                    f'{DATABASE_PORT}/'
+                    f'{DATABASE_NAME}')
 
 
 class DashDotDb(App):
@@ -21,12 +28,7 @@ class DashDotDb(App):
         # pylint: disable=redefined-outer-name
         app = Flask(self.import_name, **self.server_args)
 
-        db_url = (f'postgresql://{DATABASE_USERNAME}:'
-                  f'{DATABASE_PASSWORD}@'
-                  f'{DATABASE_HOST}:'
-                  f'{DATABASE_PORT}/'
-                  f'{DATABASE_NAME}')
-        app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+        app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         db.init_app(app)
         # pylint: disable=unused-variable
