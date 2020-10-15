@@ -7,6 +7,7 @@ from connexion.resolver import RestyResolver
 
 from dashdotdb.models.base import db
 from dashdotdb.models import imagemanifestvuln  # type: ignore  # noqa: F401
+from dashdotdb.models import deploymentvalidation  # type: ignore  # noqa: F401
 
 
 DATABASE_HOST = os.environ['DATABASE_HOST']
