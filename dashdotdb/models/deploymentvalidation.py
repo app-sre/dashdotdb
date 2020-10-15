@@ -20,7 +20,7 @@ class DeploymentValidation(db.Model):
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
     objectkind_id = db.Column(db.Integer, db.ForeignKey('objectkind.id'))
     validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'))
-    status = db.Column(db.Integer, unique=False))
+    status = db.Column(db.Integer, unique=False)
 
 
 class Namespace(db.Model):
