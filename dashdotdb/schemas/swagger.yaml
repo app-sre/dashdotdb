@@ -66,6 +66,48 @@ paths:
       responses:
         "200":
           description: successful operation
+  /deploymentvalidation:
+    get:
+      summary: Lists Deployment Validations
+      parameters:
+      - name: cluster
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: namespace
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentValidationReport'
+                x-content-type: application/json
+  /deploymentvalidation/{cluster}:
+    post:
+      summary: Add a new Deploment Validation
+      parameters:
+        - name: cluster
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Validation object to be added to the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemsDeploymentValidation'
+      responses:
+        "200":
+          description: successful operation
 components:
   schemas:
     ImageManifestVulnReport:
