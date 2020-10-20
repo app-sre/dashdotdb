@@ -95,7 +95,6 @@ Count by cluster | namespace | validation | status
           "cluster": "app-sre-prod-01",
           "namespace": "visual-qontract-stage",
           "kind": "ReplicaSet",
-          "name": "openshift-acme-d6bdb5b48",
           "validation": "replicas",
           "status": "1"
         },
