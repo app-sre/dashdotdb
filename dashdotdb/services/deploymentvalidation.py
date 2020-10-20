@@ -146,38 +146,34 @@ class DeploymentValidation:
     def get_deploymentvalidation_summary():
         """
         select cluster.name, max(validationtoken.id)
-        from validationtoken, deploymentvalidation, namespace, cluster
+        from validationtoken, deploymentvalidation, dvnamespace, dvcluster, 
         where validationtoken.id = deploymentvalidation.validationtoken_id
-        and deploymentvalidation.namespace_id = namespace.id
-        and namespace.cluster_id = cluster.id
-        group by cluster.name
+        and deploymentvalidation.namespace_id = dvnamespace.id
+        and dvnamespace.cluster_id = dvcluster.id
+        group by dvcluster.name
         """
 
         validationtoken = db.session.query(
-            db.func.max(Token.id).label('validationtoken_id')
+            db.func.max(ValidationToken.id).label('validationtoken_id')
         ).filter(
-            Token.id == DeploymentValidation.validationtoken_id,
-            DeploymentValidation.namespace_id == Namespace.id,
-            Namespace.cluster_id == Cluster.id
+            ValidationToken.id == DeploymentValidation.validationtoken_id,
+            DeploymentValidation.namespace_id == DVNamespace.id,
+            Namespace.cluster_id == DVCluster.id
         )
 
         results = db.session.query(
-            Cluster,
-            Namespace,
+            DVCluster,
+            DVNamespace,
             DeploymentValidation,
-            func.count(Validation.name).label('Count')
+            func.count(Validation.Name).label('Count')
         ).filter(
-            Validation.severity_id == Severity.id,
-            Validation.feature_id == Feature.id,
-            Feature.id == ImageFeature.feature_id,
-            ImageFeature.image_id == Image.id,
-            Image.id == Pod.image_id,
-            Pod.validationtoken_id == Token.id,
-            Pod.namespace_id == Namespace.id,
-            Namespace.cluster_id == Cluster.id,
-            Token.id == validationtoken[0].validationtoken_id
+            DeploymentValidation.validation_id == Validation.id,
+            DeploymentValidation.validationtoken_id == ValidationToken.id,
+            DeploymentValidation.namespace_id == DVNamespace.id,
+            DVNamespace.cluster_id == DVCluster.id,
+            ValidationToken.id == validationtoken[0].validationtoken_id
         ).group_by(
-            Severity, Namespace, Cluster
+            Validation, DVNamespace, DVCluster
         )
 
         return results

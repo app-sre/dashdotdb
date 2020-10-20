@@ -92,7 +92,7 @@ paths:
                 x-content-type: application/json
   /deploymentvalidation/{cluster}:
     post:
-      summary: Add a new Deploment Validation
+      summary: Add a new Deployment Validation
       parameters:
         - name: cluster
           in: path

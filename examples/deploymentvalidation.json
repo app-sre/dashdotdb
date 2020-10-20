@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "metric": {
+        "__name__": "deployment_validation_operator_replica_validation",
+        "exported_namespace": "app-interface-stage",
+        "kind": "Deployment",
+        "name": "openshift-acme"
+      },
+      "value": [
+        1603208289.29,
+        "1"
+      ]
+    },
+    {
+      "metric": {
+        "__name__": "deployment_validation_operator_replica_validation",
+        "exported_namespace": "app-interface-stage",
+        "kind": "Deployment",
+        "name": "qontract-api"
+      },
+      "value": [
+        1603208289.29,
+        "1"
+      ]
+    },
+    {
+      "metric": {
+        "__name__": "deployment_validation_operator_replica_validation",
+        "exported_namespace": "visual-qontract-stage",
+        "kind": "ReplicaSet",
+        "name": "openshift-acme-d6bdb5b48"
+      },
+      "value": [
+        1603208289.29,
+        "1"
+      ]
+    }
+  ]
+}

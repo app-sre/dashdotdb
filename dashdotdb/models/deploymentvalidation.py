@@ -52,6 +52,7 @@ class Validation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
+    status = db.Column(db.Integer, unique=False)
     deploymentvalidation = db.relationship('DeploymentValidation', backref='validation')
 
 
