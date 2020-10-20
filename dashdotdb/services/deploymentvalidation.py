@@ -77,33 +77,17 @@ class DeploymentValidation:
         db_image = db.session.query(Image) \
             .filter_by(name=image_name, validation=image_validation).first()
 
-        features = item['spec']['features']
-        for feature in features:
-            feature_name = feature['name']
-            feature_namespacename = feature['namespaceName']
-            feature_version = feature['version']
-            feature_versionformat = feature['versionformat']
-            db_feature = db.session.query(Feature) \
-                .filter_by(name=feature_name,
-                           namespacename=feature_namespacename,
-                           version=feature_version,
-                           versionformat=feature_versionformat) \
-                .filter(Feature.images.any(id=db_image.id)).first()
-            if db_feature is None:
-                db.session.add(Feature(name=feature_name,
-                                       namespacename=feature_namespacename,
-                                       version=feature_version,
-                                       versionformat=feature_versionformat,
-                                       images=[db_image]))
-                db.session.commit()
-                self.log.info('feature %s created ', feature_name)
+        objectkind = item['metric']['kind']
+        db_objectkind = db.session.query(ObjectKind) \
+            .filter_by(name=objectkind).first()
+        if db_objectkind is None:
+            db.session.add(ObjectKind(name=objectkind))
+            db.session.commit()
+            self.log.info('objectkind %s created ', objectkind)
 
-            db_feature = db.session.query(Feature) \
-                .filter_by(name=feature_name,
-                           namespacename=feature_namespacename,
-                           version=feature_version,
-                           versionformat=feature_versionformat) \
-                .filter(Feature.images.any(id=db_image.id)).first()
+        db_objectkind = db.session.query(ObjectKind) \
+            .filter_by(name=objectkind) \
+            .filter(ObjectKind.name.any(id=db_objectkind.id)).first()
 
     def get_validations(self):
         validationtoken = db.session.query(Token) \
@@ -127,12 +111,12 @@ class DeploymentValidation:
 
         result = list()
         for image in images:
-            for feature in image.features:
-                for validation in feature.validations:
+            for kind in image.kinds:
+                for validation in kind.validations:
                     result.append(
                         {
                             'repository': image.name,
-                            'name': feature.namespacename,
+                            'name': kind.namespacename,
                             'validation': image.validation[:14],
                             'affected_pods': len(image.pods),
                             'validation': validation.name,
