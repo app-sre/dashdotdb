@@ -18,7 +18,7 @@ class DeploymentValidation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=False)
     token_id = db.Column(db.Integer, db.ForeignKey('validationtoken.id'))
-    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
+    namespace_id = db.Column(db.Integer, db.ForeignKey('dvnamespace.id'))
     objectkind_id = db.Column(db.Integer, db.ForeignKey('objectkind.id'))
     validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'))
     status = db.Column(db.Integer, unique=False)
@@ -26,18 +26,18 @@ class DeploymentValidation(db.Model):
 
 class DVNamespace(db.Model):
 
-    __tablename__ = 'namespace'
+    __tablename__ = 'dvnamespace'
     __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
-    cluster_id = db.Column(db.Integer, db.ForeignKey('vcluster.id'))
+    cluster_id = db.Column(db.Integer, db.ForeignKey('dvcluster.id'))
     deploymentvalidation = db.relationship('DeploymentValidation', backref='namespace')
 
 
 class DVCluster(db.Model):
 
-    __tablename__ = 'vcluster'
+    __tablename__ = 'dvcluster'
     __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
