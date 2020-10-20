@@ -82,6 +82,7 @@ deployment_validation_total{cluster="app-sre-prod-01",namespace="fooblah",valida
 ```
  
 ## Endpoint Output (JSON)
+Count by cluster | namespace | validation | status
 ```
 {
   "status": "success",
