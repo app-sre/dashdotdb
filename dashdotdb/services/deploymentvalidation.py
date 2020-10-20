@@ -6,9 +6,9 @@ from datetime import timedelta
 from sqlalchemy import func
 
 from dashdotdb.models.deploymentvalidation import db
-from dashdotdb.models.deploymentvalidation import Token
-from dashdotdb.models.deploymentvalidation import Cluster
-from dashdotdb.models.deploymentvalidation import Namespace
+from dashdotdb.models.deploymentvalidation import ValidationToken
+from dashdotdb.models.deploymentvalidation import DVCluster
+from dashdotdb.models.deploymentvalidation import DVNamespace
 from dashdotdb.models.deploymentvalidation import DeploymentValidation
 from dashdotdb.models.deploymentvalidation import Validation
 from dashdotdb.models.deploymentvalidation import ObjectKind
@@ -35,13 +35,13 @@ class DeploymentValidation:
             return
 
         expire = datetime.now() - timedelta(minutes=60)
-        db_token = db.session.query(Token) \
+        db_validationtoken = db.session.query(Token) \
             .filter(Token.timestamp > expire).first()
-        if db_token is None:
+        if db_validationtoken is None:
             db.session.add(Token(timestamp=datetime.now()))
             db.session.commit()
-            self.log.info('token created')
-        db_token = db.session.query(Token) \
+            self.log.info('validationtoken created')
+        db_validationtoken = db.session.query(Token) \
             .filter(Token.timestamp > expire).first()
 
         cluster_name = self.cluster
@@ -106,20 +106,20 @@ class DeploymentValidation:
                 .filter(Feature.images.any(id=db_image.id)).first()
 
     def get_validations(self):
-        token = db.session.query(Token) \
-            .filter(Pod.token_id == Token.id,
+        validationtoken = db.session.query(Token) \
+            .filter(Pod.validationtoken_id == Token.id,
                     Pod.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster) \
             .order_by(Token.timestamp.desc()) \
             .limit(1) \
             .first()
-        if token is None:
+        if validationtoken is None:
             return []
 
         images = db.session.query(Image) \
             .filter(Image.id == Pod.image_id,
-                    Pod.token_id == token.id,
+                    Pod.validationtoken_id == validationtoken.id,
                     Pod.namespace_id == Namespace.id,
                     Namespace.name == self.namespace,
                     Namespace.cluster_id == Cluster.id,
@@ -145,18 +145,18 @@ class DeploymentValidation:
     @staticmethod
     def get_deploymentvalidation_summary():
         """
-        select cluster.name, max(token.id)
-        from token, deploymentvalidation, namespace, cluster
-        where token.id = deploymentvalidation.token_id
+        select cluster.name, max(validationtoken.id)
+        from validationtoken, deploymentvalidation, namespace, cluster
+        where validationtoken.id = deploymentvalidation.validationtoken_id
         and deploymentvalidation.namespace_id = namespace.id
         and namespace.cluster_id = cluster.id
         group by cluster.name
         """
 
-        token = db.session.query(
-            db.func.max(Token.id).label('token_id')
+        validationtoken = db.session.query(
+            db.func.max(Token.id).label('validationtoken_id')
         ).filter(
-            Token.id == DeploymentValidation.token_id,
+            Token.id == DeploymentValidation.validationtoken_id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
         )
@@ -172,10 +172,10 @@ class DeploymentValidation:
             Feature.id == ImageFeature.feature_id,
             ImageFeature.image_id == Image.id,
             Image.id == Pod.image_id,
-            Pod.token_id == Token.id,
+            Pod.validationtoken_id == Token.id,
             Pod.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Token.id == token[0].token_id
+            Token.id == validationtoken[0].validationtoken_id
         ).group_by(
             Severity, Namespace, Cluster
         )

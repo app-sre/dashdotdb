@@ -1,9 +1,10 @@
 from dashdotdb.models.base import db
 
 
-class Token(db.Model):
+class ValidationToken(db.Model):
 
-    __tablename__ = 'token'
+    __tablename__ = 'validationtoken'
+    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
@@ -16,35 +17,38 @@ class DeploymentValidation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=False)
-    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
+    token_id = db.Column(db.Integer, db.ForeignKey('validationtoken.id'))
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
     objectkind_id = db.Column(db.Integer, db.ForeignKey('objectkind.id'))
     validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'))
     status = db.Column(db.Integer, unique=False)
 
 
-class Namespace(db.Model):
+class DVNamespace(db.Model):
 
     __tablename__ = 'namespace'
+    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
-    cluster_id = db.Column(db.Integer, db.ForeignKey('cluster.id'))
+    cluster_id = db.Column(db.Integer, db.ForeignKey('vcluster.id'))
     deploymentvalidation = db.relationship('DeploymentValidation', backref='namespace')
 
 
-class Cluster(db.Model):
+class DVCluster(db.Model):
 
-    __tablename__ = 'cluster'
+    __tablename__ = 'vcluster'
+    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
-    namespaces = db.relationship('Namespace', backref='cluster')
+    namespaces = db.relationship('DVNamespace', backref='cluster')
 
 
 class Validation(db.Model):
 
     __tablename__ = 'validation'
+    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
@@ -54,7 +58,8 @@ class Validation(db.Model):
 class ObjectKind(db.Model):
 
     __tablename__ = 'objectkind'
+    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
-    deploymentvalidation = db.relationship('deploymentvalidation', backref='objectkind')
+    deploymentvalidation = db.relationship('DeploymentValidation', backref='objectkind')

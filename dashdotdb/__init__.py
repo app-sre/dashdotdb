@@ -12,11 +12,11 @@ from dashdotdb.models import deploymentvalidation  # type: ignore  # noqa: F401
 
 DATABASE_URL = os.environ.get('DASHDOTDB_DATABASE_URL')
 if DATABASE_URL is None:
-    DATABASE_HOST = os.environ['DATABASE_HOST']
-    DATABASE_PORT = os.environ['DATABASE_PORT']
-    DATABASE_USERNAME = os.environ['DATABASE_USERNAME']
-    DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
-    DATABASE_NAME = os.environ['DATABASE_NAME']
+    DATABASE_HOST = os.getenv('DATABASE_HOST') or 'localhost'
+    DATABASE_PORT = os.getenv('DATABASE_PORT') or '5432'
+    DATABASE_USERNAME = os.getenv('DATABASE_USERNAME') or 'postgres'
+    DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD') or 'postgres'
+    DATABASE_NAME = os.getenv('DATABASE_NAME') or 'postgres'
     DATABASE_URL = (f'postgresql://{DATABASE_USERNAME}:'
                     f'{DATABASE_PASSWORD}@'
                     f'{DATABASE_HOST}:'
