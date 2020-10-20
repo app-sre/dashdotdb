@@ -24,18 +24,18 @@ def search():
                       documentation='Vulnerabilities total per severity',
                       registry=registry)
 
-    counter = Counter('deploymentvalidation',
-                      labelnames=('cluster', 'namespace', 'validation'),
-                      documentation='Validations total per status',
-                      registry=registry)
+#    counter = Counter('deploymentvalidation',
+#                      labelnames=('cluster', 'namespace', 'validation'),
+#                      documentation='Validations total per status',
+#                      registry=registry)
 
     for result in results:
         counter.labels(cluster=result.Cluster.name,
                        namespace=result.Namespace.name,
                        severity=result.Severity.name).inc(result.Count)
-        counter.labels(cluster=result.Cluster.name,
-                       namespace=result.Namespace.name,
-                       validation=result.validation.name).inc(result.Count)
+#        counter.labels(cluster=result.Cluster.name,
+#                       namespace=result.Namespace.name,
+#                       validation=result.validation.name).inc(result.Count)
 
     headers = {'Content-type': 'text/plain'}
     return Response(generate_latest(registry=registry), 200, headers)

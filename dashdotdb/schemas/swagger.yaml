@@ -245,3 +245,13 @@ components:
                         type: array
                         items:
                           type: string
+    DeploymentValidationReport:
+      type: object
+      properties:
+        foo:
+          type: string
+    ItemsDeploymentValidation:
+      type: object
+      properties:
+        foo:
+          type: string
