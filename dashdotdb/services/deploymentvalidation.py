@@ -91,10 +91,10 @@ class DeploymentValidation:
             .filter_by(name=objectkind) \
             .filter(ObjectKind.name.any(id=db_objectkind.id)).first()
 
-    def get_validations(self):
+    def get_deploymentvalidations(self):
         validationtoken = db.session.query(ValidationToken) \
-            .filter(Pod.validationtoken_id == ValidationToken.id,
-                    Pod.namespace_id == DVNamespace.id,
+            .filter(DeploymentValidation.token_id == ValidationToken.id,
+                    DeploymentValidation.namespace_id == DVNamespace.id,
                     DVNamespace.cluster_id == DVCluster.id,
                     DVCluster.name == self.cluster) \
             .order_by(ValidationToken.timestamp.desc()) \
@@ -103,28 +103,23 @@ class DeploymentValidation:
         if validationtoken is None:
             return []
 
-        images = db.session.query(Image) \
-            .filter(Image.id == Pod.image_id,
-                    Pod.validationtoken_id == validationtoken.id,
-                    Pod.namespace_id == DVNamespace.id,
+        validations = db.session.query(Validation) \
+            .filter(Validation.id == DeploymentValidation.validation_id,
+                    DeploymentValidation.tokenz == validationtoken.id,
+                    DeploymentValidation.namespace_id == DVNamespace.id,
+                    DeploymentValidation.objectkind_id == ObjectKind.id,
                     DVNamespace.name == self.namespace,
                     DVNamespace.cluster_id == DVCluster.id,
                     DVCluster.name == self.cluster).all()
 
         result = list()
-        for image in images:
-            for kind in image.kinds:
-                for validation in kind.validations:
-                    result.append(
+        for validation in validations:
+          result.append(
                         {
-                            'repository': image.name,
-                            'name': kind.namespacename,
-                            'validation': image.validation[:14],
-                            'affected_pods': len(image.pods),
-                            'validation': validation.name,
-                            'link': validation.link,
+                          'name': validation.name,
+                          'status': validation.status
                         }
-                    )
+                       )
 
         return result
 

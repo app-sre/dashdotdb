@@ -4,16 +4,15 @@ from dashdotdb.models.base import db
 class ValidationToken(db.Model):
 
     __tablename__ = 'validationtoken'
-    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
-    deploymentvalidation = db.relationship('DeploymentValidation', backref='token')
+    deploymentvalidation = db.relationship('DeploymentValidation', backref='validationtoken')
 
 
 class DeploymentValidation(db.Model):
 
-    __tablename__ = 'DeploymentValidation'
+    __tablename__ = 'deploymentvalidation'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=False)
@@ -27,7 +26,6 @@ class DeploymentValidation(db.Model):
 class DVNamespace(db.Model):
 
     __tablename__ = 'dvnamespace'
-    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
@@ -38,7 +36,6 @@ class DVNamespace(db.Model):
 class DVCluster(db.Model):
 
     __tablename__ = 'dvcluster'
-    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
@@ -48,7 +45,6 @@ class DVCluster(db.Model):
 class Validation(db.Model):
 
     __tablename__ = 'validation'
-    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
@@ -59,7 +55,6 @@ class Validation(db.Model):
 class ObjectKind(db.Model):
 
     __tablename__ = 'objectkind'
-    __table_args__ = {'extend_existing':True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
