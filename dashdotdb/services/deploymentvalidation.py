@@ -26,56 +26,58 @@ class DeploymentValidation:
             self._insert(item)
 
     def _insert(self, item):
-        if 'kind' not in item:
-            self.log.error('skipping validation: key "kind" not found')
+        if 'metric' not in item:
+            self.log.error('skipping validation: key "metric" not found')
             return
 
-        if item['kind'] != 'DeploymentValidation':
-            self.log.info('skipping kind "%s"', item["kind"])
+        if item['metric'] != 'DeploymentValidation':
+            self.log.info('skipping metric "%s"', item["metric"])
             return
 
         expire = datetime.now() - timedelta(minutes=60)
-        db_validationtoken = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+        db_validationtoken = db.session.query(ValidationToken) \
+            .filter(ValidationToken.timestamp > expire).first()
         if db_validationtoken is None:
-            db.session.add(Token(timestamp=datetime.now()))
+            db.session.add(ValidationToken(timestamp=datetime.now()))
             db.session.commit()
             self.log.info('validationtoken created')
-        db_validationtoken = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+        db_validationtoken = db.session.query(ValidationToken) \
+            .filter(ValidationToken.timestamp > expire).first()
 
         cluster_name = self.cluster
-        db_cluster = db.session.query(Cluster) \
+        db_cluster = db.session.query(DVCluster) \
             .filter_by(name=cluster_name).first()
         if db_cluster is None:
-            db.session.add(Cluster(name=cluster_name))
+            db.session.add(DVCluster(name=cluster_name))
             db.session.commit()
             self.log.info('cluster %s created', cluster_name)
-        db_cluster = db.session.query(Cluster) \
+        db_cluster = db.session.query(DVCluster) \
             .filter_by(name=cluster_name).first()
 
         namespace_name = item['metadata']['namespace']
-        db_namespace = db.session.query(Namespace) \
+        db_namespace = db.session.query(DVNamespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
-            db.session.add(Namespace(name=namespace_name,
+            db.session.add(DVNamespace(name=namespace_name,
                                      cluster_id=db_cluster.id))
             db.session.commit()
             self.log.info('namespace %s created', namespace_name)
-        db_namespace = db.session.query(Namespace) \
+        db_namespace = db.session.query(DVNamespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
 
-        image_name = item['spec']['image']
-        image_validation = item['spec']['validation']
-        db_image = db.session.query(Image) \
-            .filter_by(name=image_name, validation=image_validation).first()
-        if db_image is None:
-            db.session.add(Image(name=image_name,
-                                 validation=image_validation))
+        validation_name = item['metric']['__name__']
+        validation_status = item['value'][1]
+        validation_namespace = item['metric']['exported_namespace']
+        db_validation = db.session.query(Validation) \
+            .filter_by(name=validation_name, status=validation_status).first()
+        if db_validation is None:
+            db.session.add(Validation(name=validation_name,
+                                 status=validation_status))
             db.session.commit()
-            self.log.info('image %s created', image_name)
-        db_image = db.session.query(Image) \
-            .filter_by(name=image_name, validation=image_validation).first()
+            self.log.info('validation %s:%s created', validation_name,
+                          validation_status)
+        db_validation = db.session.query(Validation) \
+            .filter_by(name=validation_name, status=validation_status).first()
 
         features = item['spec']['features']
         for feature in features:
@@ -106,12 +108,12 @@ class DeploymentValidation:
                 .filter(Feature.images.any(id=db_image.id)).first()
 
     def get_validations(self):
-        validationtoken = db.session.query(Token) \
-            .filter(Pod.validationtoken_id == Token.id,
-                    Pod.namespace_id == Namespace.id,
-                    Namespace.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster) \
-            .order_by(Token.timestamp.desc()) \
+        validationtoken = db.session.query(ValidationToken) \
+            .filter(Pod.validationtoken_id == ValidationToken.id,
+                    Pod.namespace_id == DVNamespace.id,
+                    DVNamespace.cluster_id == DVCluster.id,
+                    DVCluster.name == self.cluster) \
+            .order_by(ValidationToken.timestamp.desc()) \
             .limit(1) \
             .first()
         if validationtoken is None:
@@ -120,10 +122,10 @@ class DeploymentValidation:
         images = db.session.query(Image) \
             .filter(Image.id == Pod.image_id,
                     Pod.validationtoken_id == validationtoken.id,
-                    Pod.namespace_id == Namespace.id,
-                    Namespace.name == self.namespace,
-                    Namespace.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster).all()
+                    Pod.namespace_id == DVNamespace.id,
+                    DVNamespace.name == self.namespace,
+                    DVNamespace.cluster_id == DVCluster.id,
+                    DVCluster.name == self.cluster).all()
 
         result = list()
         for image in images:
@@ -158,7 +160,7 @@ class DeploymentValidation:
         ).filter(
             ValidationToken.id == DeploymentValidation.validationtoken_id,
             DeploymentValidation.namespace_id == DVNamespace.id,
-            Namespace.cluster_id == DVCluster.id
+            DVNamespace.cluster_id == DVCluster.id
         )
 
         results = db.session.query(
