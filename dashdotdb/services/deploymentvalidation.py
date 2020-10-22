@@ -108,13 +108,12 @@ class DeploymentValidationData:
             self.log.info('deploymentvalidation %s created ',
                           validation_context)
 
-
     def get_deploymentvalidations(self):
         """
         SELECT validationtoken.id AS validationtoken_id,
-        validationtoken.timestamp AS validationtoken_timestamp 
+        validationtoken.timestamp AS validationtoken_timestamp
         FROM validationtoken, deploymentvalidation, dvnamespace, dvcluster
-        WHERE deploymentvalidation.token_id = validationtoken.id 
+        WHERE deploymentvalidation.token_id = validationtoken.id
         AND deploymentvalidation.namespace_id = dvnamespace.id
         AND dvnamespace.cluster_id = dvcluster.id
         AND dvcluster.name = %(name_1)s
@@ -142,7 +141,6 @@ class DeploymentValidationData:
 
         result = list()
         for validation in validations:
-            self.log.error('bar')
             result.append({'context': validation.name,
                            'status': validation.validation.status
                            })

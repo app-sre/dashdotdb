@@ -28,7 +28,7 @@ class DashDotDb(App):
     def create_app(self):
         # pylint: disable=redefined-outer-name
         app = Flask(self.import_name, **self.server_args)
-        app.config['SQLALCHEMY_ECHO'] = True
+#       app.config['SQLALCHEMY_ECHO'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         db.init_app(app)
