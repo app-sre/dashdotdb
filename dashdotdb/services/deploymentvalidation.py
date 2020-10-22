@@ -26,56 +26,58 @@ class DeploymentValidation:
             self._insert(item)
 
     def _insert(self, item):
-        if 'kind' not in item:
-            self.log.error('skipping validation: key "kind" not found')
+        if 'metric' not in item:
+            self.log.error('skipping validation: key "metric" not found')
             return
 
-        if item['kind'] != 'DeploymentValidation':
-            self.log.info('skipping kind "%s"', item["kind"])
+        if item['metric'] != 'DeploymentValidation':
+            self.log.info('skipping metric "%s"', item["metric"])
             return
 
         expire = datetime.now() - timedelta(minutes=60)
-        db_validationtoken = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+        db_validationtoken = db.session.query(ValidationToken) \
+            .filter(ValidationToken.timestamp > expire).first()
         if db_validationtoken is None:
-            db.session.add(Token(timestamp=datetime.now()))
+            db.session.add(ValidationToken(timestamp=datetime.now()))
             db.session.commit()
             self.log.info('validationtoken created')
-        db_validationtoken = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+        db_validationtoken = db.session.query(ValidationToken) \
+            .filter(ValidationToken.timestamp > expire).first()
 
         cluster_name = self.cluster
-        db_cluster = db.session.query(Cluster) \
+        db_cluster = db.session.query(DVCluster) \
             .filter_by(name=cluster_name).first()
         if db_cluster is None:
-            db.session.add(Cluster(name=cluster_name))
+            db.session.add(DVCluster(name=cluster_name))
             db.session.commit()
             self.log.info('cluster %s created', cluster_name)
-        db_cluster = db.session.query(Cluster) \
+        db_cluster = db.session.query(DVCluster) \
             .filter_by(name=cluster_name).first()
 
         namespace_name = item['metadata']['namespace']
-        db_namespace = db.session.query(Namespace) \
+        db_namespace = db.session.query(DVNamespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
-            db.session.add(Namespace(name=namespace_name,
+            db.session.add(DVNamespace(name=namespace_name,
                                      cluster_id=db_cluster.id))
             db.session.commit()
             self.log.info('namespace %s created', namespace_name)
-        db_namespace = db.session.query(Namespace) \
+        db_namespace = db.session.query(DVNamespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
 
-        image_name = item['spec']['image']
-        image_validation = item['spec']['validation']
-        db_image = db.session.query(Image) \
-            .filter_by(name=image_name, validation=image_validation).first()
-        if db_image is None:
-            db.session.add(Image(name=image_name,
-                                 validation=image_validation))
+        validation_name = item['metric']['__name__']
+        validation_status = item['value'][1]
+        validation_namespace = item['metric']['exported_namespace']
+        db_validation = db.session.query(Validation) \
+            .filter_by(name=validation_name, status=validation_status).first()
+        if db_validation is None:
+            db.session.add(Validation(name=validation_name,
+                                 status=validation_status))
             db.session.commit()
-            self.log.info('image %s created', image_name)
-        db_image = db.session.query(Image) \
-            .filter_by(name=image_name, validation=image_validation).first()
+            self.log.info('validation %s:%s created', validation_name,
+                          validation_status)
+        db_validation = db.session.query(Validation) \
+            .filter_by(name=validation_name, status=validation_status).first()
 
         objectkind = item['metric']['kind']
         db_objectkind = db.session.query(ObjectKind) \
@@ -89,40 +91,35 @@ class DeploymentValidation:
             .filter_by(name=objectkind) \
             .filter(ObjectKind.name.any(id=db_objectkind.id)).first()
 
-    def get_validations(self):
-        validationtoken = db.session.query(Token) \
-            .filter(Pod.validationtoken_id == Token.id,
-                    Pod.namespace_id == Namespace.id,
-                    Namespace.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster) \
-            .order_by(Token.timestamp.desc()) \
+    def get_deploymentvalidations(self):
+        validationtoken = db.session.query(ValidationToken) \
+            .filter(DeploymentValidation.token_id == ValidationToken.id,
+                    DeploymentValidation.namespace_id == DVNamespace.id,
+                    DVNamespace.cluster_id == DVCluster.id,
+                    DVCluster.name == self.cluster) \
+            .order_by(ValidationToken.timestamp.desc()) \
             .limit(1) \
             .first()
         if validationtoken is None:
             return []
 
-        images = db.session.query(Image) \
-            .filter(Image.id == Pod.image_id,
-                    Pod.validationtoken_id == validationtoken.id,
-                    Pod.namespace_id == Namespace.id,
-                    Namespace.name == self.namespace,
-                    Namespace.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster).all()
+        validations = db.session.query(Validation) \
+            .filter(Validation.id == DeploymentValidation.validation_id,
+                    DeploymentValidation.tokenz == validationtoken.id,
+                    DeploymentValidation.namespace_id == DVNamespace.id,
+                    DeploymentValidation.objectkind_id == ObjectKind.id,
+                    DVNamespace.name == self.namespace,
+                    DVNamespace.cluster_id == DVCluster.id,
+                    DVCluster.name == self.cluster).all()
 
         result = list()
-        for image in images:
-            for kind in image.kinds:
-                for validation in kind.validations:
-                    result.append(
+        for validation in validations:
+          result.append(
                         {
-                            'repository': image.name,
-                            'name': kind.namespacename,
-                            'validation': image.validation[:14],
-                            'affected_pods': len(image.pods),
-                            'validation': validation.name,
-                            'link': validation.link,
+                          'name': validation.name,
+                          'status': validation.status
                         }
-                    )
+                       )
 
         return result
 
@@ -130,38 +127,34 @@ class DeploymentValidation:
     def get_deploymentvalidation_summary():
         """
         select cluster.name, max(validationtoken.id)
-        from validationtoken, deploymentvalidation, namespace, cluster
+        from validationtoken, deploymentvalidation, dvnamespace, dvcluster, 
         where validationtoken.id = deploymentvalidation.validationtoken_id
-        and deploymentvalidation.namespace_id = namespace.id
-        and namespace.cluster_id = cluster.id
-        group by cluster.name
+        and deploymentvalidation.namespace_id = dvnamespace.id
+        and dvnamespace.cluster_id = dvcluster.id
+        group by dvcluster.name
         """
 
         validationtoken = db.session.query(
-            db.func.max(Token.id).label('validationtoken_id')
+            db.func.max(ValidationToken.id).label('validationtoken_id')
         ).filter(
-            Token.id == DeploymentValidation.validationtoken_id,
-            DeploymentValidation.namespace_id == Namespace.id,
-            Namespace.cluster_id == Cluster.id
+            ValidationToken.id == DeploymentValidation.validationtoken_id,
+            DeploymentValidation.namespace_id == DVNamespace.id,
+            DVNamespace.cluster_id == DVCluster.id
         )
 
         results = db.session.query(
-            Cluster,
-            Namespace,
+            DVCluster,
+            DVNamespace,
             DeploymentValidation,
-            func.count(Validation.name).label('Count')
+            func.count(Validation.Name).label('Count')
         ).filter(
-            Validation.severity_id == Severity.id,
-            Validation.feature_id == Feature.id,
-            Feature.id == ImageFeature.feature_id,
-            ImageFeature.image_id == Image.id,
-            Image.id == Pod.image_id,
-            Pod.validationtoken_id == Token.id,
-            Pod.namespace_id == Namespace.id,
-            Namespace.cluster_id == Cluster.id,
-            Token.id == validationtoken[0].validationtoken_id
+            DeploymentValidation.validation_id == Validation.id,
+            DeploymentValidation.validationtoken_id == ValidationToken.id,
+            DeploymentValidation.namespace_id == DVNamespace.id,
+            DVNamespace.cluster_id == DVCluster.id,
+            ValidationToken.id == validationtoken[0].validationtoken_id
         ).group_by(
-            Severity, Namespace, Cluster
+            Validation, DVNamespace, DVCluster
         )
 
         return results
