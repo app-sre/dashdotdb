@@ -42,6 +42,12 @@ INFO  [alembic.runtime.migration] Will assume transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> c4f641d56546, Initial migration.
 ```
 
+Note: When adding new tables, flask can autogenerate the alembic configuration files
+by running:
+```
+FLASK_APP=dashdotdb flask db migrate -m 'New Tables'
+```
+
 Run the service:
 
 ```
@@ -150,3 +156,4 @@ on your own database instance, run:
 ```
 FLASK_APP=dashdotdb flask db upgrade
 ```
+

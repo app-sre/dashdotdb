@@ -23,8 +23,3 @@ check:
 	. venv/bin/activate && \
 	flake8 dashdotdb && \
 	pylint dashdotdb
-
-
-gentables: install
-	. venv/bin/activate && \
-  alembic -c migrations/alembic.ini revision --autogenerate -m 'new tables'
