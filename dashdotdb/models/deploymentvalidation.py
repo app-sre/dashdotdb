@@ -2,9 +2,7 @@ from dashdotdb.models.base import db
 
 
 class ValidationToken(db.Model):
-
     __tablename__ = 'validationtoken'
-
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
     deploymentvalidation = db.relationship('DeploymentValidation',
@@ -12,9 +10,7 @@ class ValidationToken(db.Model):
 
 
 class DeploymentValidation(db.Model):
-
     __tablename__ = 'deploymentvalidation'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=False)
     token_id = db.Column(db.Integer, db.ForeignKey('validationtoken.id'))
@@ -25,9 +21,7 @@ class DeploymentValidation(db.Model):
 
 
 class DVNamespace(db.Model):
-
     __tablename__ = 'dvnamespace'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
     cluster_id = db.Column(db.Integer, db.ForeignKey('dvcluster.id'))
@@ -36,18 +30,14 @@ class DVNamespace(db.Model):
 
 
 class DVCluster(db.Model):
-
     __tablename__ = 'dvcluster'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     namespaces = db.relationship('DVNamespace', backref='cluster')
 
 
 class Validation(db.Model):
-
     __tablename__ = 'validation'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
     status = db.Column(db.Integer, unique=False)
@@ -56,9 +46,7 @@ class Validation(db.Model):
 
 
 class ObjectKind(db.Model):
-
     __tablename__ = 'objectkind'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
     deploymentvalidation = db.relationship('DeploymentValidation',

@@ -1,12 +1,12 @@
-from dashdotdb.services.deploymentvalidation import DeploymentValidation
+from dashdotdb.services.deploymentvalidation import DeploymentValidationData
 
 
 def post(cluster, body):
-    dv = DeploymentValidation(cluster=cluster)
+    dv = DeploymentValidationData(cluster=cluster)
     dv.insert(validation=body)
     return 'ok'
 
 
 def search(cluster, namespace):
-    dv = DeploymentValidation(cluster, namespace)
+    dv = DeploymentValidationData(cluster, namespace)
     return dv.get_deploymentvalidations()

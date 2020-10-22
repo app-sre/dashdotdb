@@ -124,16 +124,16 @@ class DeploymentValidationData:
         """
         select cluster.name, max(validationtoken.id)
         from validationtoken, deploymentvalidation, dvnamespace, dvcluster,
-        where validationtoken.id = deploymentvalidation.validationtoken_id
+        where validationtoken.id = deploymentvalidation.token_id
         and deploymentvalidation.namespace_id = dvnamespace.id
         and dvnamespace.cluster_id = dvcluster.id
         group by dvcluster.name
         """
 
         validationtoken = db.session.query(
-            db.func.max(ValidationToken.id).label('validationtoken_id')
+            db.func.max(ValidationToken.id).label('validationtoken')
         ).filter(
-            ValidationToken.id == DeploymentValidation.validationtoken_id,
+            ValidationToken.id == DeploymentValidation.token_id,
             DeploymentValidation.namespace_id == DVNamespace.id,
             DVNamespace.cluster_id == DVCluster.id
         )
@@ -142,13 +142,13 @@ class DeploymentValidationData:
             DVCluster,
             DVNamespace,
             DeploymentValidation,
-            func.count(Validation.Name).label('Count')
+            func.count(Validation.name).label('Count')
         ).filter(
             DeploymentValidation.validation_id == Validation.id,
-            DeploymentValidation.validationtoken_id == ValidationToken.id,
+            DeploymentValidation.token_id == ValidationToken.id,
             DeploymentValidation.namespace_id == DVNamespace.id,
             DVNamespace.cluster_id == DVCluster.id,
-            ValidationToken.id == validationtoken[0].validationtoken_id
+            ValidationToken.id == validationtoken[0].Yalidationtoken_id
         ).group_by(
             Validation, DVNamespace, DVCluster
         )
