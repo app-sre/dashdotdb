@@ -42,25 +42,25 @@ INFO  [alembic.runtime.migration] Will assume transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> c4f641d56546, Initial migration.
 ```
 
-Note: When adding new tables, flask can autogenerate the alembic configuration files
-by running:
-```
-FLASK_APP=dashdotdb flask db migrate -m 'New Tables'
-```
-
 Run the service:
 
 ```
 $ flask run --debugger --port 8080
 ```
 
-Open a new terminal. Apply `imagemanifestvuln` example data:
+Open a new terminal. Apply `imagemanifestvuln` or `deploymentvalidation` 
+example data:
 
 ```
 $ curl --request POST \
 --header "Content-Type: application/json" \
 --data @examples/imagemanifestvuln.json \
 localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
+
+$ curl --request POST \
+--header "Content-Type: application/json" \
+--data @examples/deploymentvalidation.json \
+localhost:8080/api/v1/deploymentvalidation/app-sre-prod-01
 ```
 
 Or, if you already have a live cluster:
@@ -117,6 +117,10 @@ imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="High
 imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Low"} 20.0
 imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Unknown"} 5.0
 imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Critical"} 4.0
+# HELP deploymentvalidation_total Validations failing by validation type
+# TYPE deploymentvalidation_total counter
+deploymentvalidation_total{cluster="app-sre-prod-01",namespace="app-foo-prod","deployment_validation_operator_replica_validation","status"=1.0} 2.0
+deploymentvalidation_total{cluster="app-sre-prod-01",namespace="app-bar-prod","deployment_validation_operator_replica_validation","status"=1.0} 0.0
 ...
 ```
 
@@ -143,7 +147,7 @@ existing model or by creating new ones. Models are placed
 Create the upgrade routine executing the command:
 
 ```
-$ FLASK_APP=dashdotdb flask db migrate
+$ FLASK_APP=dashdotdb flask db migrate -m 'Comment'
 ```
 
 That will create a new migration file in the
