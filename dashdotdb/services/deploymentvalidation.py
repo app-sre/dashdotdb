@@ -22,7 +22,7 @@ class DeploymentValidationData:
         self.namespace = namespace
 
     def insert(self, validation):
-        for item in validation['items']:
+        for item in validation['data']['result']:
             self._insert(item)
 
     def _insert(self, item):
@@ -30,8 +30,8 @@ class DeploymentValidationData:
             self.log.error('skipping validation: key "metric" not found')
             return
 
-        if item['metric'] != 'DeploymentValidation':
-            self.log.info('skipping metric "%s"', item["metric"])
+        if 'value' not in item:
+            self.log.error('skipping validation: key "value" not found')
             return
 
         expire = datetime.now() - timedelta(minutes=60)
@@ -54,7 +54,7 @@ class DeploymentValidationData:
         db_cluster = db.session.query(DVCluster) \
             .filter_by(name=cluster_name).first()
 
-        namespace_name = item['metadata']['namespace']
+        namespace_name = item['metric']['exported_namespace']
         db_namespace = db.session.query(DVNamespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
@@ -67,7 +67,6 @@ class DeploymentValidationData:
 
         validation_name = item['metric']['__name__']
         validation_status = item['value'][1]
-#       validation_namespace = item['metric']['exported_namespace']
         db_validation = db.session.query(Validation) \
             .filter_by(name=validation_name, status=validation_status).first()
         if db_validation is None:
@@ -88,8 +87,27 @@ class DeploymentValidationData:
             self.log.info('objectkind %s created ', objectkind)
 
         db_objectkind = db.session.query(ObjectKind) \
-            .filter_by(name=objectkind) \
-            .filter(ObjectKind.name.any(id=db_objectkind.id)).first()
+            .filter_by(name=objectkind).first()
+
+        validation_context = item['metric']['name']
+        db_deploymentvalidation = db.session.query(DeploymentValidation) \
+            .filter_by(name=validation_context,
+                       token_id=db_validationtoken.id,
+                       namespace_id=db_namespace.id,
+                       objectkind_id=db_objectkind.id,
+                       validation_id=db_validation.id).first()
+        if db_deploymentvalidation is None:
+            db.session.add(DeploymentValidation(
+                name=validation_context,
+                token_id=db_validationtoken.id,
+                namespace_id=db_namespace.id,
+                objectkind_id=db_objectkind.id,
+                validation_id=db_validation.id
+            ))
+            db.session.commit()
+            self.log.info('deploymentvalidation %s created ',
+                          validation_context)
+
 
     def get_deploymentvalidations(self):
         validationtoken = db.session.query(ValidationToken) \

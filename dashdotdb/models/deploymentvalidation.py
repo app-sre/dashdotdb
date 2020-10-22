@@ -17,7 +17,6 @@ class DeploymentValidation(db.Model):
     namespace_id = db.Column(db.Integer, db.ForeignKey('dvnamespace.id'))
     objectkind_id = db.Column(db.Integer, db.ForeignKey('objectkind.id'))
     validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'))
-    status = db.Column(db.Integer, unique=False)
 
 
 class DVNamespace(db.Model):

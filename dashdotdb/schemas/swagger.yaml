@@ -246,5 +246,44 @@ components:
     ItemsDeploymentValidation:
       type: object
       properties:
-        foo:
+        status:
           type: string
+        data:
+          type: object
+          properties:
+            resultType:
+              type: string
+            result:
+              type: array
+              items:
+                type: object
+                properties:
+                  metric:
+                    type: object
+                    properties:
+                      __name__:
+                        type: string
+                      endpoint:
+                        type: string
+                      exported_namespace:
+                        type: string
+                      instance:
+                        type: string
+                      job:
+                        type: string
+                      kind:
+                        type: string
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                      pod:
+                        type: string
+                      service:
+                        type: string
+                  value:
+                    type: array
+                    items:
+                    - type: number
+                    - type: string
+
