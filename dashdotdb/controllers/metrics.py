@@ -13,8 +13,8 @@ def search():
     imv = ImageManifestVuln()
     results = imv.get_vulnerabilities_summary()
 
-    dv = DeploymentValidationData()
-    results = dv.get_deploymentvalidation_summary()
+    dpv = DeploymentValidationData()
+    results = dpv.get_deploymentvalidation_summary()
 
     registry = CollectorRegistry()
     ProcessCollector(registry=registry)
