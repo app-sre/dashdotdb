@@ -37,8 +37,8 @@ def search():
     for result in dpv_results:
         counter.labels(cluster=result.DVCluster.name,
                        namespace=result.DVNamespace.name,
-                       validation=result.validation.name,
-                       status=result.validation.status).inc(result.Count)
+                       validation=result.Validation.name,
+                       status=result.Validation.status).inc(result.Count)
 
     headers = {'Content-type': 'text/plain'}
     return Response(generate_latest(registry=registry), 200, headers)

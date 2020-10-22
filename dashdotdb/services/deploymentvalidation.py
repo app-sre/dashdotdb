@@ -169,15 +169,16 @@ class DeploymentValidationData:
             DVCluster,
             DVNamespace,
             DeploymentValidation,
+            Validation,
             func.count(Validation.name).label('Count')
         ).filter(
             DeploymentValidation.validation_id == Validation.id,
             DeploymentValidation.token_id == ValidationToken.id,
             DeploymentValidation.namespace_id == DVNamespace.id,
             DVNamespace.cluster_id == DVCluster.id,
-            ValidationToken.id == validationtoken[0].Yalidationtoken_id
+            ValidationToken.id == validationtoken[0].validationtoken_id
         ).group_by(
-            Validation, DVNamespace, DVCluster
+            Validation, DVNamespace, DVCluster.id, DeploymentValidation.id
         )
 
         return results
