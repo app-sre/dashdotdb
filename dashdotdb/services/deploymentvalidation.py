@@ -34,7 +34,7 @@ class DeploymentValidationData:
             self.log.error('skipping validation: key "value" not found')
             return
 
-        expire = datetime.now() - timedelta(minutes=60)
+        expire = datetime.now() - timedelta(minutes=5)
         db_validationtoken = db.session.query(ValidationToken) \
             .filter(ValidationToken.timestamp > expire).first()
         if db_validationtoken is None:
