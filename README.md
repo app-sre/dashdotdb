@@ -73,7 +73,7 @@ $ oc get imagemanifestvuln --all-namespaces -o json | $ curl --request POST \
 ...
 ```
 
-Query vulnerabilities:
+Query /vulnerabilities or /deploymentvalidation:
 
 ```
 $ curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespace=cso"
@@ -119,8 +119,8 @@ imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Unkn
 imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Critical"} 4.0
 # HELP deploymentvalidation_total Validations failing by validation type
 # TYPE deploymentvalidation_total counter
-deploymentvalidation_total{cluster="app-sre-prod-01",namespace="app-foo-prod","deployment_validation_operator_replica_validation","status"=1.0} 2.0
-deploymentvalidation_total{cluster="app-sre-prod-01",namespace="app-bar-prod","deployment_validation_operator_replica_validation","status"=1.0} 0.0
+deploymentvalidation_total{cluster="app-sre-prod-01",namespace="app-foo-prod",validation="deployment_validation_operator_replica_validation","status"=1.0} 2.0
+deploymentvalidation_total{cluster="app-sre-prod-01",namespace="app-bar-prod",validation="deployment_validation_operator_replica_validation","status"=1.0} 0.0
 ...
 ```
 

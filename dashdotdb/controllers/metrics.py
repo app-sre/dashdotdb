@@ -11,10 +11,10 @@ from dashdotdb.services.deploymentvalidation import DeploymentValidationData
 
 def search():
     imv = ImageManifestVuln()
-    results = imv.get_vulnerabilities_summary()
+    imv_results = imv.get_vulnerabilities_summary()
 
     dpv = DeploymentValidationData()
-    results = dpv.get_deploymentvalidation_summary()
+    dpv_results = dpv.get_deploymentvalidation_summary()
 
     registry = CollectorRegistry()
     ProcessCollector(registry=registry)
@@ -24,18 +24,21 @@ def search():
                       documentation='Vulnerabilities total per severity',
                       registry=registry)
 
-#    counter = Counter('deploymentvalidation',
-#                      labelnames=('cluster', 'namespace', 'validation'),
-#                      documentation='Validations total per status',
-#                      registry=registry)
+    counter = Counter('deploymentvalidation',
+                      labelnames=('cluster', 'namespace', 'validation',i
+                                  'status'),
+                      documentation='Validation success by validation type',
+                      registry=registry)
 
-    for result in results:
+    for result in imv_results:
         counter.labels(cluster=result.Cluster.name,
                        namespace=result.Namespace.name,
                        severity=result.Severity.name).inc(result.Count)
-#        counter.labels(cluster=result.Cluster.name,
-#                       namespace=result.Namespace.name,
-#                       validation=result.validation.name).inc(result.Count)
+    for result in dpv_results:
+        counter.labels(cluster=result.DVCluster.name,
+                       namespace=result.DVNamespace.name,
+                       validation=result.validation.name,
+                       status=result.validation.status).inc(result.Count)
 
     headers = {'Content-type': 'text/plain'}
     return Response(generate_latest(registry=registry), 200, headers)
