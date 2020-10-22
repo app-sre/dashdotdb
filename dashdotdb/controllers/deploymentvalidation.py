@@ -2,11 +2,11 @@ from dashdotdb.services.deploymentvalidation import DeploymentValidationData
 
 
 def post(cluster, body):
-    dv = DeploymentValidationData(cluster=cluster)
-    dv.insert(validation=body)
+    dpv = DeploymentValidationData(cluster=cluster)
+    dpv.insert(validation=body)
     return 'ok'
 
 
 def search(cluster, namespace):
-    dv = DeploymentValidationData(cluster, namespace)
-    return dv.get_deploymentvalidations()
+    dpv = DeploymentValidationData(cluster, namespace)
+    return dpv.get_deploymentvalidations()
