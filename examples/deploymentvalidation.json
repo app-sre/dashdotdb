@@ -1,40 +1,62 @@
 {
-  "items": [
-    {
-      "metric": {
-        "__name__": "deployment_validation_operator_replica_validation",
-        "exported_namespace": "app-interface-stage",
-        "kind": "Deployment",
-        "name": "openshift-acme"
+  "status": "success",
+  "data": {
+    "resultType": "vector",
+    "result": [
+      {
+        "metric": {
+          "__name__": "deployment_validation_operator_replica_validation",
+          "endpoint": "http-metrics",
+          "exported_namespace": "app-interface-stage",
+          "instance": "10.130.3.29:8383",
+          "job": "deployment-validation-operator-metrics",
+          "kind": "Deployment",
+          "name": "openshift-acme",
+          "namespace": "deployment-validation-operator",
+          "pod": "deployment-validation-operator-6bb5b5cfd-27mwd",
+          "service": "deployment-validation-operator-metrics"
+        },
+        "value": [
+          1603208289.29,
+          "1"
+        ]
       },
-      "value": [
-        1603208289.29,
-        "1"
-      ]
-    },
-    {
-      "metric": {
-        "__name__": "deployment_validation_operator_replica_validation",
-        "exported_namespace": "app-interface-stage",
-        "kind": "Deployment",
-        "name": "qontract-api"
+      {
+        "metric": {
+          "__name__": "deployment_validation_operator_replica_validation",
+          "endpoint": "http-metrics",
+          "exported_namespace": "app-interface-stage",
+          "instance": "10.130.3.29:8383",
+          "job": "deployment-validation-operator-metrics",
+          "kind": "Deployment",
+          "name": "qontract-api",
+          "namespace": "deployment-validation-operator",
+          "pod": "deployment-validation-operator-6bb5b5cfd-27mwd",
+          "service": "deployment-validation-operator-metrics"
+        },
+        "value": [
+          1603208289.29,
+          "1"
+        ]
       },
-      "value": [
-        1603208289.29,
-        "1"
-      ]
-    },
-    {
-      "metric": {
-        "__name__": "deployment_validation_operator_replica_validation",
-        "exported_namespace": "visual-qontract-stage",
-        "kind": "ReplicaSet",
-        "name": "openshift-acme-d6bdb5b48"
-      },
-      "value": [
-        1603208289.29,
-        "1"
-      ]
-    }
-  ]
+      {
+        "metric": {
+          "__name__": "deployment_validation_operator_replica_validation",
+          "endpoint": "http-metrics",
+          "exported_namespace": "visual-qontract-stage",
+          "instance": "10.130.3.29:8383",
+          "job": "deployment-validation-operator-metrics",
+          "kind": "ReplicaSet",
+          "name": "openshift-acme-d6bdb5b48",
+          "namespace": "deployment-validation-operator",
+          "pod": "deployment-validation-operator-6bb5b5cfd-27mwd",
+          "service": "deployment-validation-operator-metrics"
+        },
+        "value": [
+          1603208289.29,
+          "1"
+        ]
+      }
+    ]
+  }
 }
