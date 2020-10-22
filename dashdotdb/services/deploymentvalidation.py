@@ -131,7 +131,7 @@ class DeploymentValidationData:
         """
 
         validationtoken = db.session.query(
-            db.func.max(ValidationToken.id).label('validationtoken')
+            db.func.max(ValidationToken.id).label('validationtoken_id')
         ).filter(
             ValidationToken.id == DeploymentValidation.token_id,
             DeploymentValidation.namespace_id == DVNamespace.id,
