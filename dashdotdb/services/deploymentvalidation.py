@@ -178,7 +178,7 @@ class DeploymentValidationData:
             DVNamespace.cluster_id == DVCluster.id,
             ValidationToken.id == validationtoken[0].validationtoken_id
         ).group_by(
-            Validation, DVNamespace, DVCluster.id, DeploymentValidation.id
+            Validation, DVNamespace, DVCluster, DeploymentValidation.id
         )
 
         return results
