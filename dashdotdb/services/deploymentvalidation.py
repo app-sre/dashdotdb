@@ -110,6 +110,16 @@ class DeploymentValidationData:
 
 
     def get_deploymentvalidations(self):
+        """
+        SELECT validationtoken.id AS validationtoken_id,
+        validationtoken.timestamp AS validationtoken_timestamp 
+        FROM validationtoken, deploymentvalidation, dvnamespace, dvcluster
+        WHERE deploymentvalidation.token_id = validationtoken.id 
+        AND deploymentvalidation.namespace_id = dvnamespace.id
+        AND dvnamespace.cluster_id = dvcluster.id
+        AND dvcluster.name = %(name_1)s
+        ORDER BY validationtoken.timestamp DESC
+        """
         validationtoken = db.session.query(ValidationToken) \
             .filter(DeploymentValidation.token_id == ValidationToken.id,
                     DeploymentValidation.namespace_id == DVNamespace.id,
@@ -119,21 +129,22 @@ class DeploymentValidationData:
             .limit(1) \
             .first()
         if validationtoken is None:
+            self.log.error('did not find cluster %s', self.cluster)
             return []
 
-        validations = db.session.query(Validation) \
+        validations = db.session.query(DeploymentValidation) \
             .filter(Validation.id == DeploymentValidation.validation_id,
-                    DeploymentValidation.tokenz == validationtoken.id,
+                    DeploymentValidation.token_id == validationtoken.id,
                     DeploymentValidation.namespace_id == DVNamespace.id,
                     DeploymentValidation.objectkind_id == ObjectKind.id,
-                    DVNamespace.name == self.namespace,
                     DVNamespace.cluster_id == DVCluster.id,
                     DVCluster.name == self.cluster).all()
 
         result = list()
         for validation in validations:
-            result.append({'name': validation.name,
-                           'status': validation.status
+            self.log.error('bar')
+            result.append({'context': validation.name,
+                           'status': validation.validation.status
                            })
         return result
 
