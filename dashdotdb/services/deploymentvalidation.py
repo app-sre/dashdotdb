@@ -59,7 +59,7 @@ class DeploymentValidationData:
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
             db.session.add(DVNamespace(name=namespace_name,
-                                     cluster_id=db_cluster.id))
+                                       cluster_id=db_cluster.id))
             db.session.commit()
             self.log.info('namespace %s created', namespace_name)
         db_namespace = db.session.query(DVNamespace) \
@@ -67,12 +67,12 @@ class DeploymentValidationData:
 
         validation_name = item['metric']['__name__']
         validation_status = item['value'][1]
-        validation_namespace = item['metric']['exported_namespace']
+#       validation_namespace = item['metric']['exported_namespace']
         db_validation = db.session.query(Validation) \
             .filter_by(name=validation_name, status=validation_status).first()
         if db_validation is None:
             db.session.add(Validation(name=validation_name,
-                                 status=validation_status))
+                                      status=validation_status))
             db.session.commit()
             self.log.info('validation %s:%s created', validation_name,
                           validation_status)
@@ -114,20 +114,16 @@ class DeploymentValidationData:
 
         result = list()
         for validation in validations:
-          result.append(
-                        {
-                          'name': validation.name,
-                          'status': validation.status
-                        }
-                       )
-
+            result.append({'name': validation.name,
+                           'status': validation.status
+                           })
         return result
 
     @staticmethod
     def get_deploymentvalidation_summary():
         """
         select cluster.name, max(validationtoken.id)
-        from validationtoken, deploymentvalidation, dvnamespace, dvcluster, 
+        from validationtoken, deploymentvalidation, dvnamespace, dvcluster,
         where validationtoken.id = deploymentvalidation.validationtoken_id
         and deploymentvalidation.namespace_id = dvnamespace.id
         and dvnamespace.cluster_id = dvcluster.id
