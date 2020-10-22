@@ -27,7 +27,7 @@ def search():
     counter = Counter('deploymentvalidation',
                       labelnames=('cluster', 'namespace', 'validation',
                                   'status'),
-                      documentation='Validation success by validation type',
+                      documentation='Validations by validation type',
                       registry=registry)
 
     for result in imv_results:
