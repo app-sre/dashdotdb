@@ -25,7 +25,7 @@ def search():
                       registry=registry)
 
     counter = Counter('deploymentvalidation',
-                      labelnames=('cluster', 'namespace', 'validation',i
+                      labelnames=('cluster', 'namespace', 'validation',
                                   'status'),
                       documentation='Validation success by validation type',
                       registry=registry)
