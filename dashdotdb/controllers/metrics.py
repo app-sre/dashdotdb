@@ -6,14 +6,14 @@ from prometheus_client import ProcessCollector
 from prometheus_client import generate_latest
 
 from dashdotdb.services.imagemanifestvuln import ImageManifestVuln
-from dashdotdb.services.deploymentvalidation import DeploymentValidation
+from dashdotdb.services.deploymentvalidation import DeploymentValidationData
 
 
 def search():
     imv = ImageManifestVuln()
     results = imv.get_vulnerabilities_summary()
 
-    dv = DeploymentValidation()
+    dv = DeploymentValidationData()
     results = dv.get_deploymentvalidation_summary()
 
     registry = CollectorRegistry()

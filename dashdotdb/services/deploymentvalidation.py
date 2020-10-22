@@ -14,7 +14,7 @@ from dashdotdb.models.deploymentvalidation import Validation
 from dashdotdb.models.deploymentvalidation import ObjectKind
 
 
-class DeploymentValidation:
+class DeploymentValidationData:
     def __init__(self, cluster=None, namespace=None):
         self.log = logging.getLogger()
 

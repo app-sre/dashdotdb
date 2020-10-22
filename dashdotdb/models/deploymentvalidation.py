@@ -7,7 +7,8 @@ class ValidationToken(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
-    deploymentvalidation = db.relationship('DeploymentValidation', backref='validationtoken')
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='validationtoken')
 
 
 class DeploymentValidation(db.Model):
@@ -30,7 +31,8 @@ class DVNamespace(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
     cluster_id = db.Column(db.Integer, db.ForeignKey('dvcluster.id'))
-    deploymentvalidation = db.relationship('DeploymentValidation', backref='namespace')
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='namespace')
 
 
 class DVCluster(db.Model):
@@ -49,7 +51,8 @@ class Validation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
     status = db.Column(db.Integer, unique=False)
-    deploymentvalidation = db.relationship('DeploymentValidation', backref='validation')
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='validation')
 
 
 class ObjectKind(db.Model):
@@ -58,4 +61,5 @@ class ObjectKind(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
-    deploymentvalidation = db.relationship('DeploymentValidation', backref='objectkind')
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='objectkind')
