@@ -15,7 +15,7 @@ expose the relevant insights via Grafana Dashboards and monthly reports.
 Run a PostgreSQL instance:
 
 ```
-$ docker run --rm --it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+$ docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
 Open a new terminal. Install the package:
@@ -60,7 +60,7 @@ localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
 Or, if you already have a live cluster:
 
 ```
-$ oc get imagemanifestvuln --all-namespaces -o json | $ curl --request POST \
+$ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 --header "Content-Type: application/json" \
 --data @- \
 "localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
