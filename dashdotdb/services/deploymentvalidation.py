@@ -141,7 +141,11 @@ class DeploymentValidationData:
 
         result = list()
         for validation in validations:
-            result.append({'context': validation.name,
+            result.append({'cluster': validation.namespace.cluster.name,
+                           'namespace': validation.namespace.name,
+                           'validation': validation.validation.name,
+                           'context': validation.name,
+                           'context-type': validation.objectkind.name,
                            'status': validation.validation.status
                            })
         return result

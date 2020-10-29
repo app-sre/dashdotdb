@@ -239,10 +239,22 @@ components:
                   items:
                     type: string
     DeploymentValidationReport:
-      type: object
-      properties:
-        foo:
-          type: string
+      type: array
+      items:
+        type: object
+        properties:
+          cluster:
+            type: string
+          context:
+            type: string
+          context-type:
+            type: string
+          namespace:
+            type: string
+          status:
+            type: number
+          validation:
+            type: string
     ItemsDeploymentValidation:
       type: object
       properties:
@@ -286,4 +298,3 @@ components:
                     items:
                     - type: number
                     - type: string
-
