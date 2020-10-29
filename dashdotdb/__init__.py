@@ -6,7 +6,7 @@ from connexion import App
 from connexion.resolver import RestyResolver
 
 from dashdotdb.models.base import db
-from dashdotdb.models import imagemanifestvuln  # type: ignore  # noqa: F401
+from dashdotdb.models import dashdotdb  # type: ignore  # noqa: F401
 
 
 DATABASE_URL = os.environ.get('DASHDOTDB_DATABASE_URL')

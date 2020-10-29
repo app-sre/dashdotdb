@@ -1,3 +1,5 @@
+-include Makefile.devhelpers
+
 clean:
 	rm -rf venv
 	python3 -m venv venv
@@ -5,18 +7,18 @@ clean:
 
 install: clean
 	. venv/bin/activate && \
-	python setup.py install
+	python3 setup.py install
 
 
 install-requirements: install
 	. venv/bin/activate && \
-	pip install -r requirements-check.txt
+	pip3 install -r requirements-check.txt --user
 
 
 develop: clean
 	. venv/bin/activate && \
-	python setup.py develop && \
-	pip install -r requirements-check.txt
+	python3 setup.py develop && \
+	pip3 install -r requirements-check.txt --user
 
 
 check:

@@ -5,16 +5,16 @@ from datetime import timedelta
 
 from sqlalchemy import func
 
-from dashdotdb.models.imagemanifestvuln import db
-from dashdotdb.models.imagemanifestvuln import Token
-from dashdotdb.models.imagemanifestvuln import Cluster
-from dashdotdb.models.imagemanifestvuln import Namespace
-from dashdotdb.models.imagemanifestvuln import Pod
-from dashdotdb.models.imagemanifestvuln import Image
-from dashdotdb.models.imagemanifestvuln import ImageFeature
-from dashdotdb.models.imagemanifestvuln import Feature
-from dashdotdb.models.imagemanifestvuln import Vulnerability
-from dashdotdb.models.imagemanifestvuln import Severity
+from dashdotdb.models.dashdotdb import db
+from dashdotdb.models.dashdotdb import Token
+from dashdotdb.models.dashdotdb import Cluster
+from dashdotdb.models.dashdotdb import Namespace
+from dashdotdb.models.dashdotdb import Pod
+from dashdotdb.models.dashdotdb import Image
+from dashdotdb.models.dashdotdb import ImageFeature
+from dashdotdb.models.dashdotdb import Feature
+from dashdotdb.models.dashdotdb import Vulnerability
+from dashdotdb.models.dashdotdb import Severity
 
 
 class ImageManifestVuln:
