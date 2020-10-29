@@ -12,13 +12,13 @@ install: clean
 
 install-requirements: install
 	. venv/bin/activate && \
-	pip3 install -r requirements-check.txt --user
+	pip3 install -r requirements-check.txt
 
 
 develop: clean
 	. venv/bin/activate && \
 	python3 setup.py develop && \
-	pip3 install -r requirements-check.txt --user
+	pip3 install -r requirements-check.txt 
 
 
 check:

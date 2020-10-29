@@ -11,11 +11,11 @@ from dashdotdb.models import dashdotdb  # type: ignore  # noqa: F401
 
 DATABASE_URL = os.environ.get('DASHDOTDB_DATABASE_URL')
 if DATABASE_URL is None:
-    DATABASE_HOST = os.environ['DATABASE_HOST']
-    DATABASE_PORT = os.environ['DATABASE_PORT']
-    DATABASE_USERNAME = os.environ['DATABASE_USERNAME']
-    DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
-    DATABASE_NAME = os.environ['DATABASE_NAME']
+    DATABASE_HOST = os.getenv('DATABASE_HOST') or 'localhost'
+    DATABASE_PORT = os.getenv('DATABASE_PORT') or '5432'
+    DATABASE_USERNAME = os.getenv('DATABASE_USERNAME') or 'postgres'
+    DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD') or 'postgres'
+    DATABASE_NAME = os.getenv('DATABASE_NAME') or 'postgres'
     DATABASE_URL = (f'postgresql://{DATABASE_USERNAME}:'
                     f'{DATABASE_PASSWORD}@'
                     f'{DATABASE_HOST}:'
@@ -27,7 +27,7 @@ class DashDotDb(App):
     def create_app(self):
         # pylint: disable=redefined-outer-name
         app = Flask(self.import_name, **self.server_args)
-
+#       app.config['SQLALCHEMY_ECHO'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         db.init_app(app)

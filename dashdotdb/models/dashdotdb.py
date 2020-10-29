@@ -8,6 +8,8 @@ class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
     pods = db.relationship('Pod', backref='token')
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='token')
 
 
 class Pod(db.Model):
@@ -29,6 +31,8 @@ class Namespace(db.Model):
     name = db.Column(db.String(64), unique=False)
     cluster_id = db.Column(db.Integer, db.ForeignKey('cluster.id'))
     pods = db.relationship('Pod', backref='namespace')
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='namespace')
 
 
 class Cluster(db.Model):
@@ -94,3 +98,36 @@ class Severity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     vulnerabilities = db.relationship('Vulnerability', backref='severity')
+
+
+class DeploymentValidation(db.Model):
+
+    __tablename__ = 'deploymentvalidation'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256), unique=False)
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
+    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
+    objectkind_id = db.Column(db.Integer, db.ForeignKey('objectkind.id'))
+    validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'))
+
+
+class Validation(db.Model):
+
+    __tablename__ = 'validation'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=False)
+    status = db.Column(db.Integer, unique=False)
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='validation')
+
+
+class ObjectKind(db.Model):
+
+    __tablename__ = 'objectkind'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=False)
+    deploymentvalidation = db.relationship('DeploymentValidation',
+                                           backref='objectkind')
