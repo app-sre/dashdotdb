@@ -15,7 +15,7 @@ expose the relevant insights via Grafana Dashboards and monthly reports.
 Run a PostgreSQL instance:
 
 ```
-$ docker run --rm --it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+$ docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
 Open a new terminal. Install the package:
