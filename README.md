@@ -60,7 +60,7 @@ localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
 Or, if you already have a live cluster:
 
 ```
-$ oc get imagemanifestvuln --all-namespaces -o json | $ curl --request POST \
+$ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 --header "Content-Type: application/json" \
 --data @- \
 "localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
