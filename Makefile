@@ -2,7 +2,7 @@
 
 clean:
 	rm -rf venv
-	python -m venv venv
+	python3 -m venv venv
 
 
 install: clean
