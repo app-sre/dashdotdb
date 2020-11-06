@@ -150,3 +150,10 @@ on your own database instance, run:
 ```
 FLASK_APP=dashdotdb flask db upgrade
 ```
+
+## SQLAlchemy Debug
+To enable verbose SQLAlchemy logging, which will output the compiled queries 
+add to the app.config object:
+```
+app.config['SQLALCHEMY_ECHO'] = True
+```
