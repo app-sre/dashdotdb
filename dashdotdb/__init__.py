@@ -6,7 +6,7 @@ from connexion import App
 from connexion.resolver import RestyResolver
 
 from dashdotdb.models.base import db
-from dashdotdb.models import imagemanifestvuln  # type: ignore  # noqa: F401
+from dashdotdb.models import dashdotdb  # type: ignore  # noqa: F401
 
 
 DATABASE_URL = os.environ.get('DASHDOTDB_DATABASE_URL')
@@ -27,7 +27,6 @@ class DashDotDb(App):
     def create_app(self):
         # pylint: disable=redefined-outer-name
         app = Flask(self.import_name, **self.server_args)
-
         app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         db.init_app(app)

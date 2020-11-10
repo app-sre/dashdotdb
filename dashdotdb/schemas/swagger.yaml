@@ -66,6 +66,48 @@ paths:
       responses:
         "200":
           description: successful operation
+  /deploymentvalidation:
+    get:
+      summary: Lists Deployment Validations
+      parameters:
+      - name: cluster
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: namespace
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentValidationReport'
+                x-content-type: application/json
+  /deploymentvalidation/{cluster}:
+    post:
+      summary: Add a new Deployment Validation
+      parameters:
+        - name: cluster
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Validation object to be added to the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemsDeploymentValidation'
+      responses:
+        "200":
+          description: successful operation
 components:
   schemas:
     ImageManifestVulnReport:
@@ -196,3 +238,63 @@ components:
                   type: array
                   items:
                     type: string
+    DeploymentValidationReport:
+      type: array
+      items:
+        type: object
+        properties:
+          cluster:
+            type: string
+          context:
+            type: string
+          context-type:
+            type: string
+          namespace:
+            type: string
+          status:
+            type: number
+          validation:
+            type: string
+    ItemsDeploymentValidation:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            resultType:
+              type: string
+            result:
+              type: array
+              items:
+                type: object
+                properties:
+                  metric:
+                    type: object
+                    properties:
+                      __name__:
+                        type: string
+                      endpoint:
+                        type: string
+                      exported_namespace:
+                        type: string
+                      instance:
+                        type: string
+                      job:
+                        type: string
+                      kind:
+                        type: string
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                      pod:
+                        type: string
+                      service:
+                        type: string
+                  value:
+                    type: array
+                    items:
+                    - type: number
+                    - type: string

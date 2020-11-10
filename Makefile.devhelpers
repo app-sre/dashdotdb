@@ -1,0 +1,54 @@
+
+
+flaskvars:
+	export FLASK_APP=dashdotdb && \
+	export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
+
+
+venv-init: flaskvars
+	python3 -m venv venv && \
+	source venv/bin/activate && \
+	python3 setup.py develop
+
+
+run-service: flaskvars
+	FLASK_ENV=development
+	flask run --debugger --port 8080
+
+
+db-up:
+	 docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+
+
+db-capture: flaskvars
+	flask db migrate
+
+
+db-init: flaskvars
+	flask db upgrade
+
+
+dddb-import-imv:
+	curl --request POST \
+	--header "Content-Type: application/json" \
+	--data @examples/imagemanifestvuln.json \
+	localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
+
+
+dddb-query-imv:
+	curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespace=cso"
+
+
+dddb-import-dv:
+	curl --request POST \
+	--header "Content-Type: application/json" \
+	--data @examples/deploymentvalidation.json \
+	localhost:8080/api/v1/deploymentvalidation/app-sre-prod-01
+
+
+dddb-query-dv:
+	curl "localhost:8080/api/v1/deploymentvalidation?cluster=app-sre-prod-01&namespace=app-interface-stage"
+
+
+dddb-metrics:
+	curl "localhost:8080/api/v1/metrics"

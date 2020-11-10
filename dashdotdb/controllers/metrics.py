@@ -6,24 +6,40 @@ from prometheus_client import ProcessCollector
 from prometheus_client import generate_latest
 
 from dashdotdb.services.imagemanifestvuln import ImageManifestVuln
+from dashdotdb.services.deploymentvalidation import DeploymentValidationData
 
 
 def search():
     imv = ImageManifestVuln()
-    results = imv.get_vulnerabilities_summary()
+    imv_results = imv.get_vulnerabilities_summary()
+
+    dpv = DeploymentValidationData()
+    dpv_results = dpv.get_deploymentvalidation_summary()
 
     registry = CollectorRegistry()
     ProcessCollector(registry=registry)
 
-    counter = Counter('imagemanifestvuln',
-                      labelnames=('cluster', 'namespace', 'severity'),
-                      documentation='Vulnerabilities total per severity',
-                      registry=registry)
+    imv_counter = Counter('imagemanifestvuln',
+                          labelnames=('cluster', 'namespace', 'severity'),
+                          documentation='Vulnerabilities total per severity',
+                          registry=registry)
 
-    for result in results:
-        counter.labels(cluster=result.Cluster.name,
-                       namespace=result.Namespace.name,
-                       severity=result.Severity.name).inc(result.Count)
+    dv_counter = Counter('deploymentvalidation',
+                         labelnames=('cluster', 'namespace', 'validation',
+                                     'status'),
+                         documentation='Validations by validation type',
+                         registry=registry)
+
+    for result in imv_results:
+        imv_counter.labels(cluster=result.Cluster.name,
+                           namespace=result.Namespace.name,
+                           severity=result.Severity.name).inc(result.Count)
+
+    for result in dpv_results:
+        dv_counter.labels(cluster=result.Cluster.name,
+                          namespace=result.Namespace.name,
+                          validation=result.Validation.name,
+                          status=result.Validation.status).inc(result.Count)
 
     headers = {'Content-type': 'text/plain'}
     return Response(generate_latest(registry=registry), 200, headers)
