@@ -4,6 +4,56 @@ kind: Template
 metadata:
   name: dashdotdb
 objects:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: dashdotdb
+    name: nginx-postsize
+  data:
+    nginx-postsize.conf: |
+      client_max_body_size 20m;
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: dashdotdb
+    name: nginx-dynamic-conf
+  data:
+    nginx.conf: |
+      daemon off;
+      worker_processes 1;
+      error_log /dev/stderr;
+      pid /tmp/nginx.pid;
+  
+      events {
+          worker_connections 1024;
+      }
+  
+      http {
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+        upstream app {
+          server ${FORWARD_HOST};
+          keepalive 64;
+        }
+  
+        server {
+          listen *:${LISTEN_PORT};
+          server_name _;
+          access_log  /dev/stdout  main;
+          error_log /dev/stderr;
+          auth_basic "Restricted Area";
+          auth_basic_user_file /tmp/auth.htpasswd;
+  
+          include /etc/nginx/conf.d/*.conf;
+  
+          location / {
+            proxy_pass http://app;
+          }
+        }
+      }
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -54,6 +104,12 @@ objects:
           ports:
           - name: auth-proxy
             containerPort: 8000
+          volumeMounts:
+          - mountPath: /etc/nginx/conf.d
+            name: nginx-postsize
+          - mountPath: /nginx.conf
+            name: nginx-dynamic-conf
+            subPath: nginx.conf
         - image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: dashdotdb
@@ -93,6 +149,18 @@ objects:
           ports:
           - name: dashdotdb
             containerPort: 8080
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-postsize
+          name: nginx-postsize
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: nginx.conf
+              path: nginx.conf
+            name: nginx-dynamic-conf
+          name: nginx-dynamic-conf
 - apiVersion: v1
   kind: Service
   metadata:
