@@ -104,7 +104,54 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ItemsDeploymentValidation'
+              $ref: '#/components/schemas/DeploymentValidationReport'
+      responses:
+        "200":
+          description: successful operation
+  /serviceslometrics:
+    get:
+      summary: Lists Service SLO Metrics
+      parameters:
+      - name: cluster
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: namespace
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: sli_type
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceSLOMetrics'
+                x-content-type: application/json
+  /serviceslometrics/{cluster}:
+    post:
+      summary: Add a new Service SLO Metrics
+      parameters:
+        - name: cluster
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Service SLO Metrics object to be added to the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemsServiceSLOMetrics'
       responses:
         "200":
           description: successful operation
@@ -238,6 +285,62 @@ components:
                   type: array
                   items:
                     type: string
+    ServiceSLOMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: number
+        target:
+          type: number
+    ItemsServiceSLOMetrics:
+        type: object
+        required:
+        - name
+        - SLIType
+        - namespace
+        - cluster
+        - service
+        - value
+        - target 
+        properties:
+          name:
+            type: string
+          SLIType:
+            type: string
+            enum:
+              - latency
+              - availability
+              - correctness
+              - quality
+              - freshness
+              - coverage
+              - correcteness
+              - throughput
+              - durability
+          namespace:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+          cluster:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+          service:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+          value:
+            type: number
+          target:
+            type: number
     DeploymentValidationReport:
       type: array
       items:
@@ -255,46 +358,3 @@ components:
             type: number
           validation:
             type: string
-    ItemsDeploymentValidation:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: object
-          properties:
-            resultType:
-              type: string
-            result:
-              type: array
-              items:
-                type: object
-                properties:
-                  metric:
-                    type: object
-                    properties:
-                      __name__:
-                        type: string
-                      endpoint:
-                        type: string
-                      exported_namespace:
-                        type: string
-                      instance:
-                        type: string
-                      job:
-                        type: string
-                      kind:
-                        type: string
-                      name:
-                        type: string
-                      namespace:
-                        type: string
-                      pod:
-                        type: string
-                      service:
-                        type: string
-                  value:
-                    type: array
-                    items:
-                    - type: number
-                    - type: string
