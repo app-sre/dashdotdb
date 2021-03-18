@@ -106,7 +106,9 @@ class ServiceSLOMetrics:
         token = db.session.query(Token) \
             .filter(ServiceSLO.token_id == Token.id,
                     ServiceSLO.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster) \
+                    Cluster.name == self.cluster,
+                    ServiceSLO.namespace_id == Namespace.id,
+                    Namespace.name == self.namespace) \
             .order_by(Token.timestamp.desc()) \
             .limit(1) \
             .first()
