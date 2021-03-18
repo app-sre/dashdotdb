@@ -167,4 +167,3 @@ class ServiceSLO(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'))
     cluster_id = db.Column(db.Integer, db.ForeignKey('cluster.id'))
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
-

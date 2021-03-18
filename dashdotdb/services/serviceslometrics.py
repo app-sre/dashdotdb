@@ -3,8 +3,6 @@ import logging
 from datetime import datetime
 from datetime import timedelta
 
-from sqlalchemy import func
-
 from dashdotdb.models.dashdotdb import db
 from dashdotdb.models.dashdotdb import Token
 from dashdotdb.models.dashdotdb import Service
@@ -12,6 +10,7 @@ from dashdotdb.models.dashdotdb import Cluster
 from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import ServiceSLO
 from dashdotdb.models.dashdotdb import SLIType
+
 
 class ServiceSLOMetrics:
     def __init__(self, cluster=None, namespace=None, sli_type=None, name=None):
@@ -76,13 +75,12 @@ class ServiceSLOMetrics:
             .filter_by(name=slitype_name).first()
 
         db_serviceslo = db.session.query(ServiceSLO) \
-                    .filter_by(name=slo['name'],
-                               service_id=db_service.id,
-                               cluster_id=db_cluster.id,
-                               namespace_id=db_namespace.id,
-                               slitype_id=db_slitype.id,
-                               token_id=db_token.id
-                    ).first()
+            .filter_by(name=slo['name'],
+                       service_id=db_service.id,
+                       cluster_id=db_cluster.id,
+                       namespace_id=db_namespace.id,
+                       slitype_id=db_slitype.id,
+                       token_id=db_token.id).first()
         if db_serviceslo is None:
             db.session.add(ServiceSLO(name=slo['name'],
                                       service_id=db_service.id,
@@ -93,13 +91,12 @@ class ServiceSLOMetrics:
             db.session.commit()
             self.log.info('ServiceSLO %s created ', slo['name'])
         db_serviceslo = db.session.query(ServiceSLO) \
-                    .filter_by(name=slo['name'],
-                               service_id=db_service.id,
-                               cluster_id=db_cluster.id,
-                               namespace_id=db_namespace.id,
-                               slitype_id=db_slitype.id,
-                               token_id=db_token.id
-                    ).first()
+            .filter_by(name=slo['name'],
+                       service_id=db_service.id,
+                       cluster_id=db_cluster.id,
+                       namespace_id=db_namespace.id,
+                       slitype_id=db_slitype.id,
+                       token_id=db_token.id).first()
         db_serviceslo.value = slo['value']
         db_serviceslo.target = slo['target']
         db.session.commit()
@@ -151,4 +148,3 @@ class ServiceSLOMetrics:
         }
 
         return result
-
