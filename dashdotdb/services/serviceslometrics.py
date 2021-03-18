@@ -152,36 +152,3 @@ class ServiceSLOMetrics:
 
         return result
 
-    @staticmethod
-    def get_slometrics_summary():
-        """
-        select cluster.name, max(token.id)
-        from token, pod, namespace, cluster
-        where token.id = pod.token_id
-        and pod.namespace_id = namespace.id
-        and namespace.cluster_id = cluster.id
-        group by cluster.name
-        """
-
-        # token = db.session.query(
-        #     db.func.max(Token.id).label('token_id')
-        # ).filter(
-        #     Token.id == Pod.token_id,
-        #     Pod.namespace_id == Namespace.id,
-        #     Namespace.cluster_id == Cluster.id
-        # )
-
-        results = db.session.query(
-            # Service,
-            Cluster,
-            Namespace,
-            ServiceSLO,
-            SLIType
-        ).filter(ServiceSLO.slitype_id == SLIType.id,
-                ServiceSLO.namespace_id == Namespace.id,
-                Namespace.cluster_id == Cluster.id
-        ).group_by(
-            SLIType, ServiceSLO, Namespace, Cluster
-        )
-        
-        return results

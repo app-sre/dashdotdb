@@ -1,0 +1,15 @@
+{
+    "name": "policy-engine-latency",
+    "SLIType": "latency",
+    "namespace": {
+        "name": "cincinnati-production"
+    },
+    "cluster": {
+        "name": "app-sre-prod-04"
+    },
+    "service": {
+        "name": "cincinnati"
+    },
+    "value": 66,
+    "target": 99
+}
