@@ -17,14 +17,10 @@ class ServiceSLOMetrics:
     def __init__(self, cluster=None, namespace=None, sli_type=None, name=None):
         self.log = logging.getLogger()
 
-        # self.service = service
         self.cluster = cluster
         self.namespace = namespace
         self.sli_type = sli_type
         self.name = name
-        # self.sloname = sloname
-        # self.value = value
-        # self.target = target 
 
     def insert(self, slo):
 
@@ -80,47 +76,50 @@ class ServiceSLOMetrics:
             .filter_by(name=slitype_name).first()
 
         db_serviceslo = db.session.query(ServiceSLO) \
-                    .filter_by(service_id=db_service.id,
+                    .filter_by(name=slo['name'],
+                               service_id=db_service.id,
                                cluster_id=db_cluster.id,
                                namespace_id=db_namespace.id,
-                               slitype_id=db_slitype.id
+                               slitype_id=db_slitype.id,
+                               token_id=db_token.id
                     ).first()
         if db_serviceslo is None:
-            db.session.add(ServiceSLO(service_id=db_service.id,
-                                    cluster_id=db_cluster.id,
-                                    namespace_id=db_namespace.id,
-                                    slitype_id=db_slitype.id))
+            db.session.add(ServiceSLO(name=slo['name'],
+                                      service_id=db_service.id,
+                                      cluster_id=db_cluster.id,
+                                      namespace_id=db_namespace.id,
+                                      slitype_id=db_slitype.id,
+                                      token_id=db_token.id))
             db.session.commit()
             self.log.info('ServiceSLO %s created ', slo['name'])
         db_serviceslo = db.session.query(ServiceSLO) \
-                    .filter_by(service_id=db_service.id,
+                    .filter_by(name=slo['name'],
+                               service_id=db_service.id,
                                cluster_id=db_cluster.id,
                                namespace_id=db_namespace.id,
-                               slitype_id=db_slitype.id
+                               slitype_id=db_slitype.id,
+                               token_id=db_token.id
                     ).first()
-        db_serviceslo.name = slo['name']
         db_serviceslo.value = slo['value']
         db_serviceslo.target = slo['target']
         db.session.commit()
         self.log.info('ServiceSLO %s updated ', slo['name'])
 
     def get_slometrics(self):
-        # token = db.session.query(Token) \
-        #     .filter(ServiceSLO.token_id == Token.id,
-        #             ServiceSLO.namespace_id == Namespace.id,
-        #             Namespace.cluster_id == Cluster.id,
-        #             Cluster.name == self.cluster) \
-        #     .order_by(Token.timestamp.desc()) \
-        #     .limit(1) \
-        #     .first()
-        token = db.session.query(Token).first()
-        print(f"token_id is: {token.id}")
+        token = db.session.query(Token) \
+            .filter(ServiceSLO.token_id == Token.id,
+                    ServiceSLO.cluster_id == Cluster.id,
+                    Cluster.name == self.cluster) \
+            .order_by(Token.timestamp.desc()) \
+            .limit(1) \
+            .first()
+
         if token is None:
             return []
 
-        # ServiceSLO.token_id == token.id, 
         serviceslo = db.session.query(ServiceSLO) \
-            .filter(ServiceSLO.slitype_id == SLIType.id,
+            .filter(ServiceSLO.token_id == token.id,
+                    ServiceSLO.slitype_id == SLIType.id,
                     SLIType.name == self.sli_type,
                     ServiceSLO.namespace_id == Namespace.id,
                     Namespace.name == self.namespace,
@@ -129,7 +128,6 @@ class ServiceSLOMetrics:
                     ServiceSLO.name == self.name
                     ).first()
 
-        # serviceslo = db.session.query(ServiceSLO).first()
         if serviceslo is None:
             return []
 
