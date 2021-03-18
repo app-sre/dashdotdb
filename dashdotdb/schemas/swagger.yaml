@@ -110,7 +110,7 @@ paths:
           description: successful operation
   /serviceslometrics:
     get:
-      summary: Lists Service SLO Metrics
+      summary: Returns value and target for queried Service SLO Metrics
       parameters:
       - name: cluster
         in: query
@@ -123,6 +123,11 @@ paths:
         schema:
           type: string
       - name: sli_type
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: name
         in: query
         required: true
         schema:

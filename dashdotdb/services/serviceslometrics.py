@@ -13,15 +13,15 @@ from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import ServiceSLO
 from dashdotdb.models.dashdotdb import SLIType
 
-
 class ServiceSLOMetrics:
-    def __init__(self, cluster=None, namespace=None, sli_type=None):
+    def __init__(self, cluster=None, namespace=None, sli_type=None, name=None):
         self.log = logging.getLogger()
 
         # self.service = service
         self.cluster = cluster
         self.namespace = namespace
         self.sli_type = sli_type
+        self.name = name
         # self.sloname = sloname
         # self.value = value
         # self.target = target 
@@ -115,7 +115,6 @@ class ServiceSLOMetrics:
         #     .first()
         token = db.session.query(Token).first()
         print(f"token_id is: {token.id}")
-        # print(f"self.cluster is: {self.cluster}")
         if token is None:
             return []
 
@@ -126,14 +125,65 @@ class ServiceSLOMetrics:
                     ServiceSLO.namespace_id == Namespace.id,
                     Namespace.name == self.namespace,
                     Namespace.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster).first()
+                    Cluster.name == self.cluster,
+                    ServiceSLO.name == self.name
+                    ).first()
+
         # serviceslo = db.session.query(ServiceSLO).first()
-        
+        if serviceslo is None:
+            return []
+
+        sli_type = db.session.query(SLIType) \
+            .filter(ServiceSLO.slitype_id == SLIType.id).first()
+        service = db.session.query(Service) \
+            .filter(ServiceSLO.service_id == Service.id).first()
+        cluster = db.session.query(Cluster) \
+            .filter(ServiceSLO.cluster_id == Cluster.id).first()
+        namespace = db.session.query(Namespace) \
+            .filter(ServiceSLO.namespace_id == Namespace.id).first()
+
         result = {
             'name': serviceslo.name,
+            'sli_type': sli_type.name,
             'value': serviceslo.value,
-            'target': serviceslo.target
+            'target': serviceslo.target,
+            'service': service.name,
+            'cluster': cluster.name,
+            'namespace': namespace.name
         }
 
         return result
 
+    @staticmethod
+    def get_slometrics_summary():
+        """
+        select cluster.name, max(token.id)
+        from token, pod, namespace, cluster
+        where token.id = pod.token_id
+        and pod.namespace_id = namespace.id
+        and namespace.cluster_id = cluster.id
+        group by cluster.name
+        """
+
+        # token = db.session.query(
+        #     db.func.max(Token.id).label('token_id')
+        # ).filter(
+        #     Token.id == Pod.token_id,
+        #     Pod.namespace_id == Namespace.id,
+        #     Namespace.cluster_id == Cluster.id
+        # )
+
+        results = db.session.query(
+            # Service,
+            Cluster,
+            Namespace,
+            ServiceSLO,
+            SLIType
+        ).filter(ServiceSLO.slitype_id == SLIType.id,
+                ServiceSLO.namespace_id == Namespace.id,
+                Namespace.cluster_id == Cluster.id
+        ).group_by(
+            SLIType, ServiceSLO, Namespace, Cluster
+        )
+        
+        return results

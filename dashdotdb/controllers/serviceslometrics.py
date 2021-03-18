@@ -6,7 +6,7 @@ def post(cluster, body):
     imv.insert(slo=body)
     return 'ok'
 
-def search(cluster, namespace, sli_type):
-    imv = ServiceSLOMetrics(cluster, namespace, sli_type)
+def search(cluster, namespace, sli_type, name):
+    imv = ServiceSLOMetrics(cluster, namespace, sli_type, name)
     return imv.get_slometrics()
 
