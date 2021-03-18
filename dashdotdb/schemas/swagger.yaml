@@ -105,6 +105,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DeploymentValidationReport'
+              # $ref: '#/components/schemas/ItemsDeploymentValidation'
       responses:
         "200":
           description: successful operation
@@ -138,9 +139,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ServiceSLOMetrics'
+                type: object
+                $ref: '#/components/schemas/ServiceSLOMetrics'
                 x-content-type: application/json
   /serviceslometrics/{cluster}:
     post:
@@ -299,6 +299,14 @@ components:
           type: number
         target:
           type: number
+        sli_type:
+          type: string
+        service: 
+          type: string
+        cluster:
+          type: string
+        namespace:
+          type: string
     ItemsServiceSLOMetrics:
         type: object
         required:
@@ -363,3 +371,46 @@ components:
             type: number
           validation:
             type: string
+    #  ItemsDeploymentValidation:
+    #   type: object
+    #   properties:
+    #     status:
+    #       type: string
+    #     data:
+    #       type: object
+    #       properties:
+    #         resultType:
+    #           type: string
+    #         result:
+    #           type: array
+    #           items:
+    #             type: object
+    #             properties:
+    #               metric:
+    #                 type: object
+    #                 properties:
+    #                   __name__:
+    #                     type: string
+    #                   endpoint:
+    #                     type: string
+    #                   exported_namespace:
+    #                     type: string
+    #                   instance:
+    #                     type: string
+    #                   job:
+    #                     type: string
+    #                   kind:
+    #                     type: string
+    #                   name:
+    #                     type: string
+    #                   namespace:
+    #                     type: string
+    #                   pod:
+    #                     type: string
+    #                   service:
+    #                     type: string
+    #               value:
+    #                 type: array
+    #                 items:
+    #                 - type: number
+    #                 - type: string
