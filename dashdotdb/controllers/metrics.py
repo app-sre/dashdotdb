@@ -38,8 +38,8 @@ def search():
     slo_gauge = Gauge('serviceslometrics',
                       labelnames=('cluster', 'namespace', 'slitype',
                                   'name', 'value', 'target'),
-                      documentation='ServiceSLOMetrics by cluster, namespace, \
-                                    slitype, name',
+                      documentation=("ServiceSLOMetrics by cluster,"
+                                     "namespace, slitype, name"),
                       registry=registry)
 
     for result in imv_results:
