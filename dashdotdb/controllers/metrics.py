@@ -1,12 +1,14 @@
 from flask import Response
 
 from prometheus_client import Counter
+from prometheus_client import Gauge
 from prometheus_client import CollectorRegistry
 from prometheus_client import ProcessCollector
 from prometheus_client import generate_latest
 
 from dashdotdb.services.imagemanifestvuln import ImageManifestVuln
 from dashdotdb.services.deploymentvalidation import DeploymentValidationData
+from dashdotdb.services.serviceslometrics import ServiceSLOMetrics
 
 
 def search():
@@ -15,6 +17,9 @@ def search():
 
     dpv = DeploymentValidationData()
     dpv_results = dpv.get_deploymentvalidation_summary()
+
+    slo = ServiceSLOMetrics()
+    slo_results = slo.get_slometrics_summary()
 
     registry = CollectorRegistry()
     ProcessCollector(registry=registry)
@@ -30,6 +35,13 @@ def search():
                          documentation='Validations by validation type',
                          registry=registry)
 
+    slo_gauge = Gauge('serviceslometrics',
+                      labelnames=('cluster', 'namespace', 'slitype',
+                                  'name', 'value', 'target'),
+                      documentation='ServiceSLOMetrics by cluster, namespace, \
+                                    slitype, name',
+                      registry=registry)
+
     for result in imv_results:
         imv_counter.labels(cluster=result.Cluster.name,
                            namespace=result.Namespace.name,
@@ -40,6 +52,14 @@ def search():
                           namespace=result.Namespace.name,
                           validation=result.Validation.name,
                           status=result.Validation.status).inc(result.Count)
+
+    for result in slo_results:
+        slo_gauge.labels(cluster=result.Cluster.name,
+                         namespace=result.Namespace.name,
+                         slitype=result.SLIType.name,
+                         name=result.ServiceSLO.name,
+                         value=result.ServiceSLO.value,
+                         target=result.ServiceSLO.target).inc()
 
     headers = {'Content-type': 'text/plain'}
     return Response(generate_latest(registry=registry), 200, headers)

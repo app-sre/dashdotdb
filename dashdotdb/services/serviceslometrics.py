@@ -150,3 +150,28 @@ class ServiceSLOMetrics:
         }
 
         return result
+
+    @staticmethod
+    def get_slometrics_summary():
+        token = db.session.query(
+            db.func.max(Token.id).label('token_id')
+        ).filter(ServiceSLO.token_id == Token.id,
+                 ServiceSLO.cluster_id == Cluster.id,
+                 ServiceSLO.namespace_id == Namespace.id)
+
+        results = db.session.query(
+            Cluster,
+            Namespace,
+            ServiceSLO,
+            SLIType
+        ).filter(
+            ServiceSLO.slitype_id == SLIType.id,
+            ServiceSLO.token_id == Token.id,
+            ServiceSLO.namespace_id == Namespace.id,
+            Namespace.cluster_id == Cluster.id,
+            Token.id == token[0].token_id
+        ).group_by(
+            SLIType, Namespace, Cluster, ServiceSLO
+        )
+
+        return results
