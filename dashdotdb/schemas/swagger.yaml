@@ -104,8 +104,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeploymentValidationReport'
-              # $ref: '#/components/schemas/ItemsDeploymentValidation'
+              $ref: '#/components/schemas/ItemsDeploymentValidation'
       responses:
         "200":
           description: successful operation
@@ -371,46 +370,47 @@ components:
             type: number
           validation:
             type: string
-    #  ItemsDeploymentValidation:
-    #   type: object
-    #   properties:
-    #     status:
-    #       type: string
-    #     data:
-    #       type: object
-    #       properties:
-    #         resultType:
-    #           type: string
-    #         result:
-    #           type: array
-    #           items:
-    #             type: object
-    #             properties:
-    #               metric:
-    #                 type: object
-    #                 properties:
-    #                   __name__:
-    #                     type: string
-    #                   endpoint:
-    #                     type: string
-    #                   exported_namespace:
-    #                     type: string
-    #                   instance:
-    #                     type: string
-    #                   job:
-    #                     type: string
-    #                   kind:
-    #                     type: string
-    #                   name:
-    #                     type: string
-    #                   namespace:
-    #                     type: string
-    #                   pod:
-    #                     type: string
-    #                   service:
-    #                     type: string
-    #               value:
-    #                 type: array
-    #                 items:
-    #                 - type: number
-    #                 - type: string
+    ItemsDeploymentValidation:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            resultType:
+              type: string
+            result:
+              type: array
+              items:
+                type: object
+                properties:
+                  metric:
+                    type: object
+                    properties:
+                      __name__:
+                        type: string
+                      endpoint:
+                        type: string
+                      exported_namespace:
+                        type: string
+                      instance:
+                        type: string
+                      job:
+                        type: string
+                      kind:
+                        type: string
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                      pod:
+                        type: string
+                      service:
+                        type: string
+                  value:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: number
+                        - type: string
