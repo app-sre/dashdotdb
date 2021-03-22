@@ -44,7 +44,6 @@ class Cluster(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     namespaces = db.relationship('Namespace', backref='cluster')
-    serviceslo = db.relationship('ServiceSLO', backref='cluster')
 
 
 class Service(db.Model):
@@ -165,5 +164,4 @@ class ServiceSLO(db.Model):
     slitype_id = db.Column(db.Integer, db.ForeignKey('slitype.id'))
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'))
-    cluster_id = db.Column(db.Integer, db.ForeignKey('cluster.id'))
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))

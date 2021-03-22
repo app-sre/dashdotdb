@@ -77,14 +77,12 @@ class ServiceSLOMetrics:
         db_serviceslo = db.session.query(ServiceSLO) \
             .filter_by(name=slo['name'],
                        service_id=db_service.id,
-                       cluster_id=db_cluster.id,
                        namespace_id=db_namespace.id,
                        slitype_id=db_slitype.id,
                        token_id=db_token.id).first()
         if db_serviceslo is None:
             db.session.add(ServiceSLO(name=slo['name'],
                                       service_id=db_service.id,
-                                      cluster_id=db_cluster.id,
                                       namespace_id=db_namespace.id,
                                       slitype_id=db_slitype.id,
                                       token_id=db_token.id))
@@ -93,7 +91,6 @@ class ServiceSLOMetrics:
         db_serviceslo = db.session.query(ServiceSLO) \
             .filter_by(name=slo['name'],
                        service_id=db_service.id,
-                       cluster_id=db_cluster.id,
                        namespace_id=db_namespace.id,
                        slitype_id=db_slitype.id,
                        token_id=db_token.id).first()
@@ -105,10 +102,9 @@ class ServiceSLOMetrics:
     def get_slometrics(self):
         token = db.session.query(Token) \
             .filter(ServiceSLO.token_id == Token.id,
-                    ServiceSLO.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster,
                     ServiceSLO.namespace_id == Namespace.id,
-                    Namespace.name == self.namespace) \
+                    Namespace.cluster_id == Cluster.id,
+                    Cluster.name == self.cluster) \
             .order_by(Token.timestamp.desc()) \
             .limit(1) \
             .first()
@@ -134,10 +130,11 @@ class ServiceSLOMetrics:
             .filter(ServiceSLO.slitype_id == SLIType.id).first()
         service = db.session.query(Service) \
             .filter(ServiceSLO.service_id == Service.id).first()
-        cluster = db.session.query(Cluster) \
-            .filter(ServiceSLO.cluster_id == Cluster.id).first()
         namespace = db.session.query(Namespace) \
             .filter(ServiceSLO.namespace_id == Namespace.id).first()
+        cluster = db.session.query(Cluster) \
+            .filter(Namespace.id == namespace.id,
+                    Namespace.cluster_id == Cluster.id).first()
 
         result = {
             'name': serviceslo.name,
@@ -156,8 +153,8 @@ class ServiceSLOMetrics:
         token = db.session.query(
             db.func.max(Token.id).label('token_id')
         ).filter(ServiceSLO.token_id == Token.id,
-                 ServiceSLO.cluster_id == Cluster.id,
-                 ServiceSLO.namespace_id == Namespace.id)
+                 ServiceSLO.namespace_id == Namespace.id,
+                 Namespace.cluster_id == Cluster.id)
 
         results = db.session.query(
             Cluster,
