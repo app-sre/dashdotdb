@@ -37,7 +37,7 @@ def search():
 
     slo_gauge = Gauge('serviceslometrics',
                       labelnames=('cluster', 'namespace', 'slitype',
-                                  'name', 'value', 'target'),
+                                  'name', 'type'),
                       documentation=("ServiceSLOMetrics by cluster,"
                                      "namespace, slitype, name"),
                       registry=registry)
@@ -58,8 +58,12 @@ def search():
                          namespace=result.Namespace.name,
                          slitype=result.SLIType.name,
                          name=result.ServiceSLO.name,
-                         value=result.ServiceSLO.value,
-                         target=result.ServiceSLO.target).inc()
+                         type='slo_value').set(result.ServiceSLO.value)
+        slo_gauge.labels(cluster=result.Cluster.name,
+                         namespace=result.Namespace.name,
+                         slitype=result.SLIType.name,
+                         name=result.ServiceSLO.name,
+                         type='slo_target').set(result.ServiceSLO.target)
 
     headers = {'Content-type': 'text/plain'}
     return Response(generate_latest(registry=registry), 200, headers)
