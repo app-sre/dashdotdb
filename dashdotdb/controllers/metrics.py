@@ -39,7 +39,7 @@ def search():
                       labelnames=('cluster', 'namespace', 'slitype',
                                   'name', 'type'),
                       documentation=("ServiceSLOMetrics by cluster,"
-                                     "namespace, slitype, name"),
+                                     "namespace, slitype, name, type"),
                       registry=registry)
 
     for result in imv_results:
