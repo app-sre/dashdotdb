@@ -141,11 +141,11 @@ paths:
                 type: object
                 $ref: '#/components/schemas/ServiceSLOMetrics'
                 x-content-type: application/json
-  /serviceslometrics/{cluster}:
+  /serviceslometrics/{name}:
     post:
       summary: Add a new Service SLO Metrics
       parameters:
-        - name: cluster
+        - name: name
           in: path
           required: true
           schema:

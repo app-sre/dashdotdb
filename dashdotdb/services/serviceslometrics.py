@@ -104,7 +104,8 @@ class ServiceSLOMetrics:
             .filter(ServiceSLO.token_id == Token.id,
                     ServiceSLO.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster) \
+                    Cluster.name == self.cluster,
+                    ServiceSLO.name == self.name) \
             .order_by(Token.timestamp.desc()) \
             .limit(1) \
             .first()
@@ -159,6 +160,7 @@ class ServiceSLOMetrics:
         results = db.session.query(
             Cluster,
             Namespace,
+            Service,
             ServiceSLO,
             SLIType
         ).filter(
@@ -168,7 +170,7 @@ class ServiceSLOMetrics:
             Namespace.cluster_id == Cluster.id,
             Token.id == token[0].token_id
         ).group_by(
-            SLIType, Namespace, Cluster, ServiceSLO
+            SLIType, Namespace, Cluster, ServiceSLO, Service
         )
 
         return results
