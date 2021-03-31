@@ -108,6 +108,57 @@ paths:
       responses:
         "200":
           description: successful operation
+  /serviceslometrics:
+    get:
+      summary: Returns value and target for queried Service SLO Metrics
+      parameters:
+      - name: cluster
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: namespace
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: sli_type
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ServiceSLOMetrics'
+                x-content-type: application/json
+  /serviceslometrics/{name}:
+    post:
+      summary: Add a new Service SLO Metrics
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Service SLO Metrics object to be added to the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemsServiceSLOMetrics'
+      responses:
+        "200":
+          description: successful operation
 components:
   schemas:
     ImageManifestVulnReport:
@@ -238,6 +289,70 @@ components:
                   type: array
                   items:
                     type: string
+    ServiceSLOMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: number
+        target:
+          type: number
+        sli_type:
+          type: string
+        service: 
+          type: string
+        cluster:
+          type: string
+        namespace:
+          type: string
+    ItemsServiceSLOMetrics:
+        type: object
+        required:
+        - name
+        - SLIType
+        - namespace
+        - cluster
+        - service
+        - value
+        - target 
+        properties:
+          name:
+            type: string
+          SLIType:
+            type: string
+            enum:
+              - latency
+              - availability
+              - correctness
+              - quality
+              - freshness
+              - coverage
+              - correcteness
+              - throughput
+              - durability
+          namespace:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+          cluster:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+          service:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+          value:
+            type: number
+          target:
+            type: number
     DeploymentValidationReport:
       type: array
       items:
@@ -296,5 +411,6 @@ components:
                   value:
                     type: array
                     items:
-                    - type: number
-                    - type: string
+                      oneOf:
+                        - type: number
+                        - type: string

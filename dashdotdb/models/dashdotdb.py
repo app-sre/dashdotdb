@@ -10,6 +10,7 @@ class Token(db.Model):
     pods = db.relationship('Pod', backref='token')
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='token')
+    serviceslo = db.relationship('ServiceSLO', backref='token')
 
 
 class Pod(db.Model):
@@ -33,6 +34,7 @@ class Namespace(db.Model):
     pods = db.relationship('Pod', backref='namespace')
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='namespace')
+    serviceslo = db.relationship('ServiceSLO', backref='namespace')
 
 
 class Cluster(db.Model):
@@ -42,6 +44,15 @@ class Cluster(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     namespaces = db.relationship('Namespace', backref='cluster')
+
+
+class Service(db.Model):
+
+    __tablename__ = 'service'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    serviceslo = db.relationship('ServiceSLO', backref='service')
 
 
 class ImageFeature(db.Model):
@@ -131,3 +142,26 @@ class ObjectKind(db.Model):
     name = db.Column(db.String(64), unique=False)
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='objectkind')
+
+
+class SLIType(db.Model):
+
+    __tablename__ = 'slitype'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=False)
+    serviceslo = db.relationship('ServiceSLO', backref='slitype')
+
+
+class ServiceSLO(db.Model):
+
+    __tablename__ = 'serviceslo'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=False)
+    value = db.Column(db.Integer, unique=False)
+    target = db.Column(db.Integer, unique=False)
+    slitype_id = db.Column(db.Integer, db.ForeignKey('slitype.id'))
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
+    service_id = db.Column(db.Integer, db.ForeignKey('service.id'))
+    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
