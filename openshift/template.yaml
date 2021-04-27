@@ -80,7 +80,7 @@ objects:
           app: dashdotdb
       spec:
         containers:
-        - image: quay.io/app-sre/nginx-gate:32317a8
+        - image: ${IMAGE_GATE}:${IMAGE_GATE_TAG}
           imagePullPolicy: Always
           name: auth-proxy
           env:
@@ -202,3 +202,7 @@ parameters:
   value: dashdotdb-rds
 - name: authProxySecret
   value: auth-proxy
+- name: IMAGE_GATE
+  value: quay.io/app-sre/nginx-gate
+- name: IMAGE_GATE_TAG
+  value: latest
