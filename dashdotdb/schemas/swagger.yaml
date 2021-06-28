@@ -11,7 +11,7 @@ info:
 servers:
 - url: /api/v1
 paths:
-  /metrics/imagemanifestvuln:
+  /imagemanifestvuln/metrics:
     get:
       operationId: dashdotdb.controllers.metrics.imagemanifestvuln.search
       summary: Lists Image Manifests Vulnerabilities
@@ -25,7 +25,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/ImageManifestVulnReport'
                 x-content-type: application/json
-  /metrics/deploymentvalidation:
+  /deploymentvalidation/metrics:
     get:
       operationId: dashdotdb.controllers.metrics.deploymentvalidation.search
       summary: Lists Deployment Validation Information
@@ -39,7 +39,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/DeploymentValidationReport'
                 x-content-type: application/json
-  /metrics/serviceslometrics:
+  /serviceslometrics/metrics:
     get:
       operationId: dashdotdb.controllers.metrics.serviceslometrics.search
       summary: Lists service SLO metrics
