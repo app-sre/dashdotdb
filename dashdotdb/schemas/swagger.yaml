@@ -11,6 +11,37 @@ info:
 servers:
 - url: /api/v1
 paths:
+  /starttransaction:
+    get:
+      operationId: dashdotdb.controllers.transactions.get
+      summary: Start a transaction
+      responses:
+        "200":
+          description: transaction started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionid:
+                    type: string
+                    description: The unique ID for the transaction
+
+  /endtransaction:
+    post:
+      operationId: dashdotdb.controllers.transactions.post
+      summary: End a transaction
+      parameters:
+      - name: transactionid
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: transaction accepted
+        "404":
+          description: transaction not found
   /metrics:
     get:
       summary: Lists Image Manifests Vulnerabilities
@@ -52,6 +83,11 @@ paths:
     post:
       summary: Add a new Vulnerability Notification
       parameters:
+        - name: transactionid
+          in: query
+          required: true
+          schema:
+            type: string
         - name: cluster
           in: path
           required: true
@@ -94,6 +130,11 @@ paths:
     post:
       summary: Add a new Deployment Validation
       parameters:
+        - name: transactionid
+          in: query
+          required: true
+          schema:
+            type: string
         - name: cluster
           in: path
           required: true
@@ -147,6 +188,11 @@ paths:
       parameters:
         - name: name
           in: path
+          required: true
+          schema:
+            type: string
+        - name: transactionid
+          in: query
           required: true
           schema:
             type: string

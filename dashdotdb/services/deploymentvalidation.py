@@ -15,15 +15,17 @@ from dashdotdb.models.dashdotdb import ObjectKind
 
 
 class DeploymentValidationData:
-    def __init__(self, cluster=None, namespace=None):
+    def __init__(self, cluster=None, namespace=None, validation=None):
         self.log = logging.getLogger()
 
         self.cluster = cluster
         self.namespace = namespace
+        self.validation = validation
 
-    def insert(self, validation):
-        for item in validation['data']['result']:
-            self._insert(item)
+    def insert(self):
+        if self.validation:
+            for item in self.validation['data']['result']:
+                self._insert(item)
 
     def _insert(self, item):
         if 'metric' not in item:

@@ -18,19 +18,23 @@ from dashdotdb.models.dashdotdb import Severity
 
 
 class ImageManifestVuln:
-    def __init__(self, cluster=None, namespace=None):
+    def __init__(self, cluster=None, namespace=None, manifest=None):
         self.log = logging.getLogger()
 
         self.cluster = cluster
         self.namespace = namespace
+        self.manifest = manifest
 
-    def insert(self, manifest):
-        if 'kind' not in manifest:
+    def insert(self):
+        if not self.manifest:
+            return
+
+        if 'kind' not in self.manifest:
             self.log.error('skipping manifest: key "kind" not found')
             return
 
-        if manifest['kind'] != 'ImageManifestVuln':
-            self.log.info('skipping kind "%s"', manifest["kind"])
+        if self.manifest['kind'] != 'ImageManifestVuln':
+            self.log.info('skipping kind "%s"', self.manifest["kind"])
             return
 
         expire = datetime.now() - timedelta(minutes=60)
@@ -53,7 +57,7 @@ class ImageManifestVuln:
         db_cluster = db.session.query(Cluster) \
             .filter_by(name=cluster_name).first()
 
-        namespace_name = manifest['metadata']['namespace']
+        namespace_name = self.manifest['metadata']['namespace']
         db_namespace = db.session.query(Namespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
@@ -64,8 +68,8 @@ class ImageManifestVuln:
         db_namespace = db.session.query(Namespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
 
-        image_name = manifest['spec']['image']
-        image_manifest = manifest['spec']['manifest']
+        image_name = self.manifest['spec']['image']
+        image_manifest = self.manifest['spec']['manifest']
         db_image = db.session.query(Image) \
             .filter_by(name=image_name, manifest=image_manifest).first()
         if db_image is None:
@@ -76,7 +80,7 @@ class ImageManifestVuln:
         db_image = db.session.query(Image) \
             .filter_by(name=image_name, manifest=image_manifest).first()
 
-        features = manifest['spec']['features']
+        features = self.manifest['spec']['features']
         for feature in features:
             feature_name = feature['name']
             feature_namespacename = feature['namespaceName']
@@ -141,7 +145,7 @@ class ImageManifestVuln:
                     self.log.info('vulnerability %s created ',
                                   vulnerability_name)
 
-        pods = manifest['status']['affectedPods'].keys()
+        pods = self.manifest['status']['affectedPods'].keys()
         for pod in pods:
             db_pod = db.session.query(Pod) \
                 .filter_by(name=pod,

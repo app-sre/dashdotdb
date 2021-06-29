@@ -13,15 +13,18 @@ from dashdotdb.models.dashdotdb import SLIType
 
 
 class ServiceSLOMetrics:
-    def __init__(self, cluster=None, namespace=None, sli_type=None, name=None):
+    def __init__(self, cluster=None, namespace=None, sli_type=None, name=None, slo=None):
         self.log = logging.getLogger()
 
         self.cluster = cluster
         self.namespace = namespace
         self.sli_type = sli_type
         self.name = name
+        self.slo = slo
 
-    def insert(self, slo):
+    def insert(self):
+        if not self.slo:
+            return
 
         expire = datetime.now() - timedelta(minutes=60)
         db_token = db.session.query(Token) \
@@ -33,7 +36,7 @@ class ServiceSLOMetrics:
         db_token = db.session.query(Token) \
             .filter(Token.timestamp > expire).first()
 
-        service_name = slo['service']['name']
+        service_name = self.slo['service']['name']
         db_service = db.session.query(Service) \
             .filter_by(name=service_name).first()
         if db_service is None:
@@ -43,7 +46,7 @@ class ServiceSLOMetrics:
         db_service = db.session.query(Service) \
             .filter_by(name=service_name).first()
 
-        cluster_name = slo['cluster']['name']
+        cluster_name = self.slo['cluster']['name']
         db_cluster = db.session.query(Cluster) \
             .filter_by(name=cluster_name).first()
         if db_cluster is None:
@@ -53,7 +56,7 @@ class ServiceSLOMetrics:
         db_cluster = db.session.query(Cluster) \
             .filter_by(name=cluster_name).first()
 
-        namespace_name = slo['namespace']['name']
+        namespace_name = self.slo['namespace']['name']
         db_namespace = db.session.query(Namespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
         if db_namespace is None:
@@ -64,7 +67,7 @@ class ServiceSLOMetrics:
         db_namespace = db.session.query(Namespace) \
             .filter_by(name=namespace_name, cluster_id=db_cluster.id).first()
 
-        slitype_name = slo['SLIType']
+        slitype_name = self.slo['SLIType']
         db_slitype = db.session.query(SLIType) \
             .filter_by(name=slitype_name).first()
         if db_slitype is None:
@@ -75,29 +78,29 @@ class ServiceSLOMetrics:
             .filter_by(name=slitype_name).first()
 
         db_serviceslo = db.session.query(ServiceSLO) \
-            .filter_by(name=slo['name'],
+            .filter_by(name=self.slo['name'],
                        service_id=db_service.id,
                        namespace_id=db_namespace.id,
                        slitype_id=db_slitype.id,
                        token_id=db_token.id).first()
         if db_serviceslo is None:
-            db.session.add(ServiceSLO(name=slo['name'],
+            db.session.add(ServiceSLO(name=self.slo['name'],
                                       service_id=db_service.id,
                                       namespace_id=db_namespace.id,
                                       slitype_id=db_slitype.id,
                                       token_id=db_token.id))
             db.session.commit()
-            self.log.info('ServiceSLO %s created ', slo['name'])
+            self.log.info('ServiceSLO %s created ', self.slo['name'])
         db_serviceslo = db.session.query(ServiceSLO) \
-            .filter_by(name=slo['name'],
+            .filter_by(name=self.slo['name'],
                        service_id=db_service.id,
                        namespace_id=db_namespace.id,
                        slitype_id=db_slitype.id,
                        token_id=db_token.id).first()
-        db_serviceslo.value = slo['value']
-        db_serviceslo.target = slo['target']
+        db_serviceslo.value = self.slo['value']
+        db_serviceslo.target = self.slo['target']
         db.session.commit()
-        self.log.info('ServiceSLO %s updated ', slo['name'])
+        self.log.info('ServiceSLO %s updated ', self.slo['name'])
 
     def get_slometrics(self):
         token = db.session.query(Token) \
