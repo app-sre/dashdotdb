@@ -11,6 +11,7 @@ info:
 servers:
 - url: /api/v1
 paths:
+  # Image Manifest Vulnerabilities
   /imagemanifestvuln/metrics:
     get:
       operationId: dashdotdb.controllers.metrics.imagemanifestvuln.search
@@ -24,34 +25,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ImageManifestVulnReport'
-                x-content-type: application/json
-  /deploymentvalidation/metrics:
-    get:
-      operationId: dashdotdb.controllers.metrics.deploymentvalidation.search
-      summary: Lists Deployment Validation Information
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DeploymentValidationReport'
-                x-content-type: application/json
-  /serviceslometrics/metrics:
-    get:
-      operationId: dashdotdb.controllers.metrics.serviceslometrics.search
-      summary: Lists service SLO metrics
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ServiceSLOMetrics'
                 x-content-type: application/json
   /imagemanifestvuln:
     get:
@@ -95,6 +68,56 @@ paths:
       responses:
         "200":
           description: successful operation
+        "404":
+          description: token not found
+
+  # Deployment Validation Operator
+  /deploymentvalidation/newtoken:
+    get:
+      operationId: dashdotdb.controllers.deploymentvalidation.newtoken
+      summary: Create a token for data upload
+      responses:
+        "200":
+          description: token created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: A unique token identifier
+        "500":
+          description: token creation error
+  /deploymentvalidation/closetoken:
+    post:
+      operationId: dashdotdb.controllers.deploymentvalidation.closetoken
+      summary: Close a token so it can not receive data
+      parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: token closed
+        "404":
+          description: token not found
+  /deploymentvalidation/metrics:
+    get:
+      operationId: dashdotdb.controllers.metrics.deploymentvalidation.search
+      summary: Lists Deployment Validation Information
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentValidationReport'
+                x-content-type: application/json
   /deploymentvalidation:
     get:
       summary: Lists Deployment Validations
@@ -123,6 +146,11 @@ paths:
     post:
       summary: Add a new Deployment Validation
       parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
         - name: cluster
           in: path
           required: true
@@ -137,6 +165,22 @@ paths:
       responses:
         "200":
           description: successful operation
+
+  # SLOs
+  /serviceslometrics/metrics:
+    get:
+      operationId: dashdotdb.controllers.metrics.serviceslometrics.search
+      summary: Lists service SLO metrics
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceSLOMetrics'
+                x-content-type: application/json
   /serviceslometrics:
     get:
       summary: Returns value and target for queried Service SLO Metrics

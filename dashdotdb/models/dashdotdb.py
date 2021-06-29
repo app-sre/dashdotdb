@@ -13,6 +13,25 @@ class Token(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='token')
 
 
+class Tokens(db.Model):
+
+    __tablename__ = 'tokens'
+
+    id = db.Column(db.Integer, primary_key=True)
+    uuid = db.Column(db.String(36))
+    data_type = db.Column(db.String(20))
+    creation_timestamp = db.Column(db.DateTime)
+    is_open = db.Column(db.Boolean)
+
+
+class LatestTokens(db.Model):
+
+    __tablename__ = 'latesttokens'
+
+    id = db.Column(db.Integer, primary_key=True)
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
+    data_type = db.Column(db.String(20))
+
 class Pod(db.Model):
 
     __tablename__ = 'pod'
