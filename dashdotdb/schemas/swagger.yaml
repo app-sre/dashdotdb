@@ -7,12 +7,13 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.1.0
 servers:
 - url: /api/v1
 paths:
-  /metrics:
+  /imagemanifestvuln/metrics:
     get:
+      operationId: dashdotdb.controllers.metrics.imagemanifestvuln.search
       summary: Lists Image Manifests Vulnerabilities
       responses:
         "200":
@@ -23,6 +24,34 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ImageManifestVulnReport'
+                x-content-type: application/json
+  /deploymentvalidation/metrics:
+    get:
+      operationId: dashdotdb.controllers.metrics.deploymentvalidation.search
+      summary: Lists Deployment Validation Information
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentValidationReport'
+                x-content-type: application/json
+  /serviceslometrics/metrics:
+    get:
+      operationId: dashdotdb.controllers.metrics.serviceslometrics.search
+      summary: Lists service SLO metrics
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceSLOMetrics'
                 x-content-type: application/json
   /imagemanifestvuln:
     get:
@@ -300,7 +329,7 @@ components:
           type: number
         sli_type:
           type: string
-        service: 
+        service:
           type: string
         cluster:
           type: string
@@ -315,7 +344,7 @@ components:
         - cluster
         - service
         - value
-        - target 
+        - target
         properties:
           name:
             type: string

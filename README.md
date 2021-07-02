@@ -30,7 +30,7 @@ Export the `FLASK_APP` and the `DASHDOTDB_DATABASE_URL`:
 
 ```
 $ export FLASK_APP=dashdotdb
-$ export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
+$ export DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres
 ```
 
 Initialize the Database:
