@@ -1,5 +1,4 @@
-import datetime
-
+from datetime import datetime
 from uuid import uuid4
 
 from dashdotdb.models.dashdotdb import db
@@ -12,20 +11,19 @@ def close_token(uuid, data_type):
         .filter(Tokens.uuid == uuid, Tokens.data_type == data_type).first()
     if db_token is None:
         return 'token not found', 404
-    db.session.update(Tokens).where(
-        Tokens.id == db_token.id).values(is_open=False)
+    db_token.is_open = False
     latest_token = db.session.query(LatestTokens) \
-        .filter(Tokens.data_type == data_type).first()
+        .filter(Tokens.data_type == data_type,
+                Tokens.id == LatestTokens.token_id).first()
     if latest_token is None:
-        db.session.add(LatestTokens(data_type=data_type, token_id=db_token.id))
+        db.session.add(LatestTokens(token_id=db_token.id))
     else:
         # Only update the latest token if the creation timestamp is newer than
         # the current latest token creation timestamp
         latest_token_data = db.session.query(
-            Tokens).filter(Tokens.id == latest_token.id)
-        if db_token.creation_timestamp > latest_token_data.createion_timestamp:
-            db.session.update(LatestTokens).where(
-                data_type=data_type).values(token_id=db_token.id)
+            Tokens).filter(Tokens.id == latest_token.token_id).first()
+        if db_token.creation_timestamp > latest_token_data.creation_timestamp:
+            latest_token.token_id = db_token.id
     db.session.commit()
     return 'token closed'
 

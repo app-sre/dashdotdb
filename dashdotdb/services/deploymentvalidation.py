@@ -13,6 +13,7 @@ from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import DeploymentValidation
 from dashdotdb.models.dashdotdb import Validation
 from dashdotdb.models.dashdotdb import ObjectKind
+from dashdotdb.services import DataTypes
 
 
 class DeploymentValidationData:
@@ -37,7 +38,8 @@ class DeploymentValidationData:
             return
 
         db_token = db.session.query(Tokens) \
-            .filter(Tokens.uuid == token).first()
+            .filter(Tokens.uuid == token,
+                    Tokens.data_type == DataTypes.DVODataType).first()
         if db_token is None:
             self.log.error(f'skipping validation: token not found: {token}')
             return
@@ -95,14 +97,14 @@ class DeploymentValidationData:
         validation_context = item['metric']['name']
         db_deploymentvalidation = db.session.query(DeploymentValidation) \
             .filter_by(name=validation_context,
-                       token_id=db_token.id,
+                       tokens_id=db_token.id,
                        namespace_id=db_namespace.id,
                        objectkind_id=db_objectkind.id,
                        validation_id=db_validation.id).first()
         if db_deploymentvalidation is None:
             db.session.add(DeploymentValidation(
                 name=validation_context,
-                token_id=db_token.id,
+                tokens_id=db_token.id,
                 namespace_id=db_namespace.id,
                 objectkind_id=db_objectkind.id,
                 validation_id=db_validation.id
@@ -122,10 +124,10 @@ class DeploymentValidationData:
         AND cluster.name = %(name_1)s
         ORDER BY tokens.creation_timestamp DESC
         """
-        latest = db.session.query(LatestTokens).filter(
-            data_type="DVOType").first()
         token = db.session.query(Tokens) \
-            .filter(DeploymentValidation.token_id == latest.token_id,
+            .filter(Tokens.id == LatestTokens.token_id,
+                    Tokens.data_type == DataTypes.DVODataType,
+                    DeploymentValidation.tokens_id == Tokens.id,
                     DeploymentValidation.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster) \
@@ -138,7 +140,7 @@ class DeploymentValidationData:
 
         validations = db.session.query(DeploymentValidation) \
             .filter(Validation.id == DeploymentValidation.validation_id,
-                    DeploymentValidation.token_id == token.id,
+                    DeploymentValidation.tokens_id == token.id,
                     DeploymentValidation.namespace_id == Namespace.id,
                     DeploymentValidation.objectkind_id == ObjectKind.id,
                     Namespace.cluster_id == Cluster.id,
@@ -166,10 +168,10 @@ class DeploymentValidationData:
         group by cluster.name
         """
 
-        latest = db.session.query(LatestTokens).filter(
-            data_type="DVOToken").first()
         token = db.session.query(Tokens).filter(
-            latest.id == DeploymentValidation.token_id,
+            Tokens.id == LatestTokens.token_id,
+            Tokens.data_type == DataTypes.DVODataType,
+            Tokens.id == DeploymentValidation.tokens_id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
         )
@@ -182,10 +184,10 @@ class DeploymentValidationData:
             func.count(Validation.name).label('Count')
         ).filter(
             DeploymentValidation.validation_id == Validation.id,
-            DeploymentValidation.token_id == Tokens.id,
+            DeploymentValidation.tokens_id == Tokens.id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Tokens.id == token[0].token_id
+            Tokens.id == token[0].id
         ).group_by(
             Validation, Namespace, Cluster, DeploymentValidation.id
         )
