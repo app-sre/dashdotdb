@@ -23,7 +23,10 @@ class DeploymentValidationData:
     def insert(self, token, validation=None):
         if validation:
             for item in validation['data']['result']:
-                self._insert(token, item)
+                err_msg, code = self._insert(token, item)
+                if err_msg:
+                    return err_msg, code
+        return "ok"
 
     def _insert(self, token, item):
         if 'metric' not in item:
@@ -38,13 +41,14 @@ class DeploymentValidationData:
             .filter(Token.uuid == token,
                     Token.data_type == DataTypes.DVODataType).first()
         if db_token is None:
-            self.log.error(f'skipping validation: token not found: {token}')
-            return
+            err_msg = 'token not found'
+            self.log.error(f'skipping validation: {err_msg} {token}')
+            return err_msg, 404
 
         if not db_token.is_open:
-            self.log.error(
-                f'skipping validation: token {token} is closed for data')
-            return
+            err_msg = 'token is closed for data'
+            self.log.error(f'skipping validation: {err_msg} {token}')
+            return err_msg, 400
 
         cluster_name = self.cluster
         db_cluster = db.session.query(Cluster) \
@@ -109,6 +113,7 @@ class DeploymentValidationData:
             db.session.commit()
             self.log.info('deploymentvalidation %s created ',
                           validation_context)
+        return "ok", 200
 
     def get_deploymentvalidations(self):
         """

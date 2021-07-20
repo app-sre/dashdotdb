@@ -11,20 +11,20 @@ def close_token(uuid, data_type):
         .filter(Token.uuid == uuid, Token.data_type == data_type).first()
     if db_token is None:
         return 'token not found', 404
-    db_token.is_open = False
-    latest_token = db.session.query(LatestTokens) \
-        .filter(Token.data_type == data_type,
-                Token.id == LatestTokens.token_id).first()
-    if latest_token is None:
-        db.session.add(LatestTokens(token_id=db_token.id))
-    else:
-        # Only update the latest token if the creation timestamp is newer than
-        # the current latest token creation timestamp
-        latest_token_data = db.session.query(
-            Token).filter(Token.id == latest_token.token_id).first()
-        if db_token.timestamp > latest_token_data.timestamp:
-            latest_token.token_id = db_token.id
-    db.session.commit()
+    with db.session.begin():
+        db_token.is_open = False
+        latest_token = db.session.query(LatestTokens) \
+            .filter(Token.data_type == data_type,
+                    Token.id == LatestTokens.token_id).first()
+        if latest_token is None:
+            db.session.add(LatestTokens(token_id=db_token.id))
+        else:
+            # Only update the latest token if the creation timestamp is newer than
+            # the current latest token creation timestamp
+            latest_token_data = db.session.query(
+                Token).filter(Token.id == latest_token.token_id).first()
+            if db_token.timestamp > latest_token_data.timestamp:
+                latest_token.token_id = db_token.id
     return 'token closed'
 
 

@@ -5,8 +5,7 @@ from dashdotdb.services import DataTypes
 
 def post(token, cluster, body):
     dpv = DeploymentValidationData(cluster=cluster)
-    dpv.insert(token=token, validation=body)
-    return 'ok'
+    return dpv.insert(token=token, validation=body)
 
 
 def search(cluster, namespace):
