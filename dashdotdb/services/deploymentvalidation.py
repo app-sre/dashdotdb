@@ -1,12 +1,9 @@
 import logging
 
-from datetime import datetime
-from datetime import timedelta
-
 from sqlalchemy import func
 
 from dashdotdb.models.dashdotdb import db
-from dashdotdb.models.dashdotdb import Tokens
+from dashdotdb.models.dashdotdb import Token
 from dashdotdb.models.dashdotdb import LatestTokens
 from dashdotdb.models.dashdotdb import Cluster
 from dashdotdb.models.dashdotdb import Namespace
@@ -37,9 +34,9 @@ class DeploymentValidationData:
             self.log.error('skipping validation: key "value" not found')
             return
 
-        db_token = db.session.query(Tokens) \
-            .filter(Tokens.uuid == token,
-                    Tokens.data_type == DataTypes.DVODataType).first()
+        db_token = db.session.query(Token) \
+            .filter(Token.uuid == token,
+                    Token.data_type == DataTypes.DVODataType).first()
         if db_token is None:
             self.log.error(f'skipping validation: token not found: {token}')
             return
@@ -97,14 +94,14 @@ class DeploymentValidationData:
         validation_context = item['metric']['name']
         db_deploymentvalidation = db.session.query(DeploymentValidation) \
             .filter_by(name=validation_context,
-                       tokens_id=db_token.id,
+                       token_id=db_token.id,
                        namespace_id=db_namespace.id,
                        objectkind_id=db_objectkind.id,
                        validation_id=db_validation.id).first()
         if db_deploymentvalidation is None:
             db.session.add(DeploymentValidation(
                 name=validation_context,
-                tokens_id=db_token.id,
+                token_id=db_token.id,
                 namespace_id=db_namespace.id,
                 objectkind_id=db_objectkind.id,
                 validation_id=db_validation.id
@@ -124,14 +121,14 @@ class DeploymentValidationData:
         AND cluster.name = %(name_1)s
         ORDER BY tokens.creation_timestamp DESC
         """
-        token = db.session.query(Tokens) \
-            .filter(Tokens.id == LatestTokens.token_id,
-                    Tokens.data_type == DataTypes.DVODataType,
-                    DeploymentValidation.tokens_id == Tokens.id,
+        token = db.session.query(Token) \
+            .filter(Token.id == LatestTokens.token_id,
+                    Token.data_type == DataTypes.DVODataType,
+                    DeploymentValidation.token_id == Token.id,
                     DeploymentValidation.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster) \
-            .order_by(Tokens.creation_timestamp.desc()) \
+            .order_by(Token.timestamp.desc()) \
             .limit(1) \
             .first()
         if token is None:
@@ -140,7 +137,7 @@ class DeploymentValidationData:
 
         validations = db.session.query(DeploymentValidation) \
             .filter(Validation.id == DeploymentValidation.validation_id,
-                    DeploymentValidation.tokens_id == token.id,
+                    DeploymentValidation.token_id == token.id,
                     DeploymentValidation.namespace_id == Namespace.id,
                     DeploymentValidation.objectkind_id == ObjectKind.id,
                     Namespace.cluster_id == Cluster.id,
@@ -168,10 +165,10 @@ class DeploymentValidationData:
         group by cluster.name
         """
 
-        token = db.session.query(Tokens).filter(
-            Tokens.id == LatestTokens.token_id,
-            Tokens.data_type == DataTypes.DVODataType,
-            Tokens.id == DeploymentValidation.tokens_id,
+        token = db.session.query(Token).filter(
+            Token.id == LatestTokens.token_id,
+            Token.data_type == DataTypes.DVODataType,
+            Token.id == DeploymentValidation.token_id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
         )
@@ -184,10 +181,10 @@ class DeploymentValidationData:
             func.count(Validation.name).label('Count')
         ).filter(
             DeploymentValidation.validation_id == Validation.id,
-            DeploymentValidation.tokens_id == Tokens.id,
+            DeploymentValidation.token_id == Token.id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Tokens.id == token[0].id
+            Token.id == token[0].id
         ).group_by(
             Validation, Namespace, Cluster, DeploymentValidation.id
         )

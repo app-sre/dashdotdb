@@ -143,6 +143,10 @@ $ FLASK_APP=dashdotdb flask db migrate
 That will create a new migration file in the
 [migrations](/migrations/versions/) directory.
 
+NOTE: Any change to a Enum type will need to be done manually.  See
+this [issue](https://github.com/sqlalchemy/alembic/issues/278) and an
+[example](https://markrailton.com/blog/creating-migrations-when-changing-an-enum-in-python-using-sql-alchemy).
+
 For the deployed environments, the [entrypoint.sh](entrypoint.sh) will
 execute the migration before running the service. To execute the migration
 on your own database instance, run:

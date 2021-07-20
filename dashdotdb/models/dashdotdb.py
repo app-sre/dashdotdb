@@ -8,25 +8,13 @@ class Token(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
+    uuid = db.Column(db.String(36))
+    data_type = db.Column(db.Enum(DataTypes))
+    is_open = db.Column(db.Boolean, default=False)
     pods = db.relationship('Pod', backref='token')
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='token')
     serviceslo = db.relationship('ServiceSLO', backref='token')
-
-
-class Tokens(db.Model):
-
-    __tablename__ = 'tokens'
-
-    id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(db.String(36))
-    data_type = db.Column(db.Enum(DataTypes))
-    creation_timestamp = db.Column(db.DateTime)
-    is_open = db.Column(db.Boolean)
-    pods = db.relationship('Pod', backref='tokens')
-    deploymentvalidation = db.relationship('DeploymentValidation',
-                                           backref='tokens')
-    serviceslo = db.relationship('ServiceSLO', backref='tokens')
 
 
 class LatestTokens(db.Model):
@@ -34,7 +22,7 @@ class LatestTokens(db.Model):
     __tablename__ = 'latesttokens'
 
     id = db.Column(db.Integer, primary_key=True)
-    token_id = db.Column(db.Integer, db.ForeignKey('tokens.id'))
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
 
 
 class Pod(db.Model):
@@ -46,7 +34,6 @@ class Pod(db.Model):
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
     image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
-    tokens_id = db.Column(db.Integer, db.ForeignKey('tokens.id'))
 
 
 class Namespace(db.Model):
@@ -143,7 +130,6 @@ class DeploymentValidation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=False)
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
-    tokens_id = db.Column(db.Integer, db.ForeignKey('tokens.id'))
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
     objectkind_id = db.Column(db.Integer, db.ForeignKey('objectkind.id'))
     validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'))
@@ -189,6 +175,5 @@ class ServiceSLO(db.Model):
     target = db.Column(db.Integer, unique=False)
     slitype_id = db.Column(db.Integer, db.ForeignKey('slitype.id'))
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
-    tokens_id = db.Column(db.Integer, db.ForeignKey('tokens.id'))
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'))
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
