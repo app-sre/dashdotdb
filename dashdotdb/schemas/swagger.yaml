@@ -11,6 +11,50 @@ info:
 servers:
 - url: /api/v1
 paths:
+  # Tokens
+  /token:
+    get:
+      summary: Create a token for data upload
+      parameters:
+      - name: scope
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: token created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: A unique token identifier
+        "405":
+          description: invalid scope
+    post:
+      summary: Close a token so it can not receive data
+      parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: token closed
+        "404":
+          description: token not found
+        "405":
+          description: invalid scope
+
   # Image Manifest Vulnerabilities
   /imagemanifestvuln/metrics:
     get:
@@ -72,38 +116,6 @@ paths:
           description: token not found
 
   # Deployment Validation Operator
-  /deploymentvalidation/newtoken:
-    get:
-      operationId: dashdotdb.controllers.deploymentvalidation.newtoken
-      summary: Create a token for data upload
-      responses:
-        "200":
-          description: token created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    description: A unique token identifier
-        "500":
-          description: token creation error
-  /deploymentvalidation/closetoken:
-    post:
-      operationId: dashdotdb.controllers.deploymentvalidation.closetoken
-      summary: Close a token so it can not receive data
-      parameters:
-      - name: token
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: token closed
-        "404":
-          description: token not found
   /deploymentvalidation/metrics:
     get:
       operationId: dashdotdb.controllers.metrics.deploymentvalidation.search

@@ -11,6 +11,9 @@ from dashdotdb.models.dashdotdb import DeploymentValidation
 from dashdotdb.models.dashdotdb import Validation
 from dashdotdb.models.dashdotdb import ObjectKind
 from dashdotdb.services import DataTypes
+from dashdotdb.controllers.token import (TOKEN_CLOSED_CODE, TOKEN_CLOSED_MSG,
+                                         TOKEN_NOT_FOUND_CODE,
+                                         TOKEN_NOT_FOUND_MSG)
 
 
 class DeploymentValidationData:
@@ -24,7 +27,7 @@ class DeploymentValidationData:
         if validation:
             for item in validation['data']['result']:
                 err_msg, code = self._insert(token, item)
-                if err_msg:
+                if code != 200:
                     return err_msg, code
         return "ok"
 
@@ -41,14 +44,13 @@ class DeploymentValidationData:
             .filter(Token.uuid == token,
                     Token.data_type == DataTypes.DVODataType).first()
         if db_token is None:
-            err_msg = 'token not found'
-            self.log.error(f'skipping validation: {err_msg} {token}')
-            return err_msg, 404
+            self.log.error(
+                f'skipping validation: {TOKEN_NOT_FOUND_MSG} {token}')
+            return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
         if not db_token.is_open:
-            err_msg = 'token is closed for data'
-            self.log.error(f'skipping validation: {err_msg} {token}')
-            return err_msg, 400
+            self.log.error(f'skipping validation: {TOKEN_CLOSED_MSG} {token}')
+            return TOKEN_CLOSED_MSG, TOKEN_CLOSED_CODE
 
         cluster_name = self.cluster
         db_cluster = db.session.query(Cluster) \
