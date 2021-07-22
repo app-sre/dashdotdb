@@ -18,7 +18,7 @@ scope_to_data_type = {
 }
 
 
-def post(token, scope):
+def delete(token, scope):
     if scope not in scope_to_data_type:
         return TOKEN_UNKNOWN_SCOPE_MSG, TOKEN_UNKNOWN_SCOPE_CODE
     data_type = scope_to_data_type[scope]

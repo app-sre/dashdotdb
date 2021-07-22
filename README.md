@@ -48,13 +48,19 @@ Run the service:
 $ flask run --debugger --port 8080
 ```
 
-Open a new terminal. Apply `imagemanifestvuln` example data:
+Open a new terminal. Get a token:
+
+```
+$ curl localhost:8080/api/v1/token?scope=imagemanifestvuln
+```
+
+Apply `imagemanifestvuln` example data:
 
 ```
 $ curl --request POST \
 --header "Content-Type: application/json" \
 --data @examples/imagemanifestvuln.json \
-localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
+localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01?token=<token>
 ```
 
 Or, if you already have a live cluster:
@@ -63,8 +69,14 @@ Or, if you already have a live cluster:
 $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 --header "Content-Type: application/json" \
 --data @- \
-"localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
+"localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01?token=<token>"
 ...
+```
+
+Close the token:
+
+```
+$ curl --request DELETE "localhost:8080/api/v1/token/<token>?scope=imagemanifestvuln"
 ```
 
 Query vulnerabilities:

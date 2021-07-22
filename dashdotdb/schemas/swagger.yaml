@@ -34,11 +34,12 @@ paths:
                     description: A unique token identifier
         "405":
           description: invalid scope
-    post:
+  /token/{token}:
+    delete:
       summary: Close a token so it can not receive data
       parameters:
       - name: token
-        in: query
+        in: path
         required: true
         schema:
           type: string
@@ -50,6 +51,8 @@ paths:
       responses:
         "200":
           description: token closed
+        "400":
+          description: token closed for data
         "404":
           description: token not found
         "405":
@@ -112,8 +115,6 @@ paths:
       responses:
         "200":
           description: successful operation
-        "404":
-          description: token not found
 
   # Deployment Validation Operator
   /deploymentvalidation/metrics:
@@ -178,7 +179,7 @@ paths:
         "200":
           description: successful operation
         "400":
-          description: token closed
+          description: token closed for data
         "404":
           description: token not found
 
