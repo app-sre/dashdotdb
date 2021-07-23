@@ -158,12 +158,9 @@ paths:
   /deploymentvalidation/{cluster}:
     post:
       summary: Add a new Deployment Validation
+      security:
+        - TokenAuth: []
       parameters:
-        - name: token
-          in: query
-          required: true
-          schema:
-            type: string
         - name: cluster
           in: path
           required: true
@@ -178,8 +175,8 @@ paths:
       responses:
         "200":
           description: successful operation
-        "400":
-          description: token closed for data
+        "401":
+          description: invalid token
         "404":
           description: token not found
 
@@ -504,3 +501,9 @@ components:
                       oneOf:
                         - type: number
                         - type: string
+  securitySchemes:
+    TokenAuth:
+      type: apiKey
+      in: header
+      name: token
+      x-apikeyInfoFunc: dashdotdb.controllers.token.auth_token

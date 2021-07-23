@@ -59,8 +59,9 @@ Apply `imagemanifestvuln` example data:
 ```
 $ curl --request POST \
 --header "Content-Type: application/json" \
+--header "token: <token>" \
 --data @examples/imagemanifestvuln.json \
-localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01?token=<token>
+localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
 ```
 
 Or, if you already have a live cluster:
@@ -68,8 +69,9 @@ Or, if you already have a live cluster:
 ```
 $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 --header "Content-Type: application/json" \
+--header "token: <token>" \
 --data @- \
-"localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01?token=<token>"
+"localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
 ...
 ```
 

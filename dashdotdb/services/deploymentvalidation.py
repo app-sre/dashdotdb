@@ -48,10 +48,6 @@ class DeploymentValidationData:
                 f'skipping validation: {TOKEN_NOT_FOUND_MSG} {token}')
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
-        if not db_token.is_open:
-            self.log.error(f'skipping validation: {TOKEN_CLOSED_MSG} {token}')
-            return TOKEN_CLOSED_MSG, TOKEN_CLOSED_CODE
-
         cluster_name = self.cluster
         db_cluster = db.session.query(Cluster) \
             .filter_by(name=cluster_name).first()

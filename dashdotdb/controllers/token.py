@@ -6,6 +6,9 @@ from dashdotdb.models.dashdotdb import Token
 from dashdotdb.models.dashdotdb import LatestTokens
 from dashdotdb.services import DataTypes
 
+from connexion.exceptions import OAuthProblem
+
+
 TOKEN_CLOSED_CODE = 400
 TOKEN_CLOSED_MSG = 'token is closed for data'
 TOKEN_NOT_FOUND_CODE = 404
@@ -16,6 +19,18 @@ TOKEN_UNKNOWN_SCOPE_MSG = 'unknown scope'
 scope_to_data_type = {
     "deploymentvalidation": DataTypes.DVODataType
 }
+
+
+def auth_token(token, required_scopes):
+    db_token = db.session.query(Token) \
+        .filter(Token.uuid == token).first()
+    if not db_token:
+        raise OAuthProblem(TOKEN_NOT_FOUND_MSG)
+
+    if not db_token.is_open:
+        raise OAuthProblem(TOKEN_CLOSED_MSG)
+
+    return {'sub': db_token.uuid}
 
 
 def delete(token, scope):
