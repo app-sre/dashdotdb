@@ -1,4 +1,5 @@
 from dashdotdb.models.base import db
+from dashdotdb.services import DataTypes
 
 
 class Token(db.Model):
@@ -7,10 +8,21 @@ class Token(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
+    uuid = db.Column(db.String(36))
+    data_type = db.Column(db.Enum(DataTypes))
+    is_open = db.Column(db.Boolean, default=False)
     pods = db.relationship('Pod', backref='token')
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='token')
     serviceslo = db.relationship('ServiceSLO', backref='token')
+
+
+class LatestTokens(db.Model):
+
+    __tablename__ = 'latesttokens'
+
+    id = db.Column(db.Integer, primary_key=True)
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
 
 
 class Pod(db.Model):

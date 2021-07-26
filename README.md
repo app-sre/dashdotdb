@@ -48,11 +48,18 @@ Run the service:
 $ flask run --debugger --port 8080
 ```
 
-Open a new terminal. Apply `imagemanifestvuln` example data:
+Open a new terminal. Get a token:
+
+```
+$ curl localhost:8080/api/v1/token?scope=imagemanifestvuln
+```
+
+Apply `imagemanifestvuln` example data:
 
 ```
 $ curl --request POST \
 --header "Content-Type: application/json" \
+--header "X-Auth: <token>" \
 --data @examples/imagemanifestvuln.json \
 localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
 ```
@@ -62,9 +69,16 @@ Or, if you already have a live cluster:
 ```
 $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 --header "Content-Type: application/json" \
+--header "X-Auth: <token>" \
 --data @- \
 "localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
 ...
+```
+
+Close the token:
+
+```
+$ curl --request DELETE "localhost:8080/api/v1/token/<token>?scope=imagemanifestvuln"
 ```
 
 Query vulnerabilities:
@@ -142,6 +156,10 @@ $ FLASK_APP=dashdotdb flask db migrate
 
 That will create a new migration file in the
 [migrations](/migrations/versions/) directory.
+
+NOTE: Any change to a Enum type will need to be done manually.  See
+this [issue](https://github.com/sqlalchemy/alembic/issues/278) and an
+[example](https://markrailton.com/blog/creating-migrations-when-changing-an-enum-in-python-using-sql-alchemy).
 
 For the deployed environments, the [entrypoint.sh](entrypoint.sh) will
 execute the migration before running the service. To execute the migration

@@ -1,17 +1,19 @@
 import logging
 
-from datetime import datetime
-from datetime import timedelta
-
 from sqlalchemy import func
 
 from dashdotdb.models.dashdotdb import db
 from dashdotdb.models.dashdotdb import Token
+from dashdotdb.models.dashdotdb import LatestTokens
 from dashdotdb.models.dashdotdb import Cluster
 from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import DeploymentValidation
 from dashdotdb.models.dashdotdb import Validation
 from dashdotdb.models.dashdotdb import ObjectKind
+from dashdotdb.services import DataTypes
+from dashdotdb.controllers.token import (TOKEN_CLOSED_CODE, TOKEN_CLOSED_MSG,
+                                         TOKEN_NOT_FOUND_CODE,
+                                         TOKEN_NOT_FOUND_MSG)
 
 
 class DeploymentValidationData:
@@ -21,11 +23,15 @@ class DeploymentValidationData:
         self.cluster = cluster
         self.namespace = namespace
 
-    def insert(self, validation):
-        for item in validation['data']['result']:
-            self._insert(item)
+    def insert(self, token, validation=None):
+        if validation:
+            for item in validation['data']['result']:
+                err_msg, code = self._insert(token, item)
+                if code != 200:
+                    return err_msg, code
+        return "ok"
 
-    def _insert(self, item):
+    def _insert(self, token, item):
         if 'metric' not in item:
             self.log.error('skipping validation: key "metric" not found')
             return
@@ -34,15 +40,13 @@ class DeploymentValidationData:
             self.log.error('skipping validation: key "value" not found')
             return
 
-        expire = datetime.now() - timedelta(minutes=50)
         db_token = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+            .filter(Token.uuid == token,
+                    Token.data_type == DataTypes.DVODataType).first()
         if db_token is None:
-            db.session.add(Token(timestamp=datetime.now()))
-            db.session.commit()
-            self.log.info('token created')
-        db_token = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+            self.log.error(
+                f'skipping validation: {TOKEN_NOT_FOUND_MSG} {token}')
+            return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
         cluster_name = self.cluster
         db_cluster = db.session.query(Cluster) \
@@ -107,20 +111,23 @@ class DeploymentValidationData:
             db.session.commit()
             self.log.info('deploymentvalidation %s created ',
                           validation_context)
+        return "ok", 200
 
     def get_deploymentvalidations(self):
         """
-        SELECT token.id AS token_id,
-        token.timestamp AS token_timestamp
-        FROM token, deploymentvalidation, namespace, cluster
-        WHERE deploymentvalidation.token_id = token.id
+        SELECT tokens.id AS token_id,
+        tokens.creation_timestamp AS token_timestamp
+        FROM tokens, deploymentvalidation, namespace, cluster
+        WHERE deploymentvalidation.token_id = latest_token.id
         AND deploymentvalidation.namespace_id = namespace.id
         AND namespace.cluster_id = cluster.id
         AND cluster.name = %(name_1)s
-        ORDER BY token.timestamp DESC
+        ORDER BY tokens.creation_timestamp DESC
         """
         token = db.session.query(Token) \
-            .filter(DeploymentValidation.token_id == Token.id,
+            .filter(Token.id == LatestTokens.token_id,
+                    Token.data_type == DataTypes.DVODataType,
+                    DeploymentValidation.token_id == Token.id,
                     DeploymentValidation.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster) \
@@ -161,9 +168,9 @@ class DeploymentValidationData:
         group by cluster.name
         """
 
-        token = db.session.query(
-            db.func.max(Token.id).label('token_id')
-        ).filter(
+        token = db.session.query(Token).filter(
+            Token.id == LatestTokens.token_id,
+            Token.data_type == DataTypes.DVODataType,
             Token.id == DeploymentValidation.token_id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
@@ -180,7 +187,7 @@ class DeploymentValidationData:
             DeploymentValidation.token_id == Token.id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Token.id == token[0].token_id
+            Token.id == token[0].id
         ).group_by(
             Validation, Namespace, Cluster, DeploymentValidation.id
         )

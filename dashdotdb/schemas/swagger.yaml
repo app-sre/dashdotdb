@@ -11,6 +11,54 @@ info:
 servers:
 - url: /api/v1
 paths:
+  # Tokens
+  /token:
+    get:
+      summary: Create a token for data upload
+      parameters:
+      - name: scope
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: token created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: A unique token identifier
+        "405":
+          description: invalid scope
+  /token/{token}:
+    delete:
+      summary: Close a token so it can not receive data
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: token closed
+        "400":
+          description: token closed for data
+        "404":
+          description: token not found
+        "405":
+          description: invalid scope
+
+  # Image Manifest Vulnerabilities
   /imagemanifestvuln/metrics:
     get:
       operationId: dashdotdb.controllers.metrics.imagemanifestvuln.search
@@ -24,34 +72,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ImageManifestVulnReport'
-                x-content-type: application/json
-  /deploymentvalidation/metrics:
-    get:
-      operationId: dashdotdb.controllers.metrics.deploymentvalidation.search
-      summary: Lists Deployment Validation Information
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DeploymentValidationReport'
-                x-content-type: application/json
-  /serviceslometrics/metrics:
-    get:
-      operationId: dashdotdb.controllers.metrics.serviceslometrics.search
-      summary: Lists service SLO metrics
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ServiceSLOMetrics'
                 x-content-type: application/json
   /imagemanifestvuln:
     get:
@@ -95,6 +115,22 @@ paths:
       responses:
         "200":
           description: successful operation
+
+  # Deployment Validation Operator
+  /deploymentvalidation/metrics:
+    get:
+      operationId: dashdotdb.controllers.metrics.deploymentvalidation.search
+      summary: Lists Deployment Validation Information
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentValidationReport'
+                x-content-type: application/json
   /deploymentvalidation:
     get:
       summary: Lists Deployment Validations
@@ -122,6 +158,8 @@ paths:
   /deploymentvalidation/{cluster}:
     post:
       summary: Add a new Deployment Validation
+      security:
+        - TokenAuth: []
       parameters:
         - name: cluster
           in: path
@@ -137,6 +175,26 @@ paths:
       responses:
         "200":
           description: successful operation
+        "401":
+          description: invalid token
+        "404":
+          description: token not found
+
+  # SLOs
+  /serviceslometrics/metrics:
+    get:
+      operationId: dashdotdb.controllers.metrics.serviceslometrics.search
+      summary: Lists service SLO metrics
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceSLOMetrics'
+                x-content-type: application/json
   /serviceslometrics:
     get:
       summary: Returns value and target for queried Service SLO Metrics
@@ -443,3 +501,9 @@ components:
                       oneOf:
                         - type: number
                         - type: string
+  securitySchemes:
+    TokenAuth:
+      type: apiKey
+      in: header
+      name: X-Auth
+      x-apikeyInfoFunc: dashdotdb.controllers.token.auth_token
