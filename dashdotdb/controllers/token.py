@@ -52,7 +52,7 @@ def delete(token, scope):
         if latest_token is None:
             db.session.add(LatestTokens(token_id=db_token.id))
         else:
-            # Only update the latest token if the creation timestamp is newer than
+            # only update the latest token if the creation timestamp is newer than
             # the current latest token creation timestamp
             latest_token_data = db.session.query(
                 Token).filter(Token.id == latest_token.token_id).first()
@@ -68,6 +68,8 @@ def search(scope):
 
     # generate a unique id
     uuid = str(uuid4())
+
+    # store the token information so we can validate requests via token uuid
     db.session.add(Token(uuid=uuid, data_type=data_type,
                          timestamp=datetime.now(),
                          is_open=True))

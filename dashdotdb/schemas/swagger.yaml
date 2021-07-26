@@ -505,5 +505,5 @@ components:
     TokenAuth:
       type: apiKey
       in: header
-      name: token
+      name: X-Auth
       x-apikeyInfoFunc: dashdotdb.controllers.token.auth_token
