@@ -33,7 +33,7 @@ class ImageManifestVuln:
             self.log.info('skipping kind "%s"', manifest["kind"])
             return
 
-        expire = datetime.now() - timedelta(minutes=60)
+        expire = datetime.now() - timedelta(minutes=120)
         db_token = db.session.query(Token) \
             .filter(Token.timestamp > expire).first()
         if db_token is None:
