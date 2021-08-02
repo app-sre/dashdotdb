@@ -1,9 +1,9 @@
 from dashdotdb.services.imagemanifestvuln import ImageManifestVuln
 
 
-def post(cluster, body):
+def post(user, cluster, body):
     imv = ImageManifestVuln(cluster=cluster)
-    imv.insert(manifest=body)
+    imv.insert(token=user, manifest=body)
     return 'ok'
 
 

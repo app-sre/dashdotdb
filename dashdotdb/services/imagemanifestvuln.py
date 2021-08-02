@@ -1,12 +1,10 @@
 import logging
 
-from datetime import datetime
-from datetime import timedelta
-
 from sqlalchemy import func
 
 from dashdotdb.models.dashdotdb import db
 from dashdotdb.models.dashdotdb import Token
+from dashdotdb.models.dashdotdb import LatestTokens
 from dashdotdb.models.dashdotdb import Cluster
 from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import Pod
@@ -15,6 +13,9 @@ from dashdotdb.models.dashdotdb import ImageFeature
 from dashdotdb.models.dashdotdb import Feature
 from dashdotdb.models.dashdotdb import Vulnerability
 from dashdotdb.models.dashdotdb import Severity
+from dashdotdb.services import DataTypes
+from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
+                                         TOKEN_NOT_FOUND_MSG)
 
 
 class ImageManifestVuln:
@@ -24,7 +25,7 @@ class ImageManifestVuln:
         self.cluster = cluster
         self.namespace = namespace
 
-    def insert(self, manifest):
+    def insert(self, token, manifest):
         if 'kind' not in manifest:
             self.log.error('skipping manifest: key "kind" not found')
             return
@@ -33,15 +34,13 @@ class ImageManifestVuln:
             self.log.info('skipping kind "%s"', manifest["kind"])
             return
 
-        expire = datetime.now() - timedelta(minutes=120)
         db_token = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+            .filter(Token.uuid == token,
+                    Token.data_type == DataTypes.CSODataType).first()
         if db_token is None:
-            db.session.add(Token(timestamp=datetime.now()))
-            db.session.commit()
-            self.log.info('token created')
-        db_token = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+            self.log.error(
+                f'skipping ImageManifestVuln: {TOKEN_NOT_FOUND_MSG} {token}')
+            return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
         cluster_name = self.cluster
         db_cluster = db.session.query(Cluster) \
@@ -158,7 +157,9 @@ class ImageManifestVuln:
 
     def get_vulnerabilities(self):
         token = db.session.query(Token) \
-            .filter(Pod.token_id == Token.id,
+            .filter(Token.id == LatestTokens.token_id,
+                    Token.data_type == DataTypes.CSODataType,
+                    Pod.token_id == Token.id,
                     Pod.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster) \
@@ -208,9 +209,9 @@ class ImageManifestVuln:
         group by cluster.name
         """
 
-        token = db.session.query(
-            db.func.max(Token.id).label('token_id')
-        ).filter(
+        token = db.session.query(Token).filter(
+            Token.id == LatestTokens.token_id,
+            Token.data_type == DataTypes.CSODataType,
             Token.id == Pod.token_id,
             Pod.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
@@ -230,7 +231,7 @@ class ImageManifestVuln:
             Pod.token_id == Token.id,
             Pod.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Token.id == token[0].token_id
+            Token.id == token[0].id
         ).group_by(
             Severity, Namespace, Cluster
         )

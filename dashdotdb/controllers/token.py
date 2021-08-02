@@ -17,7 +17,9 @@ TOKEN_UNKNOWN_SCOPE_CODE = 405
 TOKEN_UNKNOWN_SCOPE_MSG = 'unknown scope'
 
 scope_to_data_type = {
-    "deploymentvalidation": DataTypes.DVODataType
+    "imagemanifestvuln": DataTypes.CSODataType,
+    "deploymentvalidation": DataTypes.DVODataType,
+    "serviceslometrics": DataTypes.SLODataType
 }
 
 

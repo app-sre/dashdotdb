@@ -100,6 +100,8 @@ paths:
   /imagemanifestvuln/{cluster}:
     post:
       summary: Add a new Vulnerability Notification
+      security:
+        - TokenAuth: []
       parameters:
         - name: cluster
           in: path
@@ -115,6 +117,10 @@ paths:
       responses:
         "200":
           description: successful operation
+        "401":
+          description: invalid token
+        "404":
+          description: token not found
 
   # Deployment Validation Operator
   /deploymentvalidation/metrics:
@@ -231,6 +237,8 @@ paths:
   /serviceslometrics/{name}:
     post:
       summary: Add a new Service SLO Metrics
+      security:
+        - TokenAuth: []
       parameters:
         - name: name
           in: path
@@ -246,6 +254,10 @@ paths:
       responses:
         "200":
           description: successful operation
+        "401":
+          description: invalid token
+        "404":
+          description: token not found
 components:
   schemas:
     ImageManifestVulnReport:

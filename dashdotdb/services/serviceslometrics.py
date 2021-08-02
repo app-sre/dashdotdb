@@ -1,15 +1,16 @@
 import logging
 
-from datetime import datetime
-from datetime import timedelta
-
 from dashdotdb.models.dashdotdb import db
 from dashdotdb.models.dashdotdb import Token
+from dashdotdb.models.dashdotdb import LatestTokens
 from dashdotdb.models.dashdotdb import Service
 from dashdotdb.models.dashdotdb import Cluster
 from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import ServiceSLO
 from dashdotdb.models.dashdotdb import SLIType
+from dashdotdb.services import DataTypes
+from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
+                                         TOKEN_NOT_FOUND_MSG)
 
 
 class ServiceSLOMetrics:
@@ -21,17 +22,15 @@ class ServiceSLOMetrics:
         self.sli_type = sli_type
         self.name = name
 
-    def insert(self, slo):
+    def insert(self, token, slo):
 
-        expire = datetime.now() - timedelta(minutes=60)
         db_token = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+            .filter(Token.uuid == token,
+                    Token.data_type == DataTypes.SLODataType).first()
         if db_token is None:
-            db.session.add(Token(timestamp=datetime.now()))
-            db.session.commit()
-            self.log.info('token created')
-        db_token = db.session.query(Token) \
-            .filter(Token.timestamp > expire).first()
+            self.log.error(
+                f'skipping service SLO: {TOKEN_NOT_FOUND_MSG} {token}')
+            return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
         service_name = slo['service']['name']
         db_service = db.session.query(Service) \
@@ -101,7 +100,9 @@ class ServiceSLOMetrics:
 
     def get_slometrics(self):
         token = db.session.query(Token) \
-            .filter(ServiceSLO.token_id == Token.id,
+            .filter(Token.id == LatestTokens.token_id,
+                    Token.data_type == DataTypes.SLODataType,
+                    ServiceSLO.token_id == Token.id,
                     ServiceSLO.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster,
@@ -149,13 +150,15 @@ class ServiceSLOMetrics:
 
         return result
 
-    @staticmethod
+    @ staticmethod
     def get_slometrics_summary():
-        token = db.session.query(
-            db.func.max(Token.id).label('token_id')
-        ).filter(ServiceSLO.token_id == Token.id,
-                 ServiceSLO.namespace_id == Namespace.id,
-                 Namespace.cluster_id == Cluster.id)
+        token = db.session.query(Token).filter(
+            Token.id == LatestTokens.token_id,
+            Token.data_type == DataTypes.SLODataType,
+            ServiceSLO.token_id == Token.id,
+            ServiceSLO.namespace_id == Namespace.id,
+            Namespace.cluster_id == Cluster.id
+        )
 
         results = db.session.query(
             Cluster,
@@ -168,7 +171,7 @@ class ServiceSLOMetrics:
             ServiceSLO.token_id == Token.id,
             ServiceSLO.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Token.id == token[0].token_id
+            Token.id == token[0].id
         ).group_by(
             SLIType, Namespace, Cluster, ServiceSLO, Service
         )
