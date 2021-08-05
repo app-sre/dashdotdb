@@ -1,9 +1,9 @@
 from dashdotdb.services.serviceslometrics import ServiceSLOMetrics
 
 
-def post(name, body):
+def post(user, name, body):
     slo = ServiceSLOMetrics(name=name)
-    slo.insert(slo=body)
+    slo.insert(token=user, slo=body)
     return 'ok'
 
 

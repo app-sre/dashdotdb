@@ -11,8 +11,7 @@ from dashdotdb.models.dashdotdb import DeploymentValidation
 from dashdotdb.models.dashdotdb import Validation
 from dashdotdb.models.dashdotdb import ObjectKind
 from dashdotdb.services import DataTypes
-from dashdotdb.controllers.token import (TOKEN_CLOSED_CODE, TOKEN_CLOSED_MSG,
-                                         TOKEN_NOT_FOUND_CODE,
+from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
                                          TOKEN_NOT_FOUND_MSG)
 
 
