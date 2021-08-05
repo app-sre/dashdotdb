@@ -28,18 +28,18 @@ class ImageManifestVuln:
     def insert(self, token, manifest):
         if 'kind' not in manifest:
             self.log.error('skipping manifest: key "kind" not found')
-            return
+            return 'key "kind" not found', 400
 
         if manifest['kind'] != 'ImageManifestVuln':
             self.log.info('skipping kind "%s"', manifest["kind"])
-            return
+            return f'skipping kind "{manifest["kind"]}"', 400
 
         db_token = db.session.query(Token) \
             .filter(Token.uuid == token,
                     Token.data_type == DataTypes.CSODataType).first()
         if db_token is None:
             self.log.error(
-                f'skipping ImageManifestVuln: {TOKEN_NOT_FOUND_MSG} {token}')
+                'skipping validation: %s %s', TOKEN_NOT_FOUND_MSG, token)
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
         cluster_name = self.cluster
@@ -154,6 +154,7 @@ class ImageManifestVuln:
                                    token_id=db_token.id))
                 db.session.commit()
                 self.log.info('pod %s created', pod)
+        return "ok", 200
 
     def get_vulnerabilities(self):
         token = db.session.query(Token) \
