@@ -33,18 +33,18 @@ class DeploymentValidationData:
     def _insert(self, token, item):
         if 'metric' not in item:
             self.log.error('skipping validation: key "metric" not found')
-            return
+            return 'key "metric" not found', 400
 
         if 'value' not in item:
             self.log.error('skipping validation: key "value" not found')
-            return
+            return 'key "value" not found', 400
 
         db_token = db.session.query(Token) \
             .filter(Token.uuid == token,
                     Token.data_type == DataTypes.DVODataType).first()
         if db_token is None:
             self.log.error(
-                f'skipping validation: {TOKEN_NOT_FOUND_MSG} {token}')
+                'skipping validation: %s %s', TOKEN_NOT_FOUND_MSG, token)
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
         cluster_name = self.cluster

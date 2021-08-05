@@ -1,12 +1,12 @@
 from datetime import datetime
 from uuid import uuid4
 
+from connexion.exceptions import OAuthProblem
+
 from dashdotdb.models.dashdotdb import db
 from dashdotdb.models.dashdotdb import Token
 from dashdotdb.models.dashdotdb import LatestTokens
 from dashdotdb.services import DataTypes
-
-from connexion.exceptions import OAuthProblem
 
 
 TOKEN_CLOSED_CODE = 400
@@ -23,6 +23,7 @@ scope_to_data_type = {
 }
 
 
+# pylint: disable=unused-argument
 def auth_token(token, required_scopes):
     db_token = db.session.query(Token) \
         .filter(Token.uuid == token).first()
@@ -54,8 +55,8 @@ def delete(token, scope):
         if latest_token is None:
             db.session.add(LatestTokens(token_id=db_token.id))
         else:
-            # only update the latest token if the creation timestamp is newer than
-            # the current latest token creation timestamp
+            # only update the latest token if the creation timestamp is newer
+            # than the current latest token creation timestamp
             latest_token_data = db.session.query(
                 Token).filter(Token.id == latest_token.token_id).first()
             if db_token.timestamp > latest_token_data.timestamp:

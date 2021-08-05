@@ -29,7 +29,7 @@ class ServiceSLOMetrics:
                     Token.data_type == DataTypes.SLODataType).first()
         if db_token is None:
             self.log.error(
-                f'skipping service SLO: {TOKEN_NOT_FOUND_MSG} {token}')
+                'skipping validation: %s %s', TOKEN_NOT_FOUND_MSG, token)
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
         service_name = slo['service']['name']
@@ -97,6 +97,7 @@ class ServiceSLOMetrics:
         db_serviceslo.target = slo['target']
         db.session.commit()
         self.log.info('ServiceSLO %s updated ', slo['name'])
+        return "ok", 200
 
     def get_slometrics(self):
         token = db.session.query(Token) \
