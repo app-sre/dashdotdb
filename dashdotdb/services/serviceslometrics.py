@@ -150,7 +150,7 @@ class ServiceSLOMetrics:
 
         return result
 
-    @ staticmethod
+    @staticmethod
     def get_slometrics_summary():
         token = db.session.query(Token).filter(
             Token.id == LatestTokens.token_id,
