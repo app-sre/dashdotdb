@@ -216,7 +216,9 @@ class ImageManifestVuln:
             Token.id == Pod.token_id,
             Pod.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
-        )
+        ).first()
+        if token is None:
+            return []
 
         results = db.session.query(
             Cluster,
@@ -232,7 +234,7 @@ class ImageManifestVuln:
             Pod.token_id == Token.id,
             Pod.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Token.id == token[0].id
+            Token.id == token.id
         ).group_by(
             Severity, Namespace, Cluster
         )

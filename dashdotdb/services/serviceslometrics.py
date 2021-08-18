@@ -159,7 +159,9 @@ class ServiceSLOMetrics:
             ServiceSLO.token_id == Token.id,
             ServiceSLO.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
-        )
+        ).first()
+        if token is None:
+            return []
 
         results = db.session.query(
             Cluster,
@@ -172,7 +174,7 @@ class ServiceSLOMetrics:
             ServiceSLO.token_id == Token.id,
             ServiceSLO.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Token.id == token[0].id
+            Token.id == token.id
         ).group_by(
             SLIType, Namespace, Cluster, ServiceSLO, Service
         )

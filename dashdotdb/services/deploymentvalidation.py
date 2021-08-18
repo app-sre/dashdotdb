@@ -173,7 +173,9 @@ class DeploymentValidationData:
             Token.id == DeploymentValidation.token_id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id
-        )
+        ).first()
+        if token is None:
+            return []
 
         results = db.session.query(
             Cluster,
@@ -186,7 +188,7 @@ class DeploymentValidationData:
             DeploymentValidation.token_id == Token.id,
             DeploymentValidation.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
-            Token.id == token[0].id
+            Token.id == token.id
         ).group_by(
             Validation, Namespace, Cluster, DeploymentValidation.id
         )
