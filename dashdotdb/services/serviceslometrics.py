@@ -165,11 +165,7 @@ class ServiceSLOMetrics:
 
     @staticmethod
     def get_slometrics_summary():
-        # SELECT token.id, token.timestamp, token.data_type, token.is_open
-        # FROM token, latesttokens, serviceslo
-        # WHERE token.id = latesttokens.token_id
-        # AND token.data_type = 'SLODataType'
-        # AND serviceslo.token_id = token.id
+
         token = db.session.query(Token).filter(
             Token.id == LatestTokens.token_id,
             Token.data_type == DataTypes.SLODataType,
@@ -178,14 +174,6 @@ class ServiceSLOMetrics:
         if token is None:
             return []
 
-        # SELECT cluster.name, namespace.name, service.name, serviceslo.name,
-        # serviceslo.value, serviceslo.target, slitype.name
-        # FROM cluster, namespace, service, serviceslo, slitype
-        # WHERE serviceslo.slitype_id = slitype.id
-        # AND serviceslo.service_id = service.id
-        # AND serviceslo.namespace_id = namespace.id
-        # AND namespace.cluster_id = cluster.id
-        # AND serviceslo.token_id = %(token_id_1)s
         results = db.session.query(
             Cluster,
             Namespace,
