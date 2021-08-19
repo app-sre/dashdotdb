@@ -165,6 +165,15 @@ class SLIType(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='slitype')
 
 
+class SLODocName(db.Model):
+
+    __tablename__ = 'slodocname'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=False)
+    serviceslo = db.relationship('ServiceSLO', backref='slodocname')
+
+
 class ServiceSLO(db.Model):
 
     __tablename__ = 'serviceslo'
