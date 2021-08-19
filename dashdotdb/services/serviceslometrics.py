@@ -8,6 +8,7 @@ from dashdotdb.models.dashdotdb import Cluster
 from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import ServiceSLO
 from dashdotdb.models.dashdotdb import SLIType
+from dashdotdb.models.dashdotdb import SLODocName
 from dashdotdb.services import DataTypes
 from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
                                          TOKEN_NOT_FOUND_MSG)
@@ -72,6 +73,16 @@ class ServiceSLOMetrics:
             self.log.info('slitype %s created', slitype_name)
         db_slitype = db.session.query(SLIType) \
             .filter_by(name=slitype_name).first()
+
+        slo_doc_name = slo['SLODocName']
+        db_slodocname = db.session.query(SLODocName) \
+            .filter_by(name=slo_doc_name).first()
+        if db_slodocname is None:
+            db.session.add(SLODocName(name=slo_doc_name))
+            db.session.commit()
+            self.log.info('slo_doc_name %s created', slo_doc_name)
+        db_slodocname = db.session.query(SLODocName) \
+            .filter_by(name=slo_doc_name).first()
 
         db_serviceslo = db.session.query(ServiceSLO) \
             .filter_by(name=slo['name'],
