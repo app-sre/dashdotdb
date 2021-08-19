@@ -209,6 +209,11 @@ paths:
     get:
       summary: Returns value and target for queried Service SLO Metrics
       parameters:
+      - name: slo_doc_name
+        in: query
+        required: true
+        schema:
+          type: string
       - name: cluster
         in: query
         required: true
@@ -397,6 +402,8 @@ components:
       properties:
         name:
           type: string
+        slo_doc_name:
+          type: string
         value:
           type: number
         target:
@@ -413,6 +420,7 @@ components:
         type: object
         required:
         - name
+        - SLODocName
         - SLIType
         - namespace
         - cluster
@@ -422,6 +430,12 @@ components:
         properties:
           name:
             type: string
+          SLODocName:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
           SLIType:
             type: string
             enum:

@@ -1,5 +1,6 @@
 {
     "name": "policy-engine-latency",
+    "slo_doc_name": "policy-engine",
     "SLIType": "latency",
     "namespace": {
         "name": "cincinnati-production"
