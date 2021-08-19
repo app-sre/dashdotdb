@@ -170,7 +170,7 @@ class SLODocName(db.Model):
     __tablename__ = 'slodocname'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False)
+    name = db.Column(db.String(64), unique=True)
     serviceslo = db.relationship('ServiceSLO', backref='slodocname')
 
 
