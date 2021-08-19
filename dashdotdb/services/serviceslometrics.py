@@ -15,13 +15,14 @@ from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
 
 
 class ServiceSLOMetrics:
-    def __init__(self, cluster=None, namespace=None, sli_type=None, name=None):
+    def __init__(self, cluster=None, namespace=None, sli_type=None, name=None, slo_doc_name=None):
         self.log = logging.getLogger()
 
         self.cluster = cluster
         self.namespace = namespace
         self.sli_type = sli_type
         self.name = name
+        self.slo_doc_name = slo_doc_name
 
     def insert(self, token, slo):
 
@@ -88,12 +89,14 @@ class ServiceSLOMetrics:
             .filter_by(name=slo['name'],
                        service_id=db_service.id,
                        namespace_id=db_namespace.id,
+                       slo_doc_name=db_slodocname,
                        slitype_id=db_slitype.id,
                        token_id=db_token.id).first()
         if db_serviceslo is None:
             db.session.add(ServiceSLO(name=slo['name'],
                                       service_id=db_service.id,
                                       namespace_id=db_namespace.id,
+                                      slo_doc_name=db_slodocname.id,
                                       slitype_id=db_slitype.id,
                                       token_id=db_token.id,
                                       value=slo['value'],
@@ -111,6 +114,7 @@ class ServiceSLOMetrics:
                     ServiceSLO.namespace_id == Namespace.id,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster,
+                    SLODocName.name == self.slo_doc_name,
                     ServiceSLO.name == self.name) \
             .order_by(Token.timestamp.desc()) \
             .limit(1) \
@@ -127,6 +131,7 @@ class ServiceSLOMetrics:
                     Namespace.name == self.namespace,
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster,
+                    SLODocName.name == self.slo_doc_name,
                     ServiceSLO.name == self.name
                     ).first()
 
@@ -142,9 +147,12 @@ class ServiceSLOMetrics:
         cluster = db.session.query(Cluster) \
             .filter(Namespace.id == namespace.id,
                     Namespace.cluster_id == Cluster.id).first()
+        slo_doc_name = db.session.query(SLODocName) \
+            .filter(ServiceSLO.slo_doc_name == SLODocName.id).first()
 
         result = {
             'name': serviceslo.name,
+            'slo_doc_name': slo_doc_name.name,
             'sli_type': sli_type.name,
             'value': serviceslo.value,
             'target': serviceslo.target,
