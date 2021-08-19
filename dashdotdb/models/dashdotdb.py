@@ -177,3 +177,4 @@ class ServiceSLO(db.Model):
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'))
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
+    slo_doc_name = db.Column(db.Integer, db.ForeignKey('slo_doc_name.id'))
