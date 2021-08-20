@@ -79,7 +79,7 @@ This digram visualizes the proposed schema change, introducing the 'SLODocName' 
   * this needs a "slo_doc_name" property: https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/dashdotdb/models/dashdotdb.py
   * update this to include "slo_doc_name": https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/examples/serviceslometrics.json
   * update this image: https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/docs/dashdotdb.png (and the diagram file for it: https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/docs/dashdotdb.dia)
-  * Follow the [DB upgrade guid](https://github.com/app-sre/dashdotdb#db-upgrade) to upgrade the schema in Postgres
+  * Follow the [DB upgrade guide](https://github.com/app-sre/dashdotdb#db-upgrade) to upgrade the schema in Postgres
 
 ### Changes To Other Systems
 
