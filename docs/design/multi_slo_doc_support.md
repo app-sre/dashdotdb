@@ -70,8 +70,8 @@ Here are three proposals for how a 'slo_doc_name' identifier can be introduced t
 
 [This PR](https://github.com/app-sre/dashdotdb/pull/50) uses the "Option 2" approach.
 
-[This digram](https://github.com/bkez322/dashdotdb/blob/slo-doc-name-col/docs/dashdotdb.png) visualizes the proposed schema change (bottom left).
-
+This digram visualizes the proposed schema change (bottom left):
+![](https://github.com/bkez322/dashdotdb/blob/slo-doc-name-col/docs/dashdotdb.png?raw=true)
 
 ### Other Changes To DashDotDB 
 
@@ -100,8 +100,3 @@ The following are changes to related systems that are expected to need to be mad
 * qontract-reconcile
   * This needs to produce output matching the proposal: https://github.com/app-sre/qontract-reconcile/blob/e9612b9c6c27a961ee520461722f512b91e07926/tools/app_interface_reporter.py#L115-L121
   * This function will need significant changes toward the bottom: https://github.com/app-sre/qontract-reconcile/blob/e9612b9c6c27a961ee520461722f512b91e07926/tools/app_interface_reporter.py#L225
-
-### Options
-
-
-
