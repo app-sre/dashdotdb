@@ -10,7 +10,7 @@ Implementation is tracked through [this Jira ticket](https://issues.redhat.com/b
 
 ## Context
 
-Part of the onboarding process for services within Red Hat's App-SRE organization involves creating SLO documents. [Here](https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/data/services/ocm/slo-documents), for example, are the 'ocm' service's SLO documents.
+Part of the onboarding process for services within Red Hat's App-SRE organization involves creating SLO documents. [Here](https://gitlab.cee.redhat.com/service/app-interface/-/tree/1b368998a913be3f2d45a13934eb6403d4e751de/data/services/ocm/slo-documents), for example, are the 'ocm' service's SLO documents.
 
 [Every 24 hours](https://github.com/app-sre/qontract-reconcile/blob/7f50680e999d99b80ffe693cad014838f3d53cb6/helm/qontract-reconcile/values-internal.yaml#L400-L412) SLO data [is uploaded to dashdotDB](https://github.com/app-sre/qontract-reconcile/blob/7f50680e999d99b80ffe693cad014838f3d53cb6/openshift/qontract-reconcile-internal.yaml#L7817-L7878) by executing [this code](https://github.com/app-sre/qontract-reconcile/blob/dafaa105b7ef9e7989760586d1d73acfa6d8cf92/reconcile/dashdotdb_slo.py#L35-L61).
 
@@ -36,7 +36,7 @@ The service 'cincinnati' [has **a single** SLO-document](https://gitlab.cee.redh
 
 The service 'ocm' [has **two** SLO-documents](https://gitlab.cee.redhat.com/service/app-interface/-/tree/1b368998a913be3f2d45a13934eb6403d4e751de/data/services/ocm/slo-documents). Each of these documents define SLOs with the same set of names (latency, errors, availability). There are a total of 6 SLOs defined for this serice (2 docs * 3 SLOs-per-doc = 6; 2 SLOs named 'latency', 2 SLOs named 'errors', and 2 SLOs named 'availability'). However, the 'ocm' [visual report page](https://visual-app-interface.devshift.net/reports#/reports/ocm/2021-08-01.yml) only renders 3 SLOs. **This is NOT working as intended.** The tools do not take into account the possibility of a service defining the same SLO name multiple times across multiple docs for the same service. Presumably the SLO datapoints in dash.db are incorrectly overwriting one another or are incorrectly being aggregated together.
 
-The service ['service-registry'](https://gitlab.cee.redhat.com/service/app-interface/-/tree/6762ce9ae3c34abedc21abf768437a5e7753652a/data/services/service-registry/slo-documents) would have [a similar problem] (https://visual-app-interface.devshift.net/reports#/reports/service-registry/2021-08-01.yml)(although its visual report page fails to render for a seemingly-unrelated-reason) to 'ocm'.
+The service ['service-registry'](https://gitlab.cee.redhat.com/service/app-interface/-/tree/6762ce9ae3c34abedc21abf768437a5e7753652a/data/services/service-registry/slo-documents) would have [a similar problem](https://visual-app-interface.devshift.net/reports#/reports/service-registry/2021-08-01.yml)(although its visual report page fails to render for a seemingly-unrelated-reason) to 'ocm'.
 
 ## Proposal
 
@@ -76,9 +76,9 @@ This digram visualizes the proposed schema change, introducing the 'SLODocName' 
 ### Other Changes To DashDotDB 
 
 * dash.db
-  * this needs a "slo_doc_name" property: https://github.com/app-sre/dashdotdb/blob/master/dashdotdb/models/dashdotdb.py#L168-L179
-  * update this to include "slo_doc_name": https://github.com/app-sre/dashdotdb/blob/master/examples/serviceslometrics.json
-  * update this image: https://github.com/app-sre/dashdotdb/blob/master/docs/dashdotdb.png (andthe diagram file for it: https://github.com/app-sre/dashdotdb/blob/master/docs/dashdotdb.dia)
+  * this needs a "slo_doc_name" property: https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/dashdotdb/models/dashdotdb.py
+  * update this to include "slo_doc_name": https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/examples/serviceslometrics.json
+  * update this image: https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/docs/dashdotdb.png (and the diagram file for it: https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/docs/dashdotdb.dia)
   * Follow the [DB upgrade guid](https://github.com/app-sre/dashdotdb#db-upgrade) to upgrade the schema in Postgres
 
 ### Changes To Other Systems
@@ -86,9 +86,9 @@ This digram visualizes the proposed schema change, introducing the 'SLODocName' 
 The following are changes to related systems that are expected to need to be made.
 
 * app-interface
-  * add "slo_doc_name": https://gitlab.cee.redhat.com/service/app-interface/-/blob/master/graphql-schemas/schema.yml#L1916-1922
-  * update this to include 'slo_doc_name': https://gitlab.cee.redhat.com/service/app-interface/-/blob/master/schemas/app-sre/slo-document-1.yml
-  * All of the SLO documents here need to have the new 'slo_doc_name' proeprty set: https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/data/services
+  * add "slo_doc_name": https://gitlab.cee.redhat.com/service/app-interface/-/blob/15d1ce504a9233a04d6119e8d57e58a3bcc31cb0/graphql-schemas/schema.yml#L1916-1922
+  * update this to include 'slo_doc_name': https://gitlab.cee.redhat.com/service/app-interface/-/blob/15d1ce504a9233a04d6119e8d57e58a3bcc31cb0/schemas/app-sre/slo-document-1.yml
+  * All of the SLO documents here need to have the new 'slo_doc_name' proeprty set: https://gitlab.cee.redhat.com/service/app-interface/-/tree/5381889ea1aecd1d5afd51fae246c6a5909438ef/data/services
   * all of these same sort of changes in public-github app-interface
 
 * visual-qontract
