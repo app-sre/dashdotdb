@@ -71,7 +71,7 @@ Here are three proposals for how a 'slo_doc_name' identifier can be introduced t
 [This PR](https://github.com/app-sre/dashdotdb/pull/50) uses the "Option 2" approach.
 
 This digram visualizes the proposed schema change, introducing the 'SLODocName' table. (bottom left):
-![](https://github.com/bkez322/dashdotdb/blob/slo-doc-name-col/docs/dashdotdb.png?raw=true)
+![](images/multi-slo-doc-schema-change.png)
 
 ### Other Changes To DashDotDB 
 
