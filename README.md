@@ -51,7 +51,7 @@ $ flask run --debugger --port 8080
 Open a new terminal. Get a token:
 
 ```
-$ curl localhost:8080/api/v1/token?scope=imagemanifestvuln
+$ TOKEN=$(curl --silent localhost:8080/api/v1/token?scope=imagemanifestvuln | sed 's/"//g')
 ```
 
 Apply `imagemanifestvuln` example data:
@@ -59,7 +59,7 @@ Apply `imagemanifestvuln` example data:
 ```
 $ curl --request POST \
 --header "Content-Type: application/json" \
---header "X-Auth: <token>" \
+--header "X-Auth: $TOKEN" \
 --data @examples/imagemanifestvuln.json \
 localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
 ```
@@ -69,7 +69,7 @@ Or, if you already have a live cluster:
 ```
 $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 --header "Content-Type: application/json" \
---header "X-Auth: <token>" \
+--header "X-Auth: $TOKEN" \
 --data @- \
 "localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
 ...
@@ -78,7 +78,7 @@ $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 Close the token:
 
 ```
-$ curl --request DELETE "localhost:8080/api/v1/token/<token>?scope=imagemanifestvuln"
+$ curl --request DELETE "localhost:8080/api/v1/token/$TOKEN?scope=imagemanifestvuln"
 ```
 
 Query vulnerabilities:
@@ -116,7 +116,7 @@ $ curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespac
 Prometheus metrics endpoint:
 
 ```
-$ curl "localhost:8080/api/v1/metrics"
+$ curl "localhost:8080/api/v1/imagemanifestvuln/metrics"
 ...
 # HELP imagemanifestvuln_total Vulnerabilities total per severity
 # TYPE imagemanifestvuln_total counter
