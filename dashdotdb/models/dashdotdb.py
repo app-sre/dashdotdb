@@ -8,7 +8,7 @@ class Token(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
-    uuid = db.Column(db.String(36))
+    uuid = db.Column(db.String(36), index=True)
     data_type = db.Column(db.Enum(DataTypes))
     is_open = db.Column(db.Boolean, default=False)
     pods = db.relationship('Pod', backref='token')
@@ -22,6 +22,7 @@ class LatestTokens(db.Model):
     __tablename__ = 'latesttokens'
 
     id = db.Column(db.Integer, primary_key=True)
+    # no index here, this is a very small table that won't almost grow
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
 
 
@@ -30,10 +31,13 @@ class Pod(db.Model):
     __tablename__ = 'pod'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), unique=False)
-    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
-    image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
-    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
+    name = db.Column(db.String(256), unique=False, index=True)
+    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
+                             index=True)
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'),
+                         index=True)
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'),
+                         index=True)
 
 
 class Namespace(db.Model):
@@ -41,8 +45,8 @@ class Namespace(db.Model):
     __tablename__ = 'namespace'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False)
-    cluster_id = db.Column(db.Integer, db.ForeignKey('cluster.id'))
+    name = db.Column(db.String(64), unique=False, index=True)
+    cluster_id = db.Column(db.Integer, db.ForeignKey('cluster.id'), index=True)
     pods = db.relationship('Pod', backref='namespace')
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='namespace')
@@ -87,6 +91,11 @@ class Image(db.Model):
     features = db.relationship('Feature', secondary='imagefeature')
     pods = db.relationship('Pod', backref='image')
 
+    # Indexes
+    __table_args__ = (
+        db.Index('ix_image_name_manifest', name, manifest),
+    )
+
 
 class Feature(db.Model):
 
@@ -100,6 +109,12 @@ class Feature(db.Model):
     images = db.relationship('Image', secondary='imagefeature')
     vulnerabilities = db.relationship('Vulnerability', backref='feature')
 
+    # Indexes
+    __table_args__ = (
+        db.Index('ix_feature_name_namespacename_version_versionformat',
+                 name, namespacename, version, versionformat),
+    )
+
 
 class Vulnerability(db.Model):
 
@@ -110,8 +125,15 @@ class Vulnerability(db.Model):
     description = db.Column(db.String(10000), unique=False)
     fixedby = db.Column(db.String(10000), unique=False)
     link = db.Column(db.String(10000), unique=False)
+    # No index in severity_id as we have a very small subset of severities
     severity_id = db.Column(db.Integer, db.ForeignKey('severity.id'))
-    feature_id = db.Column(db.Integer, db.ForeignKey('feature.id'))
+    feature_id = db.Column(db.Integer, db.ForeignKey('feature.id'), index=True)
+
+    # Indexes
+    __table_args__ = (
+        db.Index('ix_vulnerability_name_description_fixedby_link',
+                 name, description, fixedby, link),
+    )
 
 
 class Severity(db.Model):
@@ -128,11 +150,14 @@ class DeploymentValidation(db.Model):
     __tablename__ = 'deploymentvalidation'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), unique=False)
-    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
-    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
+    name = db.Column(db.String(256), unique=False, index=True)
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)
+    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
+                             index=True)
+    # No index in objectkind_id as we have a very small subset of them
     objectkind_id = db.Column(db.Integer, db.ForeignKey('objectkind.id'))
-    validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'))
+    validation_id = db.Column(db.Integer, db.ForeignKey('validation.id'),
+                              index=True)
 
 
 class Validation(db.Model):
@@ -151,7 +176,7 @@ class ObjectKind(db.Model):
     __tablename__ = 'objectkind'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False)
+    name = db.Column(db.String(64), unique=True)
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='objectkind')
 
@@ -170,10 +195,12 @@ class ServiceSLO(db.Model):
     __tablename__ = 'serviceslo'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False)
+    name = db.Column(db.String(64), unique=False, index=True)
     value = db.Column(db.Float, unique=False)
     target = db.Column(db.Float, unique=False)
+    # no index, slitype is a very small table
     slitype_id = db.Column(db.Integer, db.ForeignKey('slitype.id'))
-    token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
-    service_id = db.Column(db.Integer, db.ForeignKey('service.id'))
-    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'))
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)
+    service_id = db.Column(db.Integer, db.ForeignKey('service.id'), index=True)
+    namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
+                             index=True)
