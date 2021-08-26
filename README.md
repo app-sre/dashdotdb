@@ -140,6 +140,8 @@ To change the database, start by editing the
 [ERD ".dia" file](/docs/dashdotdb.dia) using
 [Gnome Dia](https://wiki.gnome.org/Apps/Dia/).
 
+The Dia application is known to have issues running on Mac OS. It may launch fine the first time, and then never again. Following [these directions](https://apple.stackexchange.com/a/411620) should help fix that.
+
 ## Model
 
 Reflect the changes to the ERD in the database model, either by updating an
