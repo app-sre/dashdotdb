@@ -28,8 +28,8 @@ Consequently, if two (or more) SLO-definitions, spread across multiple SLO-docum
 The 'name' ([example](https://gitlab.cee.redhat.com/service/app-interface/-/blob/8bba50902109207d7e8a0b8f856bec92ede1e482/data/services/ocm/slo-documents/accounts-mgmt.yml#L7)) of SLO docs will be introduced as an identifier for the SLO-metric-data stored in dashdotdb.
 
 The goals are:
-* be able to store SLO-doc-names alongside SLO-metric-data using dashdotDB's '`POST /api/v1/serviceslometrics/{name}`' HTTP API
-* be able to read SLO-doc-names alongside SLO-metric-data using dashdotDB's '`GET /api/v1/serviceslometrics/metrics`' and '`GET /api/v1/serviceslometrics`' HTTP APIs
+* be able to store SLO-doc-names alongside SLO-metric-data using dashdotDB's `POST /api/v1/serviceslometrics/{name}` HTTP API
+* be able to read SLO-doc-names alongside SLO-metric-data using dashdotDBs `GET /api/v1/serviceslometrics/metrics` and `GET /api/v1/serviceslometrics` HTTP APIs
 
 ## Implementation - GraphQL HTTP API
 
