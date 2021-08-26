@@ -33,6 +33,8 @@ The goals are:
 
 ## Implementation - GraphQL HTTP API
 
+---
+
 [`POST /api/v1/serviceslometrics/{name}`](https://github.com/app-sre/dashdotdb/blob/4663b71f34b2c540f7163985b7eccae8e7a9b0f0/dashdotdb/schemas/swagger.yaml#L241-L264)
 
 The JSON request body will now require a 'slo_doc_name' property.
@@ -57,11 +59,15 @@ Example:
 }
 ```
 
+---
+
 [`GET /api/v1/serviceslometrics/metrics`](https://github.com/app-sre/dashdotdb/blob/4663b71f34b2c540f7163985b7eccae8e7a9b0f0/dashdotdb/schemas/swagger.yaml#L193-L207)
 
 The objects within the JSON response body array will now include a 'slo_doc_name' property.
 
 Example: *(same as above)*
+
+---
 
 [`GET /api/v1/serviceslometrics`](https://github.com/app-sre/dashdotdb/blob/4663b71f34b2c540f7163985b7eccae8e7a9b0f0/dashdotdb/schemas/swagger.yaml#L208-L240)
 
@@ -71,13 +77,15 @@ Example: *(same as above)*
 
 In addition, 'slo_doc_name' is added as an optional query parameter. The rationale for this being optional is to avoid breaking existing clients that are functioning fine without burdening them with needing to know a 'slo_doc_name. A known risk with making this optional, however, is that clients potentially may make queries and get results from a 'slo_doc_name' that they don't intend to be querying from.
 
+---
+
 ## Implementation - Database Schema Changes
 
-What follows are two proposals for how a 'slo_doc_name' identifier can be introduced to the schema. Changes are marked in green.
+What follows are two proposals for how a 'slo_doc_name' identifier can be introduced to the schema. The document-author reccomends 'Option 2' for the sake of schema consistency. Changes are marked in green.
 
 ---
 
-[Option 1] - Update the 'ServiceSLO' table to include a 'slodoc_name' column of type 'string'.
+**Option 1** - Update the 'ServiceSLO' table to include a 'slodoc_name' column of type 'string'.
 * least effort proposal
 * acceptable data normalization
 * least disruptive to overall schema
@@ -86,7 +94,7 @@ What follows are two proposals for how a 'slo_doc_name' identifier can be introd
 
 ---
 
-[Option 2] - Update the 'ServiceSLO' table to include a 'slodoc_id' column of type 'integer', which is a foreign key to a new table 'SLODoc'. Table 'SLODoc' contains 'id' (primary key, integer), and 'name' (string, unique)
+**Option 2** - Update the 'ServiceSLO' table to include a 'slodoc_id' column of type 'integer', which is a foreign key to a new table 'SLODoc'. Table 'SLODoc' contains 'id' (primary key, integer), and 'name' (string, unique)
 * document-author's reccomendation
 * consistant pattern with existing tables including 'ObjectKind', 'Service', 'SLIType', 'Severity', 'SLIType'
 * slightly more effort than 'Option 1'
