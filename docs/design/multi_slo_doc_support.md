@@ -22,7 +22,7 @@ For a high-level overview of the problem this proposal aims to address, in the c
 
 Today, SLO-metric-data stored in dashdotDB has no context of the SLO-document that the SLO-definition originated from. The [ServiceSLO table](https://github.com/app-sre/dashdotdb/blob/f88048cd9156afa93a4a0448ecd088c551c8408d/dashdotdb/models/dashdotdb.py#L168) does not contain any direct or indirect reference to SLO-documents.
 
-Consequently, if two (or more) SLO-definitions, spread across multiple SLO-documents, have identical names, service-ids, and namespace-ids, dashdotDB will not be able to store associated SLO-metric-data as desired. The SLO-metric-data values for these different SLO-definitions will effectively overwrite one another, and become indistinguishable when reading from the graphQL API. 
+Consequently, if two (or more) SLO-definitions, spread across multiple SLO-documents, have identical names, service-ids, and namespace-ids, dashdotDB will not be able to store associated SLO-metric-data as desired. The SLO-metric-data values for these different SLO-definitions will effectively overwrite one another, and become indistinguishable when reading from the dashdotDB API.
 
 ## Proposal
 The 'name' ([example](https://gitlab.cee.redhat.com/service/app-interface/-/blob/8bba50902109207d7e8a0b8f856bec92ede1e482/data/services/ocm/slo-documents/accounts-mgmt.yml#L7)) of SLO docs will be introduced as an identifier for the SLO-metric-data stored in dashdotdb.
@@ -31,7 +31,7 @@ The goals are:
 * be able to store SLO-doc-names alongside SLO-metric-data using dashdotDB's `POST /api/v1/serviceslometrics/{name}` HTTP API
 * be able to read SLO-doc-names alongside SLO-metric-data using dashdotDBs `GET /api/v1/serviceslometrics/metrics` and `GET /api/v1/serviceslometrics` HTTP APIs
 
-## Implementation - GraphQL HTTP API
+## Implementation - HTTP API
 
 ---
 
