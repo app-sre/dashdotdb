@@ -73,20 +73,25 @@ In addition, 'slo_doc_name' is added as an optional query parameter. The rationa
 
 ## Implementation - Database Schema Changes
 
-Here are three proposals for how a 'slo_doc_name' identifier can be introduced to the schema:
+What follows are two proposals for how a 'slo_doc_name' identifier can be introduced to the schema. Changes are marked in green.
 
-* [Option 1]: Update the 'ServiceSLO' table to include a 'SLODocName' column of type 'string'.
-  * least effort proposal
-  * acceptable data normalization
-  * least disruptive to overall schema
-  * TODO
-* [Option 2]: Update the 'ServiceSLO' table to include a 'SLODocName' column of type 'integer', which is a foreign key to a new table 'SLODoc'. Table 'SLODoc' contains 'id' (primary key, integer), and 'name' (string, unique)
-  * slightly more effort than 'Option 1'
-  * superior data normalization over 'Option 1'
-  * less disruptive to overall schema than 'Option 3'
-  * ![](images/multi-slo-doc-schema-change.png)
-* [Option 3]: Same as Option 2, and in addition: update all tables that currently have a relationship with table 'ServiceSLO' to instead have a relationship with 'SLODoc'
-  * significantly more effort than 'Option 1' and 'Option 2'
-  * superior data normalization over 'Option 1'
-  * most disruptive overall schema change
-  * TODO
+---
+
+[Option 1] - Update the 'ServiceSLO' table to include a 'slodoc_name' column of type 'string'.
+* least effort proposal
+* acceptable data normalization
+* least disruptive to overall schema
+
+![](images/multi-slo-doc-schema-change-option-1.png)
+
+---
+
+[Option 2] - Update the 'ServiceSLO' table to include a 'slodoc_id' column of type 'integer', which is a foreign key to a new table 'SLODoc'. Table 'SLODoc' contains 'id' (primary key, integer), and 'name' (string, unique)
+* document-author's reccomendation
+* consistant pattern with existing tables including 'ObjectKind', 'Service', 'SLIType', 'Severity', 'SLIType'
+* slightly more effort than 'Option 1'
+* superior data normalization over 'Option 1'
+
+![](images/multi-slo-doc-schema-change-option-2.png)
+
+---
