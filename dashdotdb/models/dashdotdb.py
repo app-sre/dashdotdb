@@ -129,11 +129,11 @@ class Vulnerability(db.Model):
     severity_id = db.Column(db.Integer, db.ForeignKey('severity.id'))
     feature_id = db.Column(db.Integer, db.ForeignKey('feature.id'), index=True)
 
-    # Indexes
-    __table_args__ = (
-        db.Index('ix_vulnerability_name_description_fixedby_link',
-                 name, description, fixedby, link),
-    )
+    # TODO: Create index  ## pylint: disable=fixme
+    # We should have an index here because we query this table using name,
+    # description, fixedby and link. Since they are so big, it needs to be a
+    # functional index computing a hash (e.g. md5) of the column and the
+    # related queries to this table need to be modified to use it.
 
 
 class Severity(db.Model):
