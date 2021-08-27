@@ -37,14 +37,16 @@ The goals are:
 
 [`POST /api/v1/serviceslometrics/{name}`](https://github.com/app-sre/dashdotdb/blob/4663b71f34b2c540f7163985b7eccae8e7a9b0f0/dashdotdb/schemas/swagger.yaml#L241-L264)
 
-The JSON request body will now require a 'slo_doc_name' property.
+The JSON request body will now require a 'slo_doc.name' property.
 
 Example:
 ```
 {
     "name": "policy-engine-latency",
-    "slo_doc_name": "policy-engine",
     "SLIType": "latency",
+    "slo_doc": {
+        "name": "policy-engine"
+    },
     "namespace": {
         "name": "cincinnati-production"
     },
