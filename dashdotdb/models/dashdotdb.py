@@ -198,8 +198,8 @@ class ServiceSLO(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False, index=True)
-    value = db.Column(db.Float, unique=False)
-    target = db.Column(db.Float, unique=False)
+    value = db.Column(db.Float, unique=False, nullable=False)
+    target = db.Column(db.Float, unique=False, nullable=False)
     # no index, slitype is a very small table
     slitype_id = db.Column(db.Integer, db.ForeignKey('slitype.id'))
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)
