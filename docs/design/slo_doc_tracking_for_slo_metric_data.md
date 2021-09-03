@@ -77,7 +77,7 @@ The JSON response body now includes a 'slo_doc.name' property.
 
 Example: *(same as above)*
 
-In addition, 'slo_doc' (type string) is added as an optional query parameter. The rationale for this being optional is to avoid breaking existing clients that are functioning fine without burdening them with needing to know a 'slo_doc'. A known risk with making this optional, however, is that clients potentially may make queries and get results from a 'slo_doc' that they don't intend to be querying from.
+In addition, 'slo_doc' (type string) is added as an optional query parameter. The rationale for this being optional is to avoid breaking existing clients that are functioning fine, and to not burden them with needing to know a 'slo_doc'. A known risk with making this optional, however, is that clients potentially may make queries and get results from a 'slo_doc' that they don't intend to be querying from.
 
 ---
 
@@ -97,8 +97,8 @@ What follows are two proposals for how a 'slo_doc_name' identifier can be introd
 ---
 
 **Option 2** - Update the 'ServiceSLO' table to include a 'slodoc_id' column of type 'integer', which is a foreign key to a new table 'SLODoc'. Table 'SLODoc' contains 'id' (primary key, integer), and 'name' (string, unique)
-* document-author's reccomendation
-* consistant pattern with existing tables including 'ObjectKind', 'Service', 'SLIType', 'Severity', 'SLIType'
+* document-author's recommendation
+* consistant pattern with existing tables including 'ObjectKind', 'Service', 'Cluster', 'Severity', 'SLIType'
 * slightly more effort than 'Option 1'
 * superior data normalization over 'Option 1'
 
