@@ -83,7 +83,7 @@ In addition, 'slo_doc_name' is added as an optional query parameter. The rationa
 
 ## Implementation - Database Schema Changes
 
-What follow are two proposals for how a 'slo_doc_name' identifier can be introduced to the schema. The document-author reccomends 'Option 2' for the sake of schema consistency. Changes are marked in green.
+What follows are two proposals for how a 'slo_doc_name' identifier can be introduced to the schema. The document-author recommends 'Option 2' for the sake of schema consistency. Changes are marked in green.
 
 ---
 
