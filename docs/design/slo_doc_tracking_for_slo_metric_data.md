@@ -65,7 +65,7 @@ Example:
 
 [`GET /api/v1/serviceslometrics/metrics`](https://github.com/app-sre/dashdotdb/blob/4663b71f34b2c540f7163985b7eccae8e7a9b0f0/dashdotdb/schemas/swagger.yaml#L193-L207)
 
-The objects within the JSON response body array will now include a 'slo_doc_name' property.
+The objects within the JSON response body array will now include a 'slo_doc.name' property.
 
 Example: *(same as above)*
 
@@ -73,7 +73,7 @@ Example: *(same as above)*
 
 [`GET /api/v1/serviceslometrics`](https://github.com/app-sre/dashdotdb/blob/4663b71f34b2c540f7163985b7eccae8e7a9b0f0/dashdotdb/schemas/swagger.yaml#L208-L240)
 
-The JSON response body now includes a 'slo_doc_name' property.
+The JSON response body now includes a 'slo_doc.name' property.
 
 Example: *(same as above)*
 
