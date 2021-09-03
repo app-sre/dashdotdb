@@ -121,7 +121,7 @@ class Vulnerability(db.Model):
     __tablename__ = 'vulnerability'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False)
+    name = db.Column(db.String(64), unique=False, index=True)
     description = db.Column(db.String(10000), unique=False)
     fixedby = db.Column(db.String(10000), unique=False)
     link = db.Column(db.String(10000), unique=False)
@@ -129,11 +129,13 @@ class Vulnerability(db.Model):
     severity_id = db.Column(db.Integer, db.ForeignKey('severity.id'))
     feature_id = db.Column(db.Integer, db.ForeignKey('feature.id'), index=True)
 
-    # Indexes
-    __table_args__ = (
-        db.Index('ix_vulnerability_name_description_fixedby_link',
-                 name, description, fixedby, link),
-    )
+    # We may need another index here because we query this table using name,
+    # description, fixedby and link. Since they are so big, it needs to be a
+    # functional index computing a hash (e.g. md5) of the column and the
+    # related queries to this table need to be modified to use it. Anyway,
+    # the index on name is going to help a lot to that four columns query, so
+    # the multicolumn index won't probably be needed as long as names don't get
+    # repeated often.
 
 
 class Severity(db.Model):
@@ -196,8 +198,8 @@ class ServiceSLO(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False, index=True)
-    value = db.Column(db.Float, unique=False)
-    target = db.Column(db.Float, unique=False)
+    value = db.Column(db.Float, unique=False, nullable=False)
+    target = db.Column(db.Float, unique=False, nullable=False)
     # no index, slitype is a very small table
     slitype_id = db.Column(db.Integer, db.ForeignKey('slitype.id'))
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)
