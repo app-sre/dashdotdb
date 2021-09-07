@@ -77,7 +77,7 @@ The JSON response body now includes a 'slo_doc.name' property.
 
 Example: *(same as above)*
 
-In addition, 'slo_doc' (type string) is added as a **required** query parameter. The rationale for this being required is to ensure clients are receiving only the data they expect to be receieving. Consequently, all clients (e.g. qontract reconcile) consuming this API must be updated to specify the 'slo_doc' query parameter.
+In addition, 'slo_doc' (type string) is added as a **required** query parameter. This is a breaking change. The rationale for this being required is to ensure clients are receiving only the data they expect to be receieving. Consequently, all clients consuming this API must be updated to specify the 'slo_doc' query parameter.
 
 ---
 
