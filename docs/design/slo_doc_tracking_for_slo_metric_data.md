@@ -77,31 +77,13 @@ The JSON response body now includes a 'slo_doc.name' property.
 
 Example: *(same as above)*
 
-In addition, 'slo_doc' (type string) is added as an optional query parameter. The rationale for this being optional is to avoid breaking existing clients that are functioning fine, and to not burden them with needing to know a 'slo_doc'. A known risk with making this optional, however, is that clients potentially may make queries and get results from a 'slo_doc' that they don't intend to be querying from.
+In addition, 'slo_doc' (type string) is added as a **required** query parameter. The rationale for this being required is to ensure clients are receiving only the data they expect to be receieving. Consequently, all clients (e.g. qontract reconcile) consuming this API must be updated to specify the 'slo_doc' query parameter.
 
 ---
 
 ## Implementation - Database Schema Changes
 
-What follows are two proposals for how a 'slo_doc_name' identifier can be introduced to the schema. The document-author recommends 'Option 2' for the sake of schema consistency. Changes are marked in green.
-
----
-
-**Option 1** - Update the 'ServiceSLO' table to include a 'slodoc_name' column of type 'string'.
-* least effort proposal
-* acceptable data normalization
-* least disruptive to overall schema
-
-![](images/multi-slo-doc-schema-change-option-1.png)
-
----
-
-**Option 2** - Update the 'ServiceSLO' table to include a 'slodoc_id' column of type 'integer', which is a foreign key to a new table 'SLODoc'. Table 'SLODoc' contains 'id' (primary key, integer), and 'name' (string, unique)
-* document-author's recommendation
+Update the 'ServiceSLO' table to include a 'slodoc_id' column of type 'integer', which is a foreign key to a new table 'SLODoc'. Table 'SLODoc' contains 'id' (primary key, integer), and 'name' (string, unique)
 * consistant pattern with existing tables including 'ObjectKind', 'Service', 'Cluster', 'Severity', 'SLIType'
-* slightly more effort than 'Option 1'
-* superior data normalization over 'Option 1'
 
 ![](images/multi-slo-doc-schema-change-option-2.png)
-
----
