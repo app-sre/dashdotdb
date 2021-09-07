@@ -6,7 +6,7 @@ August 19, 2021
 
 ## Terminology
 
-* **SLO-metric-data** - 24-hour-snapshotted data points representing the actual observed values of SLO Prometheus queries. This data is stored in dashdotDB's underlying Postgres database.
+* **SLO-metric-data** - 24-hour-snapshotted data points representing the actual observed values of SLO Prometheus queries. This data is produced by a qontract-reconcile integration, and is stored in dashdotDB's underlying Postgres database.
 
 * **SLO-document** - Resources stored as app-interface data, and associated with services. [Example](https://gitlab.cee.redhat.com/service/app-interface/-/blob/32d546477e729e07bf33a46edce8ec44e6009e56/data/services/cincinnati/slo-documents/cincinnati.yml)
 
