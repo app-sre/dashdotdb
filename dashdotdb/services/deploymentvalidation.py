@@ -143,7 +143,8 @@ class DeploymentValidationData:
                     DeploymentValidation.namespace_id == Namespace.id,
                     DeploymentValidation.objectkind_id == ObjectKind.id,
                     Namespace.cluster_id == Cluster.id,
-                    Cluster.name == self.cluster).all()
+                    Cluster.name == self.cluster,
+                    Namespace.name == self.namespace).all()
 
         result = list()
         for validation in validations:
