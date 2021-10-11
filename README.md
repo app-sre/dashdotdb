@@ -113,21 +113,6 @@ $ curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespac
 ...
 ```
 
-Prometheus metrics endpoint:
-
-```
-$ curl "localhost:8080/api/v1/metrics"
-...
-# HELP imagemanifestvuln_total Vulnerabilities total per severity
-# TYPE imagemanifestvuln_total counter
-imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Medium"} 86.0
-imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="High"} 43.0
-imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Low"} 20.0
-imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Unknown"} 5.0
-imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Critical"} 4.0
-...
-```
-
 # Changing the Database Model
 
 The current Entity Relationship Diagram looks like this:
