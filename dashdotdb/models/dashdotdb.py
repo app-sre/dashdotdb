@@ -192,6 +192,16 @@ class SLIType(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='slitype')
 
 
+# this might need to eb associated with a namespace
+class SLODoc(db.Model):
+
+    __tablename__ = 'slodoc'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=False, index=True)
+    serviceslo = db.relationship('ServiceSLO', backref='slodoc')
+
+
 class ServiceSLO(db.Model):
 
     __tablename__ = 'serviceslo'
@@ -202,6 +212,7 @@ class ServiceSLO(db.Model):
     target = db.Column(db.Float, unique=False, nullable=False)
     # no index, slitype is a very small table
     slitype_id = db.Column(db.Integer, db.ForeignKey('slitype.id'))
+    slodoc_id = db.Column(db.Integer, db.ForeignKey('slodoc.id'), index=True)
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'), index=True)
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
