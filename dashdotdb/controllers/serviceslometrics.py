@@ -7,6 +7,6 @@ def post(user, name, body):
     return 'ok'
 
 
-def search(cluster, namespace, sli_type, name):
-    slo = ServiceSLOMetrics(cluster, namespace, sli_type, name)
+def search(cluster, namespace, sli_type, slo_doc, name):
+    slo = ServiceSLOMetrics(cluster, namespace, sli_type, slo_doc, name)
     return slo.get_slometrics()

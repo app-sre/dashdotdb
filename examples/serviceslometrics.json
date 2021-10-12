@@ -2,7 +2,7 @@
     "name": "policy-engine-latency",
     "SLIType": "latency",
     "SLODoc": {
-        "name": "asdf"
+        "name": "cincinnati-production"
     },
     "namespace": {
         "name": "cincinnati-production"
