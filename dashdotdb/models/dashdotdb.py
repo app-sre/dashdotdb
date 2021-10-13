@@ -197,7 +197,7 @@ class SLODoc(db.Model):
     __tablename__ = 'slodoc'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False, index=True)
+    name = db.Column(db.String(64), unique=True, index=True)
     serviceslo = db.relationship('ServiceSLO', backref='slodoc')
 
 
