@@ -142,7 +142,7 @@ class ServiceSLOMetrics:
         slo_doc = db.session.query(SLODoc) \
             .filter(serviceslo.slodoc_id == SLODoc.id).first()
 
-        # FIXME:
+        # TODO: Fix this:
         # The queries used below appear to be flawed.
         # These queries just grab the oldest sli-type, service,
         # etc, in the database referenced by any ServiceSLO row,
