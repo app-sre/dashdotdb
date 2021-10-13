@@ -138,20 +138,21 @@ class ServiceSLOMetrics:
         if serviceslo is None:
             return []
 
+        slo_doc = db.session.query(SLODoc) \
+            .filter(serviceslo.slodoc_id == SLODoc.id).first()
+
         # FIXME:
-        # The queries used here appear to be flawed.
+        # The queries used below appear to be flawed.
         # These queries just grab the oldest sli-type, service,
         # etc, in the database referenced by any ServiceSLO row,
         # and are not actually referenced against
         # the HTTP query param values.
         # We probably mean to use the 'serviceslo' variable and
-        # not the 'ServiceSLO' table class here.
+        # not the 'ServiceSLO' table class here?
         # (This function is used by the GET /api/v1/serviceslometrics
         # endpoint).
         sli_type = db.session.query(SLIType) \
             .filter(ServiceSLO.slitype_id == SLIType.id).first()
-        slo_doc = db.session.query(SLODoc) \
-            .filter(ServiceSLO.slodoc_id == SLODoc.id).first()
         service = db.session.query(Service) \
             .filter(ServiceSLO.service_id == Service.id).first()
         namespace = db.session.query(Namespace) \
