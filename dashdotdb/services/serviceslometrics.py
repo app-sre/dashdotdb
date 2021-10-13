@@ -126,6 +126,7 @@ class ServiceSLOMetrics:
             .filter(ServiceSLO.token_id == token.id,
                     ServiceSLO.slitype_id == SLIType.id,
                     SLIType.name == self.sli_type,
+                    ServiceSLO.slodoc_id == SLODoc.id,
                     SLODoc.name == self.slo_doc,
                     ServiceSLO.namespace_id == Namespace.id,
                     Namespace.name == self.namespace,
@@ -137,6 +138,16 @@ class ServiceSLOMetrics:
         if serviceslo is None:
             return []
 
+        # FIXME:
+        # The queries used here appear to be flawed.
+        # These queries just grab the oldest sli-type, service,
+        # etc, in the database referenced by any ServiceSLO row,
+        # and are not actually referenced against
+        # the HTTP query param values.
+        # We probably mean to use the 'serviceslo' variable and
+        # not the 'ServiceSLO' table class here.
+        # (This function is used by the GET /api/v1/serviceslometrics
+        # endpoint).
         sli_type = db.session.query(SLIType) \
             .filter(ServiceSLO.slitype_id == SLIType.id).first()
         slo_doc = db.session.query(SLODoc) \
