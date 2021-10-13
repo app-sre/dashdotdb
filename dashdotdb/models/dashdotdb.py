@@ -192,7 +192,6 @@ class SLIType(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='slitype')
 
 
-# this might need to eb associated with a namespace
 class SLODoc(db.Model):
 
     __tablename__ = 'slodoc'

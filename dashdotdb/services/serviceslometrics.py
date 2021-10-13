@@ -75,7 +75,6 @@ class ServiceSLOMetrics:
         db_slitype = db.session.query(SLIType) \
             .filter_by(name=slitype_name).first()
 
-        # this might need to be associated with a namespace
         slodoc_name = slo['SLODoc']['name']
         db_slodoc = db.session.query(SLODoc) \
             .filter_by(name=slodoc_name).first()
