@@ -16,7 +16,7 @@ from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
 
 class ServiceSLOMetrics:
     def __init__(self, cluster=None, namespace=None, sli_type=None,
-        slo_doc=None, name=None):
+                 slo_doc=None, name=None):
         self.log = logging.getLogger()
 
         self.cluster = cluster
