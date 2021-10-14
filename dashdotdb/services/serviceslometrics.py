@@ -24,7 +24,9 @@ class ServiceSLOMetricsInput:
 
 
 class ServiceSLOMetrics:
-    def __init__(self, input_props: ServiceSLOMetricsInput = None):
+    def __init__(self,
+                 input_props: ServiceSLOMetricsInput =
+                 ServiceSLOMetricsInput()):
         self.log = logging.getLogger()
 
         self.cluster = input_props.cluster
@@ -150,7 +152,7 @@ class ServiceSLOMetrics:
         slo_doc = db.session.query(SLODoc) \
             .filter(serviceslo.slodoc_id == SLODoc.id).first()
 
-        # TODO: Fix the following:
+        # FIXME:
         # The queries used below appear to be flawed.
         # These queries just grab the oldest sli-type, service,
         # etc, in the database referenced by any ServiceSLO row,
