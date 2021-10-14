@@ -16,22 +16,22 @@ from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
 
 class ServiceSLOMetricsInput:
     def __init__(self):
-        self.cluster = ""
-        self.namespace = ""
-        self.sli_type = ""
-        self.slo_doc = ""
-        self.name = ""
+        self.cluster: str = None
+        self.namespace: str = None
+        self.sli_type: str = None
+        self.slo_doc: str = None
+        self.name: str = None
 
 
 class ServiceSLOMetrics:
-    def __init__(self, inputProperties: ServiceSLOMetricsInput):
+    def __init__(self, input_props: ServiceSLOMetricsInput = None):
         self.log = logging.getLogger()
 
-        self.cluster = inputProperties.cluster
-        self.namespace = inputProperties.namespace
-        self.sli_type = inputProperties.sli_type
-        self.slo_doc = inputProperties.slo_doc
-        self.name = inputProperties.name
+        self.cluster = input_props.cluster
+        self.namespace = input_props.namespace
+        self.sli_type = input_props.sli_type
+        self.slo_doc = input_props.slo_doc
+        self.name = input_props.name
 
     def insert(self, token, slo):
 

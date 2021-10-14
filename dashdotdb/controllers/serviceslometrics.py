@@ -2,19 +2,21 @@ from dashdotdb.services.serviceslometrics import ServiceSLOMetrics
 from dashdotdb.services.serviceslometrics import ServiceSLOMetricsInput
 
 
-def post(user, name, body):
+def post(user, name: str, body):
     slo = ServiceSLOMetrics(name=name)
     slo.insert(token=user, slo=body)
     return 'ok'
 
 
-def search(cluster, namespace, sli_type, slo_doc, name):
-    inputProperties = ServiceSLOMetricsInput()
-    inputProperties.cluster = cluster
-    inputProperties.namespace = namespace
-    inputProperties.sli_type = sli_type
-    inputProperties.slo_doc = slo_doc
-    inputProperties.name = name
+def search(cluster: str = None, namespace: str = None,
+           sli_type: str = None, slo_doc: str = None,
+           name: str = None):
+    input_props = ServiceSLOMetricsInput()
+    input_props.cluster = cluster
+    input_props.namespace = namespace
+    input_props.sli_type = sli_type
+    input_props.slo_doc = slo_doc
+    input_props.name = name
 
-    slo = ServiceSLOMetrics(inputProperties=inputProperties)
+    slo = ServiceSLOMetrics(input_props=input_props)
     return slo.get_slometrics()
