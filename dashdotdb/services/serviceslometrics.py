@@ -14,16 +14,24 @@ from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
                                          TOKEN_NOT_FOUND_MSG)
 
 
+class ServiceSLOMetricsInput:
+    def __init__(self):
+        self.cluster = ""
+        self.namespace = ""
+        self.sli_type = ""
+        self.slo_doc = ""
+        self.name = ""
+
+
 class ServiceSLOMetrics:
-    def __init__(self, cluster=None, namespace=None, sli_type=None,
-                 slo_doc=None, name=None):
+    def __init__(self, inputProperties: ServiceSLOMetricsInput):
         self.log = logging.getLogger()
 
-        self.cluster = cluster
-        self.namespace = namespace
-        self.sli_type = sli_type
-        self.slo_doc = slo_doc
-        self.name = name
+        self.cluster = inputProperties.cluster
+        self.namespace = inputProperties.namespace
+        self.sli_type = inputProperties.sli_type
+        self.slo_doc = inputProperties.slo_doc
+        self.name = inputProperties.name
 
     def insert(self, token, slo):
 
@@ -142,7 +150,7 @@ class ServiceSLOMetrics:
         slo_doc = db.session.query(SLODoc) \
             .filter(serviceslo.slodoc_id == SLODoc.id).first()
 
-        # TODO: Fix this:
+        # TODO:
         # The queries used below appear to be flawed.
         # These queries just grab the oldest sli-type, service,
         # etc, in the database referenced by any ServiceSLO row,
