@@ -9,12 +9,12 @@ def post(user, name, body):
 
 
 def search(cluster, namespace, sli_type, slo_doc, name):
-    input = ServiceSLOMetricsInput()
-    input.cluster = cluster
-    input.namespace = namespace
-    input.sli_type = sli_type
-    input.slo_doc = slo_doc
-    input.name = name
+    inputProperties = ServiceSLOMetricsInput()
+    inputProperties.cluster = cluster
+    inputProperties.namespace = namespace
+    inputProperties.sli_type = sli_type
+    inputProperties.slo_doc = slo_doc
+    inputProperties.name = name
 
-    slo = ServiceSLOMetrics(input)
+    slo = ServiceSLOMetrics(inputProperties=inputProperties)
     return slo.get_slometrics()
