@@ -1,5 +1,7 @@
 import logging
 
+from typing import Optional
+
 from dashdotdb.models.dashdotdb import db
 from dashdotdb.models.dashdotdb import Token
 from dashdotdb.models.dashdotdb import LatestTokens
@@ -25,8 +27,11 @@ class ServiceSLOMetricsInput:
 
 class ServiceSLOMetrics:
     def __init__(self,
-                 input_props: ServiceSLOMetricsInput =
-                 ServiceSLOMetricsInput()):
+                 input_props: Optional[ServiceSLOMetricsInput] = None):
+
+        if input_props is None:
+            input_props = ServiceSLOMetricsInput()
+
         self.log = logging.getLogger()
 
         self.cluster = input_props.cluster

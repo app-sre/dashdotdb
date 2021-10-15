@@ -10,8 +10,8 @@ def post(user, name: str, body):
     return 'ok'
 
 
-def search(cluster: str = None, namespace: str = None,
-           sli_type: str = None, slo_doc: str = None, name: str = None):
+def search(cluster: str, namespace: str,
+           sli_type: str, slo_doc: str, name: str):
     input_props = ServiceSLOMetricsInput()
     input_props.cluster = cluster
     input_props.namespace = namespace
