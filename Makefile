@@ -24,4 +24,5 @@ develop: clean
 check:
 	. venv/bin/activate && \
 	flake8 dashdotdb && \
+	mypy --ignore-missing-imports --install-types --non-interactive --no-implicit-optional && \
 	pylint dashdotdb
