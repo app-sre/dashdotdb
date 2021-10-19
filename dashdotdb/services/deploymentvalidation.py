@@ -192,6 +192,6 @@ class DeploymentValidationData:
             Token.id == token.id
         ).group_by(
             Validation, Namespace, Cluster, DeploymentValidation.id
-        )
+        ).yield_per(250)
 
         return results
