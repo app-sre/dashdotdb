@@ -224,6 +224,11 @@ paths:
         required: true
         schema:
           type: string
+      - name: slo_doc
+        in: query
+        required: true
+        schema:
+          type: string
       - name: name
         in: query
         required: true
@@ -409,11 +414,14 @@ components:
           type: string
         namespace:
           type: string
+        slo_doc:
+          type: string
     ItemsServiceSLOMetrics:
         type: object
         required:
         - name
         - SLIType
+        - SLODoc
         - namespace
         - cluster
         - service
@@ -434,6 +442,12 @@ components:
               - correcteness
               - throughput
               - durability
+          SLODoc:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
           namespace:
             type: object
             properties:

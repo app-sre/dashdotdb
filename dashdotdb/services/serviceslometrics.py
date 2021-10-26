@@ -1,5 +1,7 @@
 import logging
 
+from typing import Optional
+
 from dashdotdb.models.dashdotdb import db
 from dashdotdb.models.dashdotdb import Token
 from dashdotdb.models.dashdotdb import LatestTokens
@@ -8,19 +10,35 @@ from dashdotdb.models.dashdotdb import Cluster
 from dashdotdb.models.dashdotdb import Namespace
 from dashdotdb.models.dashdotdb import ServiceSLO
 from dashdotdb.models.dashdotdb import SLIType
+from dashdotdb.models.dashdotdb import SLODoc
 from dashdotdb.services import DataTypes
 from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
                                          TOKEN_NOT_FOUND_MSG)
 
 
+class ServiceSLOMetricsInput:
+    def __init__(self):
+        self.cluster: str = None
+        self.namespace: str = None
+        self.sli_type: str = None
+        self.slo_doc: str = None
+        self.name: str = None
+
+
 class ServiceSLOMetrics:
-    def __init__(self, cluster=None, namespace=None, sli_type=None, name=None):
+    def __init__(self,
+                 input_props: Optional[ServiceSLOMetricsInput] = None):
+
+        if input_props is None:
+            input_props = ServiceSLOMetricsInput()
+
         self.log = logging.getLogger()
 
-        self.cluster = cluster
-        self.namespace = namespace
-        self.sli_type = sli_type
-        self.name = name
+        self.cluster = input_props.cluster
+        self.namespace = input_props.namespace
+        self.sli_type = input_props.sli_type
+        self.slo_doc = input_props.slo_doc
+        self.name = input_props.name
 
     def insert(self, token, slo):
 
@@ -73,17 +91,29 @@ class ServiceSLOMetrics:
         db_slitype = db.session.query(SLIType) \
             .filter_by(name=slitype_name).first()
 
+        slodoc_name = slo['SLODoc']['name']
+        db_slodoc = db.session.query(SLODoc) \
+            .filter_by(name=slodoc_name).first()
+        if db_slodoc is None:
+            db.session.add(SLODoc(name=slodoc_name))
+            db.session.commit()
+            self.log.info('slodoc %s created', slodoc_name)
+        db_slodoc = db.session.query(SLODoc) \
+            .filter_by(name=slodoc_name).first()
+
         db_serviceslo = db.session.query(ServiceSLO) \
             .filter_by(name=slo['name'],
                        service_id=db_service.id,
                        namespace_id=db_namespace.id,
                        slitype_id=db_slitype.id,
+                       slodoc_id=db_slodoc.id,
                        token_id=db_token.id).first()
         if db_serviceslo is None:
             db.session.add(ServiceSLO(name=slo['name'],
                                       service_id=db_service.id,
                                       namespace_id=db_namespace.id,
                                       slitype_id=db_slitype.id,
+                                      slodoc_id=db_slodoc.id,
                                       token_id=db_token.id,
                                       value=slo['value'],
                                       target=slo['target']))
@@ -112,6 +142,8 @@ class ServiceSLOMetrics:
             .filter(ServiceSLO.token_id == token.id,
                     ServiceSLO.slitype_id == SLIType.id,
                     SLIType.name == self.sli_type,
+                    ServiceSLO.slodoc_id == SLODoc.id,
+                    SLODoc.name == self.slo_doc,
                     ServiceSLO.namespace_id == Namespace.id,
                     Namespace.name == self.namespace,
                     Namespace.cluster_id == Cluster.id,
@@ -122,6 +154,19 @@ class ServiceSLOMetrics:
         if serviceslo is None:
             return []
 
+        slo_doc = db.session.query(SLODoc) \
+            .filter(serviceslo.slodoc_id == SLODoc.id).first()
+
+        # FIXME:
+        # The queries used below appear to be flawed.
+        # These queries just grab the oldest sli-type, service,
+        # etc, in the database referenced by any ServiceSLO row,
+        # and are not actually referenced against
+        # the HTTP query param values.
+        # We probably mean to use the 'serviceslo' variable and
+        # not the 'ServiceSLO' table class here?
+        # (This function is used by the GET /api/v1/serviceslometrics
+        # endpoint).
         sli_type = db.session.query(SLIType) \
             .filter(ServiceSLO.slitype_id == SLIType.id).first()
         service = db.session.query(Service) \
@@ -135,6 +180,7 @@ class ServiceSLOMetrics:
         result = {
             'name': serviceslo.name,
             'sli_type': sli_type.name,
+            'slo_doc': slo_doc.name,
             'value': serviceslo.value,
             'target': serviceslo.target,
             'service': service.name,
@@ -163,6 +209,7 @@ class ServiceSLOMetrics:
         # serviceslo.value, serviceslo.target, slitype.name
         # FROM cluster, namespace, service, serviceslo, slitype
         # WHERE serviceslo.slitype_id = slitype.id
+        # AND serviceslo.slodoc_id = slodoc.id
         # AND serviceslo.service_id = service.id
         # AND serviceslo.namespace_id = namespace.id
         # AND namespace.cluster_id = cluster.id
@@ -172,9 +219,11 @@ class ServiceSLOMetrics:
             Namespace,
             Service,
             ServiceSLO,
-            SLIType
+            SLIType,
+            SLODoc
         ).filter(
             ServiceSLO.slitype_id == SLIType.id,
+            ServiceSLO.slodoc_id == SLODoc.id,
             ServiceSLO.service_id == Service.id,
             ServiceSLO.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
