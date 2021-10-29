@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_migrate import Migrate
+from flask_healthz import healthz, HealthError
 from connexion import App
 from connexion.resolver import RestyResolver
 
@@ -22,16 +23,29 @@ if DATABASE_URL is None:
                     f'{DATABASE_PORT}/'
                     f'{DATABASE_NAME}')
 
-
 class DashDotDb(App):
+    def liveness(self):
+        pass
+
+    def readiness(self, db):
+        try:
+            pass # Have to figure this out
+        except Exception:
+            raise HealthError("Can't connect to the database")
+    
     def create_app(self):
         # pylint: disable=redefined-outer-name
         app = Flask(self.import_name, **self.server_args)
+        app.register_blueprint(healthz, url_prefix="/api/healthz")
         app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         db.init_app(app)
         # pylint: disable=unused-variable
         migrate = Migrate(app, db)  # type: ignore  # noqa: F841
+        app.config['HEALTHZ'] = {
+            "live": self.liveness,
+            "ready": self.readiness,
+        }
         return app
 
 
