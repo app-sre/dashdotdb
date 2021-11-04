@@ -23,6 +23,7 @@ if DATABASE_URL is None:
                     f'{DATABASE_PORT}/'
                     f'{DATABASE_NAME}')
 
+
 class DashDotDb(App):
     def liveness(self):
         pass
@@ -32,7 +33,7 @@ class DashDotDb(App):
             db.engine.execute('SELECT 1')
         except Exception:
             raise HealthError("Can't connect to the database")
-    
+
     def create_app(self):
         # pylint: disable=redefined-outer-name
         app = Flask(self.import_name, **self.server_args)
