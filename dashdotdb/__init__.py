@@ -24,18 +24,18 @@ if DATABASE_URL is None:
                     f'{DATABASE_NAME}')
 
 
-def liveness():
-    pass
-
-
-def readiness():
-    try:
-        db.engine.execute('SELECT 1')
-    except Exception:
-        raise HealthError("Can't connect to the database")
-
-
 class DashDotDb(App):
+    @staticmethod
+    def liveness():
+        pass
+
+    @staticmethod
+    def readiness():
+        try:
+            db.engine.execute('SELECT 1')
+        except Exception:
+            raise HealthError("Can't connect to the database")
+
     def create_app(self):
         # pylint: disable=redefined-outer-name
         app = Flask(self.import_name, **self.server_args)
