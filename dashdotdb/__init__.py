@@ -46,8 +46,8 @@ class DashDotDb(App):
         # pylint: disable=unused-variable
         migrate = Migrate(app, db)  # type: ignore  # noqa: F841
         app.config['HEALTHZ'] = {
-            "live": liveness,
-            "ready": readiness,
+            "live": self.liveness,
+            "ready": self.readiness,
         }
         return app
 
