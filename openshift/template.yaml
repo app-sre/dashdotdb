@@ -5,6 +5,10 @@ metadata:
   name: dashdotdb
 objects:
 - apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: dashdotdb
+- apiVersion: v1
   kind: ConfigMap
   metadata:
     labels:
@@ -79,6 +83,17 @@ objects:
         labels:
           app: dashdotdb
       spec:
+        serviceAccountName: dashdotdb
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - dashdotdb
+              topologyKey: "kubernetes.io/hostname"
         containers:
         - image: ${IMAGE_GATE}:${IMAGE_GATE_TAG}
           imagePullPolicy: Always
@@ -153,6 +168,18 @@ objects:
           ports:
           - name: dashdotdb
             containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /api/healthz/live
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /api/healthz/ready
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
         volumes:
         - configMap:
             defaultMode: 420
