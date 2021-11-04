@@ -27,9 +27,9 @@ class DashDotDb(App):
     def liveness(self):
         pass
 
-    def readiness(self, db):
+    def readiness(self):
         try:
-            pass # Have to figure this out
+            db.engine.execute('SELECT 1')
         except Exception:
             raise HealthError("Can't connect to the database")
     
