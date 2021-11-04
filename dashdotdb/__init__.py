@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from flask_migrate import Migrate
-from flask_healthz import healthz, HealthError
+from flask_healthz import healthz, HealthError # type: ignore  # noqa: F401
 from connexion import App
 from connexion.resolver import RestyResolver
 
