@@ -157,35 +157,15 @@ class ServiceSLOMetrics:
         slo_doc = db.session.query(SLODoc) \
             .filter(serviceslo.slodoc_id == SLODoc.id).first()
 
-        # FIXME:
-        # The queries used below appear to be flawed.
-        # These queries just grab the oldest sli-type, service,
-        # etc, in the database referenced by any ServiceSLO row,
-        # and are not actually referenced against
-        # the HTTP query param values.
-        # We probably mean to use the 'serviceslo' variable and
-        # not the 'ServiceSLO' table class here?
-        # (This function is used by the GET /api/v1/serviceslometrics
-        # endpoint).
-        sli_type = db.session.query(SLIType) \
-            .filter(ServiceSLO.slitype_id == SLIType.id).first()
-        service = db.session.query(Service) \
-            .filter(ServiceSLO.service_id == Service.id).first()
-        namespace = db.session.query(Namespace) \
-            .filter(ServiceSLO.namespace_id == Namespace.id).first()
-        cluster = db.session.query(Cluster) \
-            .filter(Namespace.id == namespace.id,
-                    Namespace.cluster_id == Cluster.id).first()
-
         result = {
             'name': serviceslo.name,
-            'sli_type': sli_type.name,
+            'sli_type': serviceslo.slitype.name,
             'slo_doc': slo_doc.name,
             'value': serviceslo.value,
             'target': serviceslo.target,
-            'service': service.name,
-            'cluster': cluster.name,
-            'namespace': namespace.name
+            'service': serviceslo.service.name,
+            'cluster': serviceslo.namespace.cluster.name,
+            'namespace': serviceslo.namespace.name
         }
 
         return result
