@@ -178,7 +178,7 @@ class ImageManifestVuln:
                     Namespace.cluster_id == Cluster.id,
                     Cluster.name == self.cluster).all()
 
-        result = list()
+        result = []
         for image in images:
             for feature in image.features:
                 for vulnerability in feature.vulnerabilities:

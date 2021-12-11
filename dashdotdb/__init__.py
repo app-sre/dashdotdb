@@ -33,8 +33,8 @@ class DashDotDb(App):
     def readiness():
         try:
             db.engine.execute('SELECT 1')
-        except Exception:
-            raise HealthError("Can't connect to the database")
+        except Exception as error:
+            raise HealthError("Can't connect to the database") from error
 
     def create_app(self):
         # pylint: disable=redefined-outer-name
