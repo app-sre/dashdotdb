@@ -146,7 +146,7 @@ class DeploymentValidationData:
                     Cluster.name == self.cluster,
                     Namespace.name == self.namespace).all()
 
-        result = list()
+        result = []
         for validation in validations:
             result.append({'cluster': validation.namespace.cluster.name,
                            'namespace': validation.namespace.name,
