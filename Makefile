@@ -26,3 +26,7 @@ check:
 	flake8 dashdotdb && \
 	mypy --install-types --non-interactive && \
 	pylint dashdotdb
+
+ci:
+	docker build -t app-sre-dashdotdb-ci:do-not-use -f Dockerfile.ci .
+	docker build -t app-sre-dashdotdb:do-not-use .

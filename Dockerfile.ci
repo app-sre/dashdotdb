@@ -1,0 +1,13 @@
+FROM        registry.access.redhat.com/ubi8/python-38
+
+COPY        . ./
+
+RUN         pip3 install --no-cache-dir . && \
+            pip3 install --no-cache-dir gunicorn && \
+            pip3 install --no-cache-dir -r requirements-check.txt
+
+RUN         flake8 dashdotdb && \
+	        mypy --install-types --non-interactive && \
+	        pylint dashdotdb
+
+ENTRYPOINT  ["./entrypoint.sh"]

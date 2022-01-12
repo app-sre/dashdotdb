@@ -2,5 +2,4 @@
 
 set -exvo pipefail
 
-make install-requirements
-make check
+make ci

@@ -1,0 +1,9 @@
+venv/
+.idea/
+__pycache__
+*.egg-info/
+build/
+dist/
+*.dia~
+*.dia.autosave
+.DS_Store
