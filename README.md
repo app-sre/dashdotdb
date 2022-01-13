@@ -10,27 +10,27 @@ It's a building block - and a central part - in the architecture created to
 extract information from multiples sources, place them into the Database and
 expose the relevant insights via Grafana Dashboards and monthly reports.
 
-# Quickstart
+## Quickstart
 
 Run a PostgreSQL instance:
 
 ```
-$ docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
 Open a new terminal. Install the package:
 
 ```
-$ python -m venv venv
-$ source venv/bin/activate
-$ python setup.py develop
+python -m venv venv
+source venv/bin/activate
+python setup.py develop
 ```
 
 Export the `FLASK_APP` and the `DASHDOTDB_DATABASE_URL`:
 
 ```
-$ export FLASK_APP=dashdotdb
-$ export DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres
+export FLASK_APP=dashdotdb
+export DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres
 ```
 
 Initialize the Database:
@@ -45,13 +45,13 @@ INFO  [alembic.runtime.migration] Running upgrade  -> c4f641d56546, Initial migr
 Run the service:
 
 ```
-$ flask run --debugger --port 8080
+flask run --debugger --port 8080
 ```
 
 Open a new terminal. Get a token:
 
 ```
-$ TOKEN=$(curl --silent localhost:8080/api/v1/token?scope=imagemanifestvuln | sed 's/"//g')
+TOKEN=$(curl --silent localhost:8080/api/v1/token?scope=imagemanifestvuln | sed 's/"//g')
 ```
 
 Apply `imagemanifestvuln` example data:
@@ -78,7 +78,7 @@ $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 Close the token:
 
 ```
-$ curl --request DELETE "localhost:8080/api/v1/token/$TOKEN?scope=imagemanifestvuln"
+curl --request DELETE "localhost:8080/api/v1/token/$TOKEN?scope=imagemanifestvuln"
 ```
 
 Query vulnerabilities:
@@ -128,13 +128,13 @@ imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Crit
 ...
 ```
 
-# Changing the Database Model
+## Changing the Database Model
 
 The current Entity Relationship Diagram looks like this:
 
 ![](docs/dashdotdb.png)
 
-## ERD
+### ERD
 
 To change the database, start by editing the
 [ERD ".dia" file](/docs/dashdotdb.dia) using
@@ -142,18 +142,18 @@ To change the database, start by editing the
 
 The Dia application is known to have issues running on Mac OS. It may launch fine the first time, and then never again. Following [these directions](https://apple.stackexchange.com/a/411620) should help fix that.
 
-## Model
+### Model
 
 Reflect the changes to the ERD in the database model, either by updating an
 existing model or by creating new ones. Models are placed
 [here](/dashdotdb/models/).
 
-## DB Upgrade
+### DB Upgrade
 
 Create the upgrade routine executing the command:
 
 ```
-$ FLASK_APP=dashdotdb flask db migrate
+FLASK_APP=dashdotdb flask db migrate
 ```
 
 That will create a new migration file in the
@@ -171,9 +171,11 @@ on your own database instance, run:
 FLASK_APP=dashdotdb flask db upgrade
 ```
 
-## SQLAlchemy Debug
-To enable verbose SQLAlchemy logging, which will output the compiled queries 
+### SQLAlchemy Debug
+
+To enable verbose SQLAlchemy logging, which will output the compiled queries
 add to the app.config object:
+
 ```
 app.config['SQLALCHEMY_ECHO'] = True
 ```
