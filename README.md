@@ -74,8 +74,9 @@ $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 "localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
 ...
 ```
+(Note: Data that is uploaded to dashdotDB is not actually available for query until the token that was used to upload it is deleted. The only data available for query at any given moment is that which was uploaded using the most recently deleted token.)
 
-Close the token:
+Close the token (to make the latest data queryable):
 
 ```
 curl --request DELETE "localhost:8080/api/v1/token/$TOKEN?scope=imagemanifestvuln"
