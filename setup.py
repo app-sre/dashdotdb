@@ -30,6 +30,7 @@ setup(name='dashdotdb',
             'prometheus-client ~= 0.8',
             'gunicorn ~= 20.0',
             'openapi-schema-validator ~= 0.1.5',
-            'jsonschema ~= 3.0'
+            'jsonschema ~= 3.0',
+            'markupsafe == 2.0.1'
       ],
       )
