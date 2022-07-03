@@ -60,6 +60,14 @@ objects:
             proxy_read_timeout 300;
             send_timeout 300;
           }
+
+          location /healthz {
+            access_log off;
+            auth_basic "off";
+            allow all;
+            default_type text/plain;
+            return 200 "healthy\n";
+          }
         }
       }
 - apiVersion: apps/v1
