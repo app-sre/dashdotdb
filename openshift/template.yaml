@@ -60,6 +60,14 @@ objects:
             proxy_read_timeout 300;
             send_timeout 300;
           }
+
+          location /healthz {
+            access_log off;
+            auth_basic "off";
+            allow all;
+            default_type text/plain;
+            return 200 "healthy\n";
+          }
         }
       }
 - apiVersion: apps/v1
@@ -125,6 +133,26 @@ objects:
           ports:
           - name: auth-proxy
             containerPort: 8000
+          readinessProbe:
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            httpGet:
+              path: /healthz
+              port: auth-proxy
+              scheme: HTTP
+            timeoutSeconds: 1
+            initialDelaySeconds: 10
+          livenessProbe:
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            httpGet:
+              path: /healthz
+              port: auth-proxy
+              scheme: HTTP
+            timeoutSeconds: 1
+            initialDelaySeconds: 10
           volumeMounts:
           - mountPath: /etc/nginx/conf.d
             name: nginx-postsize
