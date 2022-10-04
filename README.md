@@ -20,6 +20,12 @@ You can quickly run the app locally with docker-compose
 docker-compose up
 ```
 
+Test data can be generated via
+
+```
+make test-data
+```
+
 ### Manual
 
 Run a PostgreSQL instance:
