@@ -31,6 +31,7 @@ setup(name='dashdotdb',
             'gunicorn ~= 20.1',
             'openapi-schema-validator ~= 0.1.5',
             'jsonschema ~= 3.0',
-            'markupsafe == 2.1.1'
+            # Newer versions are not compatible with our Flask version
+            'markupsafe == 2.0.1'
       ],
       )
