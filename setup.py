@@ -21,16 +21,16 @@ setup(name='dashdotdb',
             'Programming Language :: Python :: 3.9',
       ],
       install_requires=[
-            'connexion[swagger-ui] ~= 2.7',
+            'connexion[swagger-ui] ~= 2.14',
             'Flask ~= 1.1',
             'flask-healthz ~= 0.0.3',
-            'Flask-Migrate ~= 2.5',
-            'Flask-SQLAlchemy ~= 2.4',
-            'psycopg2-binary ~= 2.8',
-            'prometheus-client ~= 0.8',
-            'gunicorn ~= 20.0',
+            'Flask-Migrate ~= 2.7',
+            'Flask-SQLAlchemy ~= 2.5',
+            'psycopg2-binary ~= 2.9',
+            'prometheus-client ~= 0.14',
+            'gunicorn ~= 20.1',
             'openapi-schema-validator ~= 0.1.5',
             'jsonschema ~= 3.0',
-            'markupsafe == 2.0.1'
+            'markupsafe == 2.1.1'
       ],
       )
