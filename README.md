@@ -12,6 +12,16 @@ expose the relevant insights via Grafana Dashboards and monthly reports.
 
 ## Quickstart
 
+### Docker-compose
+
+You can quickly run the app locally with docker-compose
+
+```
+docker-compose up
+```
+
+### Manual
+
 Run a PostgreSQL instance:
 
 ```
@@ -47,6 +57,8 @@ Run the service:
 ```
 flask run --debugger --port 8080
 ```
+
+## Using the app
 
 Open a new terminal. Get a token:
 
