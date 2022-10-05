@@ -7,3 +7,4 @@ dist/
 *.dia~
 *.dia.autosave
 .DS_Store
+*.swp
