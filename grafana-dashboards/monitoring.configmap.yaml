@@ -28,11 +28,132 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 1548,
-      "iteration": 1664974163031,
+      "id": 1834,
+      "iteration": 1665057508793,
       "links": [],
       "liveNow": false,
       "panels": [
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 31,
+          "panels": [],
+          "title": "Service Health",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 16,
+            "x": 0,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 2,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.0.3",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "builder",
+              "expr": "kube_deployment_spec_replicas{namespace=\"dashdot\", deployment=\"dashdotdb\"}",
+              "legendFormat": "Pods Desired",
+              "range": true,
+              "refId": "Desired"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "builder",
+              "expr": "kube_deployment_status_replicas_ready{namespace=\"dashdot\", deployment=\"dashdotdb\"}",
+              "hide": false,
+              "legendFormat": "Pods Ready",
+              "range": true,
+              "refId": "Ready"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Dash.DB Deployment",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:54",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:55",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
         {
           "collapsed": false,
           "datasource": {
@@ -43,7 +164,7 @@ data:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 0
+            "y": 9
           },
           "id": 4,
           "panels": [],
@@ -77,13 +198,13 @@ data:
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 6,
-            "w": 24,
+            "h": 8,
+            "w": 16,
             "x": 0,
-            "y": 1
+            "y": 10
           },
           "hiddenSeries": false,
-          "id": 2,
+          "id": 34,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -197,10 +318,10 @@ data:
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 7,
-            "w": 24,
+            "h": 8,
+            "w": 16,
             "x": 0,
-            "y": 7
+            "y": 18
           },
           "hiddenSeries": false,
           "id": 29,
@@ -371,7 +492,7 @@ data:
       "uid": "dashdotdbservicemonitoring",
       "version": 1,
       "weekStart": ""
-    }   
+    }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
