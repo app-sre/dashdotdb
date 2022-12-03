@@ -4,7 +4,7 @@ WORKDIR     /dashdotdb
 
 COPY        . ./
 
-RUN         microdnf update && microdnf install python3-dev libpq-dev
+RUN         yum install python3-dev libpq-dev
 RUN         pip3 install --no-cache-dir . && \
             pip3 install --no-cache-dir gunicorn
 

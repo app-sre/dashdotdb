@@ -2,7 +2,7 @@ FROM        registry.access.redhat.com/ubi8/python-39
 
 COPY        . ./
 
-RUN         microdnf update && microdnf install python3-dev libpq-dev
+RUN         yum install python3-dev libpq-dev
 RUN         pip3 install --no-cache-dir . && \
             pip3 install --no-cache-dir gunicorn && \
             pip3 install --no-cache-dir -r requirements-check.txt
