@@ -27,20 +27,28 @@ RUN set -eux && \
 
 FROM registry.access.redhat.com/ubi8/python-39:latest
 
-COPY --from=builder /build/psycopg2-*.egg .
+COPY --from=builder /build/psycopg2-*.egg ./
 
 USER 0
+
+ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 
 RUN set -eux && \
   python3 -m easy_install psycopg2-*.egg && \
   rm -f psycopg2-*.egg && \
   pip3 list
 
-WORKDIR     /dashdotdb
+WORKDIR /dashdotdb
 
-COPY        . ./
+COPY . ./
 
-RUN         pip3 install --no-cache-dir . && \
-            pip3 install --no-cache-dir gunicorn
+ENV PIP_NO_CACHE_DIR 1
 
-ENTRYPOINT  ["./entrypoint.sh"]
+RUN set -eux && \
+  pip3 install gunicorn && \
+  pip3 install . && \
+  pip3 list
+
+USER 1001
+
+ENTRYPOINT ["./entrypoint.sh"]
