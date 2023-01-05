@@ -172,7 +172,7 @@ existing model or by creating new ones. Models are placed
 Create the upgrade routine executing the command:
 
 ```
-FLASK_APP=dashdotdb flask db migrate
+make db
 ```
 
 That will create a new migration file in the
