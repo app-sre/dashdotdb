@@ -1,31 +1,35 @@
+DATABASE_URL := postgresql://postgres:postgres@127.0.0.1:5432/postgres
+FLASK_APP := dashdotdb
 
 
-flaskvars:
-	export FLASK_APP=dashdotdb && \
-	export DASHDOTDB_DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
-
-
-venv-init: flaskvars
+venv-init:
 	python3 -m venv venv && \
 	source venv/bin/activate && \
 	python3 setup.py develop
 
 
-run-service: flaskvars
-	FLASK_ENV=development
-	flask run --debugger --port 8080
+run-service:
+	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) flask run --debugger --port 8080
+
+
+db-down:
+	docker rm -f dashdot-postgres
 
 
 db-up:
-	 docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+	 docker run -d --name dashdot-postgres --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+	 sleep 2
 
 
-db-capture: flaskvars
-	flask db migrate
+db-capture:
+	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) flask db migrate
 
 
-db-init: flaskvars
-	flask db upgrade
+db-init:
+	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) flask db upgrade
+
+
+db: db-down db-up db-init db-capture db-init
 
 
 dddb-import-imv:
