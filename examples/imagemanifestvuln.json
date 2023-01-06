@@ -2,507 +2,851 @@
     "apiVersion": "secscan.quay.redhat.com/v1alpha1",
     "kind": "ImageManifestVuln",
     "metadata": {
-        "creationTimestamp": "2020-05-20T14:24:56Z",
-        "generation": 42,
+        "creationTimestamp": "2022-07-22T07:14:45Z",
+        "generation": 3549,
         "labels": {
-            "cso/sleep-6f84df5847-4bn9p": "true",
-            "cso/sleep-6f84df5847-bctxz": "true",
-            "cso/sleep-6f84df5847-dh9l8": "true"
+            "unleash/app-interface-84f4d66bfc-259tb": "true",
+            "unleash/app-interface-84f4d66bfc-25fbm": "true",
+            "unleash/app-interface-84f4d66bfc-6s8k7": "true",
+            "unleash/app-interface-84f4d66bfc-6vdpk": "true",
+            "unleash/app-interface-84f4d66bfc-7gjfz": "true",
+            "unleash/app-interface-84f4d66bfc-7wb7q": "true",
+            "unleash/app-interface-84f4d66bfc-7xqbj": "true",
+            "unleash/app-interface-84f4d66bfc-9cxf6": "true",
+            "unleash/app-interface-84f4d66bfc-c62x6": "true",
+            "unleash/app-interface-84f4d66bfc-cd79p": "true",
+            "unleash/app-interface-84f4d66bfc-cwhr8": "true",
+            "unleash/app-interface-84f4d66bfc-dqx4d": "true",
+            "unleash/app-interface-84f4d66bfc-f8qcf": "true",
+            "unleash/app-interface-84f4d66bfc-fvd4d": "true",
+            "unleash/app-interface-84f4d66bfc-hcfpn": "true",
+            "unleash/app-interface-84f4d66bfc-kpstd": "true",
+            "unleash/app-interface-84f4d66bfc-kz6rx": "true",
+            "unleash/app-interface-84f4d66bfc-lt9rx": "true",
+            "unleash/app-interface-84f4d66bfc-mj9gx": "true",
+            "unleash/app-interface-84f4d66bfc-mtgzp": "true",
+            "unleash/app-interface-84f4d66bfc-nvgw4": "true",
+            "unleash/app-interface-84f4d66bfc-pfs4k": "true",
+            "unleash/app-interface-84f4d66bfc-qdztq": "true",
+            "unleash/app-interface-84f4d66bfc-rc2ld": "true",
+            "unleash/app-interface-84f4d66bfc-sqfvt": "true",
+            "unleash/app-interface-84f4d66bfc-t55wk": "true",
+            "unleash/app-interface-84f4d66bfc-tvswk": "true",
+            "unleash/app-interface-84f4d66bfc-x56cs": "true",
+            "unleash/insights-f8ff54f8b-2dxvm": "true",
+            "unleash/insights-f8ff54f8b-2fg9v": "true",
+            "unleash/insights-f8ff54f8b-4b72b": "true",
+            "unleash/insights-f8ff54f8b-4p5pz": "true",
+            "unleash/insights-f8ff54f8b-4vvsl": "true",
+            "unleash/insights-f8ff54f8b-bn8fm": "true",
+            "unleash/insights-f8ff54f8b-btjlp": "true",
+            "unleash/insights-f8ff54f8b-ccfkc": "true",
+            "unleash/insights-f8ff54f8b-cwq4j": "true",
+            "unleash/insights-f8ff54f8b-flhn5": "true",
+            "unleash/insights-f8ff54f8b-fstkg": "true",
+            "unleash/insights-f8ff54f8b-gsbmv": "true",
+            "unleash/insights-f8ff54f8b-hl4b2": "true",
+            "unleash/insights-f8ff54f8b-hlpmr": "true",
+            "unleash/insights-f8ff54f8b-jf9z6": "true",
+            "unleash/insights-f8ff54f8b-k6xws": "true",
+            "unleash/insights-f8ff54f8b-km974": "true",
+            "unleash/insights-f8ff54f8b-kp9vj": "true",
+            "unleash/insights-f8ff54f8b-lhwsq": "true",
+            "unleash/insights-f8ff54f8b-mzld7": "true",
+            "unleash/insights-f8ff54f8b-ps85m": "true",
+            "unleash/insights-f8ff54f8b-pvknd": "true",
+            "unleash/insights-f8ff54f8b-q4wnn": "true",
+            "unleash/insights-f8ff54f8b-qp6bg": "true",
+            "unleash/insights-f8ff54f8b-qvvlk": "true",
+            "unleash/insights-f8ff54f8b-s655m": "true",
+            "unleash/insights-f8ff54f8b-sjzbh": "true",
+            "unleash/insights-f8ff54f8b-sv2tj": "true",
+            "unleash/insights-f8ff54f8b-swkzp": "true",
+            "unleash/insights-f8ff54f8b-trfvf": "true",
+            "unleash/insights-f8ff54f8b-vmnxv": "true",
+            "unleash/insights-f8ff54f8b-wfrwv": "true",
+            "unleash/insights-f8ff54f8b-wx4qq": "true",
+            "unleash/insights-f8ff54f8b-zvdfd": "true",
+            "unleash/managed-services-6c47f9bc55-29dgb": "true",
+            "unleash/managed-services-6c47f9bc55-2jpkv": "true",
+            "unleash/managed-services-6c47f9bc55-4dcg7": "true",
+            "unleash/managed-services-6c47f9bc55-5lt2p": "true",
+            "unleash/managed-services-6c47f9bc55-8fs9r": "true",
+            "unleash/managed-services-6c47f9bc55-9pndw": "true",
+            "unleash/managed-services-6c47f9bc55-b6ghk": "true",
+            "unleash/managed-services-6c47f9bc55-cpzw5": "true",
+            "unleash/managed-services-6c47f9bc55-dg729": "true",
+            "unleash/managed-services-6c47f9bc55-dhdfx": "true",
+            "unleash/managed-services-6c47f9bc55-drsng": "true",
+            "unleash/managed-services-6c47f9bc55-ds54c": "true",
+            "unleash/managed-services-6c47f9bc55-dzlrq": "true",
+            "unleash/managed-services-6c47f9bc55-f9k59": "true",
+            "unleash/managed-services-6c47f9bc55-g99xp": "true",
+            "unleash/managed-services-6c47f9bc55-hdv6z": "true",
+            "unleash/managed-services-6c47f9bc55-hgmkb": "true",
+            "unleash/managed-services-6c47f9bc55-hl4c6": "true",
+            "unleash/managed-services-6c47f9bc55-lrrqc": "true",
+            "unleash/managed-services-6c47f9bc55-m98n7": "true",
+            "unleash/managed-services-6c47f9bc55-mbgjp": "true",
+            "unleash/managed-services-6c47f9bc55-mgcjx": "true",
+            "unleash/managed-services-6c47f9bc55-n7rzp": "true",
+            "unleash/managed-services-6c47f9bc55-p57bb": "true",
+            "unleash/managed-services-6c47f9bc55-q2wfl": "true",
+            "unleash/managed-services-6c47f9bc55-qlslw": "true",
+            "unleash/managed-services-6c47f9bc55-r2grv": "true",
+            "unleash/managed-services-6c47f9bc55-rkqfj": "true",
+            "unleash/managed-services-6c47f9bc55-scg76": "true",
+            "unleash/managed-services-6c47f9bc55-sx7zl": "true",
+            "unleash/managed-services-6c47f9bc55-tbz5r": "true",
+            "unleash/managed-services-6c47f9bc55-trt4f": "true",
+            "unleash/managed-services-6c47f9bc55-tsnvq": "true",
+            "unleash/managed-services-6c47f9bc55-vttl2": "true",
+            "unleash/managed-services-6c47f9bc55-w968z": "true",
+            "unleash/managed-services-6c47f9bc55-xb4pd": "true",
+            "unleash/managed-services-6c47f9bc55-xv2gm": "true",
+            "unleash/managed-services-6c47f9bc55-z2j9k": "true",
+            "unleash/managed-services-6c47f9bc55-zlf45": "true",
+            "unleash/ocm-55668f7ff6-26nhw": "true",
+            "unleash/ocm-55668f7ff6-2jqxk": "true",
+            "unleash/ocm-55668f7ff6-2jsb8": "true",
+            "unleash/ocm-55668f7ff6-2qqqq": "true",
+            "unleash/ocm-55668f7ff6-5h9d4": "true",
+            "unleash/ocm-55668f7ff6-69pg7": "true",
+            "unleash/ocm-55668f7ff6-6lq2k": "true",
+            "unleash/ocm-55668f7ff6-6qfxc": "true",
+            "unleash/ocm-55668f7ff6-7jsn8": "true",
+            "unleash/ocm-55668f7ff6-897pm": "true",
+            "unleash/ocm-55668f7ff6-cbbmp": "true",
+            "unleash/ocm-55668f7ff6-dlwgj": "true",
+            "unleash/ocm-55668f7ff6-f7rbh": "true",
+            "unleash/ocm-55668f7ff6-fstw6": "true",
+            "unleash/ocm-55668f7ff6-jd2fj": "true",
+            "unleash/ocm-55668f7ff6-k9kqh": "true",
+            "unleash/ocm-55668f7ff6-kk25r": "true",
+            "unleash/ocm-55668f7ff6-mbbt9": "true",
+            "unleash/ocm-55668f7ff6-ncn6b": "true",
+            "unleash/ocm-55668f7ff6-nkvxt": "true",
+            "unleash/ocm-55668f7ff6-qc77b": "true",
+            "unleash/ocm-55668f7ff6-qw2b4": "true",
+            "unleash/ocm-55668f7ff6-sg2cl": "true",
+            "unleash/ocm-55668f7ff6-sn6f2": "true",
+            "unleash/ocm-55668f7ff6-ttqsg": "true",
+            "unleash/ocm-55668f7ff6-vmgqg": "true"
         },
-        "name": "sha256.9e0c275e0bcb495773b10a18e499985d782810e47b4fce076422acb4bc3da3dd",
-        "namespace": "cso",
-        "resourceVersion": "935794",
-        "selfLink": "/apis/secscan.quay.redhat.com/v1alpha1/namespaces/cso/imagemanifestvulns/sha256.9e0c275e0bcb495773b10a18e499985d782810e47b4fce076422acb4bc3da3dd",
-        "uid": "fff9e72d-531f-45ac-94c9-acbf6d85a062"
+        "name": "sha256.45cacb324a9c93f8ef6982e74631f42ffa4220d5cf9b5d34af99178ef5486778",
+        "namespace": "unleash",
+        "resourceVersion": "1819128818",
+        "uid": "f6e99790-9d41-40e6-9baa-ff04dd09f6c9"
     },
     "spec": {
         "features": [
             {
-                "name": "platform-python-pip",
-                "namespaceName": "centos:8",
-                "version": "9.0.3-15.el8",
-                "versionformat": "rpm",
+                "name": "python3-libs",
+                "version": "3.6.8-45.el8",
                 "vulnerabilities": [
                     {
-                        "description": "pip is a package management system used to install and manage software packages written in Python. Many packages can be found in the Python Package Index (PyPI). pip is a recursive acronym that can stand for either \"Pip Installs Packages\" or \"Pip Installs Python\".  Security Fix(es): * python-urllib3: Cross-host redirect does not remove Authorization header allow for credential exposure (CVE-2018-20060) * python-urllib3: CRLF injection due to not encoding the '\\r\\n' sequence leading to possible attack on internal service (CVE-2019-11236) * python-urllib3: Certification mishandle when error should be thrown (CVE-2019-11324) * python-requests: Redirect from HTTPS to HTTP does not remove Authorization header (CVE-2018-18074) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:9.0.3-16.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1916",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1916",
-                        "namespaceName": "centos:8",
+                        "description": "Python is an interpreted, interactive, object-oriented programming language, which includes modules, classes, exceptions, very high level dynamic data types and dynamic typing. Python supports interfaces to many system calls and libraries, as well as to various windowing systems. \n\nSecurity Fix(es):\n\n* python(mailcap): findmatch() function does not sanitise the second argument (CVE-2015-20107)\n\n* python: urllib.parse does not sanitize URLs containing ASCII newline and tabs (CVE-2022-0391)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:3.6.8-47.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6457 https://access.redhat.com/security/cve/CVE-2015-20107 https://access.redhat.com/security/cve/CVE-2022-0391",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:H/A:L\", \"Score\": 7.6}}}",
+                        "name": "RHSA-2022:6457: python3 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
                         "severity": "Medium"
                     }
                 ]
             },
             {
-                "name": "libstdc++",
-                "namespaceName": "centos:8",
-                "version": "8.3.1-4.5.el8",
-                "versionformat": "rpm",
+                "name": "pcre2-utf32",
+                "version": "10.32-2.el8",
                 "vulnerabilities": [
                     {
-                        "description": "The gcc packages provide compilers for C, C++, Java, Fortran, Objective C, and Ada 95 GNU, as well as related support libraries. Security Fix(es): * gcc: POWER9 \"DARN\" RNG intrinsic produces repeated output (CVE-2019-15847) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:8.3.1-5.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1864",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1864",
-                        "namespaceName": "centos:8",
+                        "description": "The pcre2 package contains a new generation of the Perl Compatible Regular Expression libraries for implementing regular expression pattern matching using the same syntax and semantics as Perl. \n\nSecurity Fix(es):\n\n* pcre2: Out-of-bounds read in compile_xclass_matchingpath in pcre2_jit_compile.c (CVE-2022-1586)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:10.32-3.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5809 https://access.redhat.com/security/cve/CVE-2022-1586",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H\", \"Score\": 9.1}}}",
+                        "name": "RHSA-2022:5809: pcre2 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
                         "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "pcre2-utf16",
+                "version": "10.32-2.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The pcre2 package contains a new generation of the Perl Compatible Regular Expression libraries for implementing regular expression pattern matching using the same syntax and semantics as Perl. \n\nSecurity Fix(es):\n\n* pcre2: Out-of-bounds read in compile_xclass_matchingpath in pcre2_jit_compile.c (CVE-2022-1586)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:10.32-3.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5809 https://access.redhat.com/security/cve/CVE-2022-1586",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H\", \"Score\": 9.1}}}",
+                        "name": "RHSA-2022:5809: pcre2 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "systemd",
+                "version": "239-58.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit.\n\nSecurity Fix(es):\n\n* systemd-resolved: use-after-free when dealing with DnsStream in resolved-dns-stream.c (CVE-2022-2526)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:239-58.el8_6.4",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6206 https://access.redhat.com/security/cve/CVE-2022-2526",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:6206: systemd security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
                     }
                 ]
             },
             {
                 "name": "sqlite-libs",
-                "namespaceName": "centos:8",
-                "version": "3.26.0-3.el8",
-                "versionformat": "rpm",
+                "version": "3.26.0-15.el8",
                 "vulnerabilities": [
                     {
-                        "description": "SQLite is a C library that implements an SQL database engine. A large subset of SQL92 is supported. A complete database is stored in a single disk file. The API is designed for convenience and ease of use. Applications that link against SQLite can enjoy the power and flexibility of an SQL database without the administrative hassles of supporting a separate database server. Security Fix(es): * sqlite: fts3: improve shadow table corruption detection (CVE-2019-13734) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
-                        "fixedby": "0:3.26.0-4.el8_1",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:0273",
-                        "metadata": "null",
-                        "name": "RHSA-2020:0273",
-                        "namespaceName": "centos:8",
-                        "severity": "High"
-                    },
-                    {
-                        "description": "SQLite is a C library that implements an SQL database engine. A large subset of SQL92 is supported. A complete database is stored in a single disk file. The API is designed for convenience and ease of use. Applications that link against SQLite can enjoy the power and flexibility of an SQL database without the administrative hassles of supporting a separate database server. Security Fix(es): * sqlite: heap out-of-bound read in function rtreenode() (CVE-2019-8457) * sqlite: fts3: improve shadow table corruption detection (CVE-2019-13752) * sqlite: fts3: incorrectly removed corruption check (CVE-2019-13753) * sqlite: mishandling of certain uses of SELECT DISTINCT involving a LEFT JOIN in flattenSubquery in select.c leads to a NULL pointer dereference (CVE-2019-19923) * sqlite: incorrect sqlite3WindowRewrite() error handling leads to mishandling certain parser-tree rewriting (CVE-2019-19924) * sqlite: zipfileUpdate in ext/misc/zipfile.c mishandles a NULL pathname during an update of a ZIP archive (CVE-2019-19925) * sqlite: mishandles certain uses of INSERT INTO in situations involving embedded '\\0' characters in filenames (CVE-2019-19959) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:3.26.0-6.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1810",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1810",
-                        "namespaceName": "centos:8",
+                        "description": "SQLite is a C library that implements an SQL database engine. A large subset of SQL92 is supported. A complete database is stored in a single disk file. The API is designed for convenience and ease of use. Applications that link against SQLite can enjoy the power and flexibility of an SQL database without the administrative hassles of supporting a separate database server.\n\nSecurity Fix(es):\n\n* sqlite: Out of bounds access during table rename (CVE-2020-35527)\n\n* sqlite: Null pointer derreference in src/select.c (CVE-2020-35525)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:3.26.0-16.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7108 https://access.redhat.com/security/cve/CVE-2020-35525 https://access.redhat.com/security/cve/CVE-2020-35527",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:7108: sqlite security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
                         "severity": "Medium"
-                    },
+                    }
+                ]
+            },
+            {
+                "name": "zlib-devel",
+                "version": "1.2.11-18.el8_5",
+                "vulnerabilities": [
                     {
-                        "description": "SQLite is a C library that implements an SQL database engine. A large subset of SQL92 is supported. A complete database is stored in a single disk file. The API is designed for convenience and ease of use. Applications that link against SQLite can enjoy the power and flexibility of an SQL database without the administrative hassles of supporting a separate database server. Security Fix(es): * sqlite: fts3: improve shadow table corruption detection (CVE-2019-13734) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
-                        "fixedby": "0:3.26.0-4.el8_0",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:0229",
-                        "metadata": "null",
-                        "name": "RHSA-2020:0229",
-                        "namespaceName": "centos:8",
+                        "description": "The zlib packages provide a general-purpose lossless data compression library that is used by many different programs.\n\nSecurity Fix(es):\n\n* zlib: a heap-based buffer over-read or buffer overflow in inflate in inflate.c via a large gzip header extra field (CVE-2022-37434)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:1.2.11-19.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7106 https://access.redhat.com/security/cve/CVE-2022-37434",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:7106: zlib security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "vim-minimal",
+                "version": "2:8.0.1763-19.el8_6.2",
+                "vulnerabilities": [
+                    {
+                        "description": "Vim (Vi IMproved) is an updated and improved version of the vi editor.\n\nSecurity Fix(es):\n\n* vim: Out-of-bounds Write (CVE-2022-1785)\n\n* vim: out-of-bounds write in vim_regsub_both() in regexp.c (CVE-2022-1897)\n\n* vim: buffer over-read in utf_ptr2char() in mbyte.c (CVE-2022-1927)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "2:8.0.1763-19.el8_6.4",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5813 https://access.redhat.com/security/cve/CVE-2022-1785 https://access.redhat.com/security/cve/CVE-2022-1897 https://access.redhat.com/security/cve/CVE-2022-1927",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 7.8}}}",
+                        "name": "RHSA-2022:5813: vim security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "python3-libxml2",
+                "version": "2.9.7-13.el8_6.1",
+                "vulnerabilities": [
+                    {
+                        "description": "The libxml2 library is a development toolbox providing the implementation of various XML standards.\n\nSecurity Fix(es):\n\n* libxml2: Incorrect server side include parsing can lead to XSS (CVE-2016-3709)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nAdditional Changes:\n\nFor detailed information on changes in this release, see the Red Hat Enterprise Linux 8.7 Release Notes linked from the References section.",
+                        "fixedby": "0:2.9.7-15.el8",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7715 https://access.redhat.com/security/cve/CVE-2016-3709",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N\", \"Score\": 6.1}}}",
+                        "name": "RHSA-2022:7715: libxml2 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "openssl-libs",
+                "version": "1:1.1.1k-6.el8_5",
+                "vulnerabilities": [
+                    {
+                        "description": "OpenSSL is a toolkit that implements the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols, as well as a full-strength general-purpose cryptography library.\n\nSecurity Fix(es):\n\n* openssl: c_rehash script allows command injection (CVE-2022-1292)\n\n* openssl: the c_rehash script allows command injection (CVE-2022-2068)\n\n* openssl: AES OCB fails to encrypt some bytes (CVE-2022-2097)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "1:1.1.1k-7.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5818 https://access.redhat.com/security/cve/CVE-2022-1292 https://access.redhat.com/security/cve/CVE-2022-2068 https://access.redhat.com/security/cve/CVE-2022-2097",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:5818: openssl security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "libkadm5",
+                "version": "1.18.2-14.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "Kerberos is a network authentication system, which can improve the security of your network by eliminating the insecure practice of sending passwords over the network in unencrypted form. It allows clients and servers to authenticate to each other with the help of a trusted third party, the Kerberos key distribution center (KDC).\n\nSecurity Fix(es):\n\n* krb5: integer overflow vulnerabilities in PAC parsing (CVE-2022-42898)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:1.18.2-22.el8_7",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:8638 https://access.redhat.com/security/cve/CVE-2022-42898",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"\", \"Score\": \"\"}}}",
+                        "name": "RHSA-2022:8638: krb5 security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
                         "severity": "High"
                     }
                 ]
             },
             {
-                "name": "python3-libs",
-                "namespaceName": "centos:8",
-                "version": "3.6.8-15.1.el8",
-                "versionformat": "rpm",
+                "name": "vim-filesystem",
+                "version": "2:8.0.1763-19.el8_6.2",
                 "vulnerabilities": [
                     {
-                        "description": "Python is an interpreted, interactive, object-oriented programming language, which includes modules, classes, exceptions, very high level dynamic data types and dynamic typing. Python supports interfaces to many system calls and libraries, as well as to various windowing systems.  Security Fix(es): * python: Cookie domain check returns incorrect results (CVE-2018-20852) * python: email.utils.parseaddr wrongly parses email addresses (CVE-2019-16056) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:3.6.8-23.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1764",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1764",
-                        "namespaceName": "centos:8",
+                        "description": "Vim (Vi IMproved) is an updated and improved version of the vi editor.\n\nSecurity Fix(es):\n\n* vim: Out-of-bounds Write (CVE-2022-1785)\n\n* vim: out-of-bounds write in vim_regsub_both() in regexp.c (CVE-2022-1897)\n\n* vim: buffer over-read in utf_ptr2char() in mbyte.c (CVE-2022-1927)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "2:8.0.1763-19.el8_6.4",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5813 https://access.redhat.com/security/cve/CVE-2022-1785 https://access.redhat.com/security/cve/CVE-2022-1897 https://access.redhat.com/security/cve/CVE-2022-1927",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 7.8}}}",
+                        "name": "RHSA-2022:5813: vim security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "zlib",
+                "version": "1.2.11-18.el8_5",
+                "vulnerabilities": [
+                    {
+                        "description": "The zlib packages provide a general-purpose lossless data compression library that is used by many different programs.\n\nSecurity Fix(es):\n\n* zlib: a heap-based buffer over-read or buffer overflow in inflate in inflate.c via a large gzip header extra field (CVE-2022-37434)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:1.2.11-19.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7106 https://access.redhat.com/security/cve/CVE-2022-37434",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:7106: zlib security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "gnupg2",
+                "version": "2.2.20-2.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The GNU Privacy Guard (GnuPG or GPG) is a tool for encrypting data and creating digital signatures, compliant with OpenPGP and S/MIME standards.\n\nSecurity Fix(es):\n\n* gpg: Signature spoofing via status line injection (CVE-2022-34903)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:2.2.20-3.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6463 https://access.redhat.com/security/cve/CVE-2022-34903",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N\", \"Score\": 6.5}}}",
+                        "name": "RHSA-2022:6463: gnupg2 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
                         "severity": "Medium"
                     }
                 ]
             },
             {
                 "name": "libcom_err",
-                "namespaceName": "centos:8",
-                "version": "1.44.6-3.el8",
-                "versionformat": "rpm",
+                "version": "1.45.6-4.el8",
                 "vulnerabilities": [
                     {
-                        "description": "The e2fsprogs packages provide a number of utilities for creating, checking, modifying, and correcting the ext2, ext3, and ext4 file systems. The following packages have been upgraded to a later upstream version: e2fsprogs (1.45.4). (BZ#1783777) Security Fix(es): * e2fsprogs: crafted ext4 partition leads to out-of-bounds write (CVE-2019-5094) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:1.45.4-3.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1913",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1913",
-                        "namespaceName": "centos:8",
+                        "description": "The e2fsprogs packages provide a number of utilities for creating, checking, modifying, and correcting the ext2, ext3, and ext4 file systems.\n\nSecurity Fix(es):\n\n* e2fsprogs: out-of-bounds read/write via crafted filesystem (CVE-2022-1304)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nAdditional Changes:\n\nFor detailed information on changes in this release, see the Red Hat Enterprise Linux 8.7 Release Notes linked from the References section.",
+                        "fixedby": "0:1.45.6-5.el8",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7720 https://access.redhat.com/security/cve/CVE-2022-1304",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H\", \"Score\": 7.8}}}",
+                        "name": "RHSA-2022:7720: e2fsprogs security and bug fix update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
                         "severity": "Medium"
                     }
                 ]
             },
             {
-                "name": "systemd-udev",
-                "namespaceName": "centos:8",
-                "version": "239-18.el8_1.1",
-                "versionformat": "rpm",
+                "name": "krb5-devel",
+                "version": "1.18.2-14.el8",
                 "vulnerabilities": [
                     {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: services with DynamicUser can create SUID/SGID binaries (CVE-2019-3843) * systemd: services with DynamicUser can get new privileges and create SGID binaries (CVE-2019-3844) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:239-29.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1794",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1794",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
+                        "description": "Kerberos is a network authentication system, which can improve the security of your network by eliminating the insecure practice of sending passwords over the network in unencrypted form. It allows clients and servers to authenticate to each other with the help of a trusted third party, the Kerberos key distribution center (KDC).\n\nSecurity Fix(es):\n\n* krb5: integer overflow vulnerabilities in PAC parsing (CVE-2022-42898)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:1.18.2-22.el8_7",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:8638 https://access.redhat.com/security/cve/CVE-2022-42898",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"\", \"Score\": \"\"}}}",
+                        "name": "RHSA-2022:8638: krb5 security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
+                    }
+                ]
+            },
+            {
+                "name": "urllib3",
+                "version": "1.24.2",
+                "vulnerabilities": [
+                    {
+                        "description": "urllib3 before 1.25.9 allows CRLF injection if the attacker controls the HTTP request method, as demonstrated by inserting CR and LF control characters in the first argument of putrequest(). NOTE: this is similar to CVE-2020-26116.",
+                        "metadata": "{\"UpdatedBy\": \"pyupio\", \"RepoName\": \"pypi\", \"RepoLink\": \"https://pypi.org/simple\", \"DistroName\": \"\", \"DistroVersion\": \"\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N\", \"Score\": 7.2}}}",
+                        "name": "pyup.io-38834 (CVE-2020-26137)",
+                        "namespaceName": "pyupio",
+                        "severity": "High"
                     },
                     {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: use-after-free when asynchronous polkit queries are performed (CVE-2020-1712) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Bug Fix(es): * systemd: systemctl reload command breaks ordering dependencies between units (BZ#1781712)",
-                        "fixedby": "0:239-18.el8_1.4",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:0575",
-                        "metadata": "null",
-                        "name": "RHSA-2020:0575",
-                        "namespaceName": "centos:8",
+                        "description": "Urllib3 1.26.5 includes a fix for CVE-2021-33503: An issue was discovered in urllib3 before 1.26.5. When provided with a URL containing many @ characters in the authority component, the authority regular expression exhibits catastrophic backtracking, causing a denial of service if a URL were passed as a parameter or redirected to via an HTTP redirect.\r\nhttps://github.com/advisories/GHSA-q2q7-5pp4-w6pg",
+                        "metadata": "{\"UpdatedBy\": \"pyupio\", \"RepoName\": \"pypi\", \"RepoLink\": \"https://pypi.org/simple\", \"DistroName\": \"\", \"DistroVersion\": \"\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H\", \"Score\": 7.5}}}",
+                        "name": "pyup.io-43975 (CVE-2021-33503)",
+                        "namespaceName": "pyupio",
                         "severity": "High"
                     }
                 ]
             },
             {
-                "name": "curl",
-                "namespaceName": "centos:8",
-                "version": "7.61.1-11.el8",
-                "versionformat": "rpm",
+                "name": "openssl",
+                "version": "1:1.1.1k-6.el8_5",
                 "vulnerabilities": [
                     {
-                        "description": "The curl packages provide the libcurl library and the curl utility for downloading files from servers using various protocols, including HTTP, FTP, and LDAP. Security Fix(es): * curl: double free due to subsequent call of realloc() (CVE-2019-5481) * curl: heap buffer overflow in function tftp_receive_packet() (CVE-2019-5482) * curl: TFTP receive heap buffer overflow in tftp_receive_packet() function (CVE-2019-5436) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:7.61.1-12.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1792",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1792",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    }
-                ]
-            },
-            {
-                "name": "glibc-minimal-langpack",
-                "namespaceName": "centos:8",
-                "version": "2.28-72.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The glibc packages provide the standard C libraries (libc), POSIX thread libraries (libpthread), standard math libraries (libm), and the name service cache daemon (nscd) used by multiple programs on the system. Without these libraries, the Linux system cannot function correctly. Security Fix(es): * glibc: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries (CVE-2019-19126) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:2.28-101.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1828",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1828",
-                        "namespaceName": "centos:8",
-                        "severity": "Low"
-                    }
-                ]
-            },
-            {
-                "name": "python3-pip-wheel",
-                "namespaceName": "centos:8",
-                "version": "9.0.3-15.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "pip is a package management system used to install and manage software packages written in Python. Many packages can be found in the Python Package Index (PyPI). pip is a recursive acronym that can stand for either \"Pip Installs Packages\" or \"Pip Installs Python\".  Security Fix(es): * python-urllib3: Cross-host redirect does not remove Authorization header allow for credential exposure (CVE-2018-20060) * python-urllib3: CRLF injection due to not encoding the '\\r\\n' sequence leading to possible attack on internal service (CVE-2019-11236) * python-urllib3: Certification mishandle when error should be thrown (CVE-2019-11324) * python-requests: Redirect from HTTPS to HTTP does not remove Authorization header (CVE-2018-18074) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:9.0.3-16.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1916",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1916",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    }
-                ]
-            },
-            {
-                "name": "binutils",
-                "namespaceName": "centos:8",
-                "version": "2.30-58.el8.0.1",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The binutils packages provide a collection of binary utilities for the manipulation of object code in various object file formats. It includes the ar, as, gprof, ld, nm, objcopy, objdump, ranlib, readelf, size, strings, strip, and addr2line utilities. Security Fix(es): * binutils: integer overflow leading to a SEGV in _bfd_dwarf2_find_nearest_line in dwarf2.c (CVE-2019-17451) * binutils: Improper Input Validation, Signed/Unsigned Comparison, Out-of-bounds Read in gold/fileread.cc and elfcpp/elfcpp_file.h leads to denial of service (CVE-2019-1010204) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:2.30-73.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1797",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1797",
-                        "namespaceName": "centos:8",
-                        "severity": "Low"
-                    }
-                ]
-            },
-            {
-                "name": "systemd-libs",
-                "namespaceName": "centos:8",
-                "version": "239-18.el8_1.1",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: services with DynamicUser can create SUID/SGID binaries (CVE-2019-3843) * systemd: services with DynamicUser can get new privileges and create SGID binaries (CVE-2019-3844) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:239-29.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1794",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1794",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    },
-                    {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: use-after-free when asynchronous polkit queries are performed (CVE-2020-1712) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Bug Fix(es): * systemd: systemctl reload command breaks ordering dependencies between units (BZ#1781712)",
-                        "fixedby": "0:239-18.el8_1.4",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:0575",
-                        "metadata": "null",
-                        "name": "RHSA-2020:0575",
-                        "namespaceName": "centos:8",
-                        "severity": "High"
-                    }
-                ]
-            },
-            {
-                "name": "systemd",
-                "namespaceName": "centos:8",
-                "version": "239-18.el8_1.1",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: services with DynamicUser can create SUID/SGID binaries (CVE-2019-3843) * systemd: services with DynamicUser can get new privileges and create SGID binaries (CVE-2019-3844) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:239-29.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1794",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1794",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    },
-                    {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: use-after-free when asynchronous polkit queries are performed (CVE-2020-1712) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Bug Fix(es): * systemd: systemctl reload command breaks ordering dependencies between units (BZ#1781712)",
-                        "fixedby": "0:239-18.el8_1.4",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:0575",
-                        "metadata": "null",
-                        "name": "RHSA-2020:0575",
-                        "namespaceName": "centos:8",
-                        "severity": "High"
-                    }
-                ]
-            },
-            {
-                "name": "gnutls",
-                "namespaceName": "centos:8",
-                "version": "3.6.8-8.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The gnutls packages provide the GNU Transport Layer Security (GnuTLS) library, which implements cryptographic algorithms and protocols such as SSL, TLS, and DTLS. Security Fix(es): * gnutls: DTLS client hello contains a random value of all zeroes (CVE-2020-11501) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
-                        "fixedby": "0:3.6.8-10.el8_2",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1998",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1998",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    }
-                ]
-            },
-            {
-                "name": "glib2",
-                "namespaceName": "centos:8",
-                "version": "2.56.4-7.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "GLib provides the core application building blocks for libraries and applications written in C. It provides the core object system used in GNOME, the main loop implementation, and a large set of utility functions for strings and common data structures. The Intelligent Input Bus (IBus) is an input method framework for multilingual input in Unix-like operating systems. Security Fix(es): * ibus: missing authorization allows local attacker to access the input bus of another user (CVE-2019-14822) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:2.56.4-8.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1880",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1880",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    }
-                ]
-            },
-            {
-                "name": "libarchive",
-                "namespaceName": "centos:8",
-                "version": "3.3.2-7.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The libarchive programming library can create and read several different streaming archive formats, including GNU tar, cpio, and ISO 9660 CD-ROM images. Libarchive is used notably in the bsdtar utility, scripting language bindings such as python-libarchive, and several popular desktop file managers. Security Fix(es): * libarchive: use-after-free in archive_read_format_rar_read_data when there is an error in the decompression of an archive entry (CVE-2019-18408) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
-                        "fixedby": "0:3.3.2-8.el8_1",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:0271",
-                        "metadata": "null",
-                        "name": "RHSA-2020:0271",
-                        "namespaceName": "centos:8",
-                        "severity": "High"
-                    }
-                ]
-            },
-            {
-                "name": "glibc",
-                "namespaceName": "centos:8",
-                "version": "2.28-72.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The glibc packages provide the standard C libraries (libc), POSIX thread libraries (libpthread), standard math libraries (libm), and the name service cache daemon (nscd) used by multiple programs on the system. Without these libraries, the Linux system cannot function correctly. Security Fix(es): * glibc: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries (CVE-2019-19126) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:2.28-101.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1828",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1828",
-                        "namespaceName": "centos:8",
-                        "severity": "Low"
-                    }
-                ]
-            },
-            {
-                "name": "platform-python",
-                "namespaceName": "centos:8",
-                "version": "3.6.8-15.1.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "Python is an interpreted, interactive, object-oriented programming language, which includes modules, classes, exceptions, very high level dynamic data types and dynamic typing. Python supports interfaces to many system calls and libraries, as well as to various windowing systems.  Security Fix(es): * python: Cookie domain check returns incorrect results (CVE-2018-20852) * python: email.utils.parseaddr wrongly parses email addresses (CVE-2019-16056) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:3.6.8-23.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1764",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1764",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    }
-                ]
-            },
-            {
-                "name": "bind-export-libs",
-                "namespaceName": "centos:8",
-                "version": "32:9.11.4-26.P2.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The Berkeley Internet Name Domain (BIND) is an implementation of the Domain Name System (DNS) protocols. BIND includes a DNS server (named); a resolver library (routines for applications to use when interfacing with DNS); and tools for verifying that the DNS server is operating correctly. The following packages have been upgraded to a later upstream version: bind (9.11.13). (BZ#1704328) Security Fix(es): * bind: TCP Pipelining doesn't limit TCP clients on a single connection (CVE-2019-6477) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "32:9.11.13-3.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1845",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1845",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    }
-                ]
-            },
-            {
-                "name": "glibc-common",
-                "namespaceName": "centos:8",
-                "version": "2.28-72.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The glibc packages provide the standard C libraries (libc), POSIX thread libraries (libpthread), standard math libraries (libm), and the name service cache daemon (nscd) used by multiple programs on the system. Without these libraries, the Linux system cannot function correctly. Security Fix(es): * glibc: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries (CVE-2019-19126) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:2.28-101.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1828",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1828",
-                        "namespaceName": "centos:8",
-                        "severity": "Low"
-                    }
-                ]
-            },
-            {
-                "name": "systemd-pam",
-                "namespaceName": "centos:8",
-                "version": "239-18.el8_1.1",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: services with DynamicUser can create SUID/SGID binaries (CVE-2019-3843) * systemd: services with DynamicUser can get new privileges and create SGID binaries (CVE-2019-3844) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:239-29.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1794",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1794",
-                        "namespaceName": "centos:8",
-                        "severity": "Medium"
-                    },
-                    {
-                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: use-after-free when asynchronous polkit queries are performed (CVE-2020-1712) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Bug Fix(es): * systemd: systemctl reload command breaks ordering dependencies between units (BZ#1781712)",
-                        "fixedby": "0:239-18.el8_1.4",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:0575",
-                        "metadata": "null",
-                        "name": "RHSA-2020:0575",
-                        "namespaceName": "centos:8",
-                        "severity": "High"
-                    }
-                ]
-            },
-            {
-                "name": "openssl-libs",
-                "namespaceName": "centos:8",
-                "version": "1:1.1.1c-2.el8",
-                "versionformat": "rpm",
-                "vulnerabilities": [
-                    {
-                        "description": "OpenSSL is a toolkit that implements the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols, as well as a full-strength general-purpose cryptography library. Security Fix(es): * openssl: side-channel weak encryption vulnerability (CVE-2019-1547) * openssl: information disclosure in fork() (CVE-2019-1549) * openssl: information disclosure in PKCS7_dataDecode and CMS_decrypt_set1_pkey (CVE-2019-1563) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "1:1.1.1c-15.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1840",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1840",
-                        "namespaceName": "centos:8",
+                        "description": "OpenSSL is a toolkit that implements the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols, as well as a full-strength general-purpose cryptography library.\n\nSecurity Fix(es):\n\n* openssl: c_rehash script allows command injection (CVE-2022-1292)\n\n* openssl: the c_rehash script allows command injection (CVE-2022-2068)\n\n* openssl: AES OCB fails to encrypt some bytes (CVE-2022-2097)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "1:1.1.1k-7.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5818 https://access.redhat.com/security/cve/CVE-2022-1292 https://access.redhat.com/security/cve/CVE-2022-2068 https://access.redhat.com/security/cve/CVE-2022-2097",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:5818: openssl security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
                         "severity": "Medium"
                     }
                 ]
             },
             {
                 "name": "libxml2",
-                "namespaceName": "centos:8",
-                "version": "2.9.7-5.el8",
-                "versionformat": "rpm",
+                "version": "2.9.7-13.el8_6.1",
                 "vulnerabilities": [
                     {
-                        "description": "The libxml2 library is a development toolbox providing the implementation of various XML standards. Security Fix(es): * libxml2: NULL pointer dereference in xmlXPathCompOpEval() function in xpath.c (CVE-2018-14404) * libxml2: infinite loop in xz_decomp function in xzlib.c (CVE-2018-9251) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:2.9.7-7.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1827",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1827",
-                        "namespaceName": "centos:8",
+                        "description": "The libxml2 library is a development toolbox providing the implementation of various XML standards.\n\nSecurity Fix(es):\n\n* libxml2: Incorrect server side include parsing can lead to XSS (CVE-2016-3709)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nAdditional Changes:\n\nFor detailed information on changes in this release, see the Red Hat Enterprise Linux 8.7 Release Notes linked from the References section.",
+                        "fixedby": "0:2.9.7-15.el8",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7715 https://access.redhat.com/security/cve/CVE-2016-3709",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N\", \"Score\": 6.1}}}",
+                        "name": "RHSA-2022:7715: libxml2 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
                         "severity": "Medium"
                     }
                 ]
             },
             {
-                "name": "libcurl-minimal",
-                "namespaceName": "centos:8",
-                "version": "7.61.1-11.el8",
-                "versionformat": "rpm",
+                "name": "kernel-headers",
+                "version": "4.18.0-372.13.1.el8_6",
                 "vulnerabilities": [
                     {
-                        "description": "The curl packages provide the libcurl library and the curl utility for downloading files from servers using various protocols, including HTTP, FTP, and LDAP. Security Fix(es): * curl: double free due to subsequent call of realloc() (CVE-2019-5481) * curl: heap buffer overflow in function tftp_receive_packet() (CVE-2019-5482) * curl: TFTP receive heap buffer overflow in tftp_receive_packet() function (CVE-2019-5436) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:7.61.1-12.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1792",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1792",
-                        "namespaceName": "centos:8",
+                        "description": "The kernel packages contain the Linux kernel, the core of any Linux operating system.\n\nSecurity Fix(es):\n\n* kernel: Small table perturb size in the TCP source port generation algorithm can lead to information leak (CVE-2022-1012)\n\n* kernel: a use-after-free write in the netfilter subsystem can lead to privilege escalation to root (CVE-2022-32250)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nBug Fix(es):\n\n* Softirq hrtimers are being placed on the per-CPU softirq clocks on isolcpu’s. (BZ#2090484)\n\n* enable/disable multiqueues repeatedly while ping local host, guest kernel panic (BZ#2093416)\n\n* Backport kernel audit enhancements and fixes from v5.13-rc1 to v5.16-rc6 (BZ#2095434)\n\n* blk_update_request: I/O error, dev nvme0n3, during xfs creation (BZ#2100150)\n\n* SCSI updates for RHEL 8.7 (BZ#2100254)\n\n* Kernel bug on mm/slub.c:314 (BZ#2102251)\n\n* Implement new tc action for check_pkt_len (BZ#2102333)\n\n* too long timeout value with TIME_WAIT status of conntrack entry (BZ#2104002)\n\n* Connectx6-DX, mlx5 , backport   087032ee7021 (\"net/mlx5e: TC, Fix ct_clear overwriting ct action metadata\") (BZ#2104012)\n\n* mlx5: Software steering memory allocation failure, netperf  TCP_CRR with ct(). (BZ#2104013)\n\n* tcp: request_sock leak in Calico OCP (BZ#2104670)",
+                        "fixedby": "0:4.18.0-372.19.1.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5819 https://access.redhat.com/security/cve/CVE-2022-1012 https://access.redhat.com/security/cve/CVE-2022-32250",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:H\", \"Score\": 8.2}}}",
+                        "name": "RHSA-2022:5819: kernel security and bug fix update (Important)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "High"
+                    },
+                    {
+                        "description": "The kernel packages contain the Linux kernel, the core of any Linux operating system.\n\nSecurity Fix(es):\n\n* A use-after-free in cls_route filter implementation may lead to privilege escalation (CVE-2022-2588)\n\n* Information leak in scsi_ioctl() (CVE-2022-0494)\n\n* A kernel-info-leak issue in pfkey_register (CVE-2022-1353)\n\n* RetBleed Arbitrary Speculative Code Execution with Return Instructions (CVE-2022-23816, CVE-2022-29900)\n\n* Branch Type Confusion (non-retbleed) (CVE-2022-23825)\n\n* RetBleed Arbitrary Speculative Code Execution with Return Instructions (CVE-2022-29901)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nBug Fix(es):\n\n* Add s390_iommu_aperture kernel parameter (BZ#2081324)\n\n* Blackscreen and hangup after resume from hibernate or S3 with DFGX WX3200 (BZ#2091065)\n\n* Update NVME subsystem with bug fixes and minor changes (BZ#2106017)\n\n* Fix parsing of nw_proto for IPv6 fragments (BZ#2106703)\n\n* \"vmcore failed, _exitcode:139\" error observed while capturing vmcore during fadump after memory remove. incomplete vmcore is captured. (BZ#2107488)\n\n* 'disable_policy' is ignored for addresses configured on a down interface (BZ#2109971)\n\n* Backport request for new cpufreq.default_governor kernel command line parameter (BZ#2109996)\n\n* Panics in mpt3sas mpt3sas_halt_firmware() if mpt3sas_fwfault_debug=1 enabled when poweroff issued to server (BZ#2111140)\n\n* IOMMU/DMA update for 8.7 (BZ#2111692)\n\n* Update Broadcom Emulex lpfc driver for RHEL8.7 with bug fixes (14.0.0.13) (BZ#2112103)\n\n* Incorrect Socket(s) \u0026 \"Core(s) per socket\" reported by lscpu command. (BZ#2112820)\n\n* Panic in ch_release() due to NULL ch-\u003edevice pointer, backport upstream fix (BZ#2115965)\n\n* pyverbs-tests fail over qede IW HCAs on \"test_query_rc_qp\" (tests.test_qp.QPTest) (BZ#2119122)\n\n* qedi shutdown handler hangs upon reboot (BZ#2119847)\n\n* cache link_info for ethtool (BZ#2120197)\n\n* Important iavf bug fixes (BZ#2120225)\n\n* Hibernate crash with Aquantia 2.5/5 Gb LAN card (BZ#2124966)\n\n* While using PTimekeeper the qede driver produces excessive log messages (BZ#2125477)\n\n* general protection fault handling rpc_xprt.timer (BZ#2126184)\n\n* Not enough device MSI-X vectors (BZ#2126482)\n\n* Atlantic driver panic on wakeup after hybernate (BZ#2127845)\n\n* Memory leak in vxlan_xmit_one (BZ#2131255)\n\n* Missing hybernate/resume fixes (BZ#2131936)\n\nEnhancement(s):\n\n* Update smartpqi driver to latest upstream Second Set of Patches (BZ#2112354)\n\n* qed/qede/qedr - driver updates to latest upstream (BZ#2120611)\n\n* Update qedi driver to latest upstream (BZ#2120612)\n\n* Update qedf driver to latest upstream (BZ#2120613)\n\n* Include the support for new NVIDIA Mobile GFX GA103 on ADL Gen Laptops (BZ#2127122)\n\n* Need to enable hpilo to support new HPE RL300 Gen11 for ARM (aarch64) (BZ#2129923)",
+                        "fixedby": "0:4.18.0-372.32.1.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7110 https://access.redhat.com/security/cve/CVE-2022-0494 https://access.redhat.com/security/cve/CVE-2022-1353 https://access.redhat.com/security/cve/CVE-2022-23816 https://access.redhat.com/security/cve/CVE-2022-23825 https://access.redhat.com/security/cve/CVE-2022-2588 https://access.redhat.com/security/cve/CVE-2022-29900 https://access.redhat.com/security/cve/CVE-2022-29901",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H\", \"Score\": 7.1}}}",
+                        "name": "RHSA-2022:7110: kernel security, bug fix, and enhancement update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
+                    },
+                    {
+                        "description": "The kernel packages contain the Linux kernel, the core of any Linux operating system.\n\nSecurity Fix(es):\n\n* off-path attacker may inject data or terminate victim's TCP session (CVE-2020-36516)\n\n* race condition in VT_RESIZEX ioctl when vc_cons[i].d is already NULL leading to NULL pointer dereference (CVE-2020-36558)\n\n* use-after-free vulnerability in function sco_sock_sendmsg() (CVE-2021-3640)\n\n* memory leak for large arguments in video_usercopy function in drivers/media/v4l2-core/v4l2-ioctl.c (CVE-2021-30002)\n\n* smb2_ioctl_query_info NULL Pointer Dereference (CVE-2022-0168)\n\n* NULL pointer dereference in udf_expand_file_adinicbdue() during writeback (CVE-2022-0617)\n\n* swiotlb information leak with DMA_FROM_DEVICE (CVE-2022-0854)\n\n* uninitialized registers on stack in nft_do_chain can cause kernel pointer leakage to UM (CVE-2022-1016)\n\n* race condition in snd_pcm_hw_free leading to use-after-free (CVE-2022-1048)\n\n* use-after-free in tc_new_tfilter() in net/sched/cls_api.c (CVE-2022-1055)\n\n* use-after-free and memory errors in ext4 when mounting and operating on a corrupted image (CVE-2022-1184)\n\n* NULL pointer dereference in x86_emulate_insn may lead to DoS (CVE-2022-1852)\n\n* buffer overflow in nft_set_desc_concat_parse() (CVE-2022-2078)\n\n* nf_tables cross-table potential use-after-free may lead to local privilege escalation (CVE-2022-2586)\n\n* openvswitch: integer underflow leads to out-of-bounds write in reserve_sfa_size() (CVE-2022-2639)\n\n* use-after-free when psi trigger is destroyed while being polled (CVE-2022-2938)\n\n* net/packet: slab-out-of-bounds access in packet_recvmsg() (CVE-2022-20368)\n\n* possible to use the debugger to write zero into a location of choice (CVE-2022-21499)\n\n* Spectre-BHB (CVE-2022-23960)\n\n* Post-barrier Return Stack Buffer Predictions (CVE-2022-26373)\n\n* memory leak in drivers/hid/hid-elo.c (CVE-2022-27950)\n\n* double free in ems_usb_start_xmit in drivers/net/can/usb/ems_usb.c (CVE-2022-28390)\n\n* use after free in SUNRPC subsystem (CVE-2022-28893)\n\n* use-after-free due to improper update of reference count in net/sched/cls_u32.c (CVE-2022-29581)\n\n* DoS in nfqnl_mangle in net/netfilter/nfnetlink_queue.c (CVE-2022-36946)\n\n* nfs_atomic_open() returns uninitialized data instead of ENOTDIR (CVE-2022-24448)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nAdditional Changes:\n\nFor detailed information on changes in this release, see the Red Hat Enterprise Linux 8.7 Release Notes linked from the References section.",
+                        "fixedby": "0:4.18.0-425.3.1.el8",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7683 https://access.redhat.com/security/cve/CVE-2020-36516 https://access.redhat.com/security/cve/CVE-2020-36558 https://access.redhat.com/security/cve/CVE-2021-30002 https://access.redhat.com/security/cve/CVE-2021-3640 https://access.redhat.com/security/cve/CVE-2022-0168 https://access.redhat.com/security/cve/CVE-2022-0617 https://access.redhat.com/security/cve/CVE-2022-0854 https://access.redhat.com/security/cve/CVE-2022-1016 https://access.redhat.com/security/cve/CVE-2022-1048 https://access.redhat.com/security/cve/CVE-2022-1055 https://access.redhat.com/security/cve/CVE-2022-1184 https://access.redhat.com/security/cve/CVE-2022-1852 https://access.redhat.com/security/cve/CVE-2022-20368 https://access.redhat.com/security/cve/CVE-2022-2078 https://access.redhat.com/security/cve/CVE-2022-21499 https://access.redhat.com/security/cve/CVE-2022-23960 https://access.redhat.com/security/cve/CVE-2022-24448 https://access.redhat.com/security/cve/CVE-2022-2586 https://access.redhat.com/security/cve/CVE-2022-26373 https://access.redhat.com/security/cve/CVE-2022-2639 https://access.redhat.com/security/cve/CVE-2022-27950 https://access.redhat.com/security/cve/CVE-2022-28390 https://access.redhat.com/security/cve/CVE-2022-28893 https://access.redhat.com/security/cve/CVE-2022-2938 https://access.redhat.com/security/cve/CVE-2022-29581 https://access.redhat.com/security/cve/CVE-2022-36946",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 7.8}}}",
+                        "name": "RHSA-2022:7683: kernel security, bug fix, and enhancement update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
                         "severity": "Medium"
                     }
                 ]
             },
             {
-                "name": "libgcc",
-                "namespaceName": "centos:8",
-                "version": "8.3.1-4.5.el8",
-                "versionformat": "rpm",
+                "name": "gnutls",
+                "version": "3.6.16-4.el8",
                 "vulnerabilities": [
                     {
-                        "description": "The gcc packages provide compilers for C, C++, Java, Fortran, Objective C, and Ada 95 GNU, as well as related support libraries. Security Fix(es): * gcc: POWER9 \"DARN\" RNG intrinsic produces repeated output (CVE-2019-15847) For more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section. Additional Changes: For detailed information on changes in this release, see the Red Hat Enterprise Linux 8.2 Release Notes linked from the References section.",
-                        "fixedby": "0:8.3.1-5.el8",
-                        "link": "https://access.redhat.com/errata/RHSA-2020:1864",
-                        "metadata": "null",
-                        "name": "RHSA-2020:1864",
-                        "namespaceName": "centos:8",
+                        "description": "The gnutls packages provide the GNU Transport Layer Security (GnuTLS) library, which implements cryptographic algorithms and protocols such as SSL, TLS, and DTLS.\n\nSecurity Fix(es):\n\n* gnutls: Double free during gnutls_pkcs7_verify. (CVE-2022-2509)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:3.6.16-5.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7105 https://access.redhat.com/security/cve/CVE-2022-2509",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H\", \"Score\": 7.5}}}",
+                        "name": "RHSA-2022:7105: gnutls security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
                         "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "libksba",
+                "version": "1.3.5-7.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "KSBA (pronounced Kasbah) is a library to make X.509 certificates as well as the CMS easily accessible by other applications.  Both specifications are building blocks of S/MIME and TLS.\n\nSecurity Fix(es):\n\n* libksba: integer overflow may lead to remote code execution (CVE-2022-3515)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:1.3.5-8.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7089 https://access.redhat.com/security/cve/CVE-2022-3515",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"\", \"Score\": \"\"}}}",
+                        "name": "RHSA-2022:7089: libksba security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
+                    }
+                ]
+            },
+            {
+                "name": "nodejs-nodemon",
+                "version": "2.0.15-1.module+el8.5.0+13504+a2e74d91",
+                "vulnerabilities": [
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: Improper handling of URI Subject Alternative Names (CVE-2021-44531)\n\n* nodejs: Certificate Verification Bypass via String Injection (CVE-2021-44532)\n\n* nodejs: Incorrect handling of certificate subject and issuer fields (CVE-2021-44533)\n\n* nodejs: HTTP Request Smuggling due to incorrect parsing of header fields (CVE-2022-35256)\n\n* nodejs: Prototype pollution via console.table properties (CVE-2022-21824)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:2.0.19-2.module+el8.7.0+16991+b0a68a3e",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7830 https://access.redhat.com/security/cve/CVE-2021-44531 https://access.redhat.com/security/cve/CVE-2021-44532 https://access.redhat.com/security/cve/CVE-2021-44533 https://access.redhat.com/security/cve/CVE-2022-21824 https://access.redhat.com/security/cve/CVE-2022-35256",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H\", \"Score\": 8.2}}}",
+                        "name": "RHSA-2022:7830: nodejs:14 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    },
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: DNS rebinding in --inspect via invalid IP addresses (CVE-2022-32212)\n\n* nodejs: HTTP request smuggling due to flawed parsing of Transfer-Encoding (CVE-2022-32213)\n\n* nodejs: HTTP request smuggling due to improper delimiting of header fields (CVE-2022-32214)\n\n* nodejs: HTTP request smuggling due to incorrect parsing of multi-line Transfer-Encoding (CVE-2022-32215)\n\n* got: missing verification of requested URLs allows redirects to UNIX sockets (CVE-2022-33987)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nBug Fix(es):\n\n* nodejs:14/nodejs: rebase to latest upstream release (BZ#2106367)\n\n* nodejs:14/nodejs: Specify --with-default-icu-data-dir when using bootstrap build (BZ#2111417)",
+                        "fixedby": "0:2.0.19-2.module+el8.6.0+16231+7c1b33d9",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6448 https://access.redhat.com/security/cve/CVE-2022-32212 https://access.redhat.com/security/cve/CVE-2022-32213 https://access.redhat.com/security/cve/CVE-2022-32214 https://access.redhat.com/security/cve/CVE-2022-32215 https://access.redhat.com/security/cve/CVE-2022-33987",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 8.1}}}",
+                        "name": "RHSA-2022:6448: nodejs:14 security and bug fix update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "nodejs-docs",
+                "version": "1:14.18.2-2.module+el8.5.0+13644+8d46dafd",
+                "vulnerabilities": [
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: Improper handling of URI Subject Alternative Names (CVE-2021-44531)\n\n* nodejs: Certificate Verification Bypass via String Injection (CVE-2021-44532)\n\n* nodejs: Incorrect handling of certificate subject and issuer fields (CVE-2021-44533)\n\n* nodejs: HTTP Request Smuggling due to incorrect parsing of header fields (CVE-2022-35256)\n\n* nodejs: Prototype pollution via console.table properties (CVE-2022-21824)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "1:14.20.1-2.module+el8.7.0+16991+b0a68a3e",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7830 https://access.redhat.com/security/cve/CVE-2021-44531 https://access.redhat.com/security/cve/CVE-2021-44532 https://access.redhat.com/security/cve/CVE-2021-44533 https://access.redhat.com/security/cve/CVE-2022-21824 https://access.redhat.com/security/cve/CVE-2022-35256",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H\", \"Score\": 8.2}}}",
+                        "name": "RHSA-2022:7830: nodejs:14 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    },
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: DNS rebinding in --inspect via invalid IP addresses (CVE-2022-32212)\n\n* nodejs: HTTP request smuggling due to flawed parsing of Transfer-Encoding (CVE-2022-32213)\n\n* nodejs: HTTP request smuggling due to improper delimiting of header fields (CVE-2022-32214)\n\n* nodejs: HTTP request smuggling due to incorrect parsing of multi-line Transfer-Encoding (CVE-2022-32215)\n\n* got: missing verification of requested URLs allows redirects to UNIX sockets (CVE-2022-33987)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nBug Fix(es):\n\n* nodejs:14/nodejs: rebase to latest upstream release (BZ#2106367)\n\n* nodejs:14/nodejs: Specify --with-default-icu-data-dir when using bootstrap build (BZ#2111417)",
+                        "fixedby": "1:14.20.0-2.module+el8.6.0+16231+7c1b33d9",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6448 https://access.redhat.com/security/cve/CVE-2022-32212 https://access.redhat.com/security/cve/CVE-2022-32213 https://access.redhat.com/security/cve/CVE-2022-32214 https://access.redhat.com/security/cve/CVE-2022-32215 https://access.redhat.com/security/cve/CVE-2022-33987",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 8.1}}}",
+                        "name": "RHSA-2022:6448: nodejs:14 security and bug fix update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "pcre2",
+                "version": "10.32-2.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The pcre2 package contains a new generation of the Perl Compatible Regular Expression libraries for implementing regular expression pattern matching using the same syntax and semantics as Perl. \n\nSecurity Fix(es):\n\n* pcre2: Out-of-bounds read in compile_xclass_matchingpath in pcre2_jit_compile.c (CVE-2022-1586)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:10.32-3.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5809 https://access.redhat.com/security/cve/CVE-2022-1586",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H\", \"Score\": 9.1}}}",
+                        "name": "RHSA-2022:5809: pcre2 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "platform-python",
+                "version": "3.6.8-45.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "Python is an interpreted, interactive, object-oriented programming language, which includes modules, classes, exceptions, very high level dynamic data types and dynamic typing. Python supports interfaces to many system calls and libraries, as well as to various windowing systems. \n\nSecurity Fix(es):\n\n* python(mailcap): findmatch() function does not sanitise the second argument (CVE-2015-20107)\n\n* python: urllib.parse does not sanitize URLs containing ASCII newline and tabs (CVE-2022-0391)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:3.6.8-47.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6457 https://access.redhat.com/security/cve/CVE-2015-20107 https://access.redhat.com/security/cve/CVE-2022-0391",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:H/A:L\", \"Score\": 7.6}}}",
+                        "name": "RHSA-2022:6457: python3 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "nodejs-full-i18n",
+                "version": "1:14.18.2-2.module+el8.5.0+13644+8d46dafd",
+                "vulnerabilities": [
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: Improper handling of URI Subject Alternative Names (CVE-2021-44531)\n\n* nodejs: Certificate Verification Bypass via String Injection (CVE-2021-44532)\n\n* nodejs: Incorrect handling of certificate subject and issuer fields (CVE-2021-44533)\n\n* nodejs: HTTP Request Smuggling due to incorrect parsing of header fields (CVE-2022-35256)\n\n* nodejs: Prototype pollution via console.table properties (CVE-2022-21824)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "1:14.20.1-2.module+el8.7.0+16991+b0a68a3e",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7830 https://access.redhat.com/security/cve/CVE-2021-44531 https://access.redhat.com/security/cve/CVE-2021-44532 https://access.redhat.com/security/cve/CVE-2021-44533 https://access.redhat.com/security/cve/CVE-2022-21824 https://access.redhat.com/security/cve/CVE-2022-35256",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H\", \"Score\": 8.2}}}",
+                        "name": "RHSA-2022:7830: nodejs:14 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    },
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: DNS rebinding in --inspect via invalid IP addresses (CVE-2022-32212)\n\n* nodejs: HTTP request smuggling due to flawed parsing of Transfer-Encoding (CVE-2022-32213)\n\n* nodejs: HTTP request smuggling due to improper delimiting of header fields (CVE-2022-32214)\n\n* nodejs: HTTP request smuggling due to incorrect parsing of multi-line Transfer-Encoding (CVE-2022-32215)\n\n* got: missing verification of requested URLs allows redirects to UNIX sockets (CVE-2022-33987)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nBug Fix(es):\n\n* nodejs:14/nodejs: rebase to latest upstream release (BZ#2106367)\n\n* nodejs:14/nodejs: Specify --with-default-icu-data-dir when using bootstrap build (BZ#2111417)",
+                        "fixedby": "1:14.20.0-2.module+el8.6.0+16231+7c1b33d9",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6448 https://access.redhat.com/security/cve/CVE-2022-32212 https://access.redhat.com/security/cve/CVE-2022-32213 https://access.redhat.com/security/cve/CVE-2022-32214 https://access.redhat.com/security/cve/CVE-2022-32215 https://access.redhat.com/security/cve/CVE-2022-33987",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 8.1}}}",
+                        "name": "RHSA-2022:6448: nodejs:14 security and bug fix update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "pcre2-devel",
+                "version": "10.32-2.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The pcre2 package contains a new generation of the Perl Compatible Regular Expression libraries for implementing regular expression pattern matching using the same syntax and semantics as Perl. \n\nSecurity Fix(es):\n\n* pcre2: Out-of-bounds read in compile_xclass_matchingpath in pcre2_jit_compile.c (CVE-2022-1586)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:10.32-3.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5809 https://access.redhat.com/security/cve/CVE-2022-1586",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H\", \"Score\": 9.1}}}",
+                        "name": "RHSA-2022:5809: pcre2 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "libcurl",
+                "version": "7.61.1-22.el8_6.3",
+                "vulnerabilities": [
+                    {
+                        "description": "The curl packages provide the libcurl library and the curl utility for downloading files from servers using various protocols, including HTTP, FTP, and LDAP.\n\nSecurity Fix(es):\n\n* curl: HTTP compression denial of service (CVE-2022-32206)\n\n* curl: FTP-KRB bad message verification (CVE-2022-32208)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:7.61.1-22.el8_6.4",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6159 https://access.redhat.com/security/cve/CVE-2022-32206 https://access.redhat.com/security/cve/CVE-2022-32208",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H\", \"Score\": 6.5}}}",
+                        "name": "RHSA-2022:6159: curl security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "nodejs",
+                "version": "1:14.18.2-2.module+el8.5.0+13644+8d46dafd",
+                "vulnerabilities": [
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: Improper handling of URI Subject Alternative Names (CVE-2021-44531)\n\n* nodejs: Certificate Verification Bypass via String Injection (CVE-2021-44532)\n\n* nodejs: Incorrect handling of certificate subject and issuer fields (CVE-2021-44533)\n\n* nodejs: HTTP Request Smuggling due to incorrect parsing of header fields (CVE-2022-35256)\n\n* nodejs: Prototype pollution via console.table properties (CVE-2022-21824)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "1:14.20.1-2.module+el8.7.0+16991+b0a68a3e",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7830 https://access.redhat.com/security/cve/CVE-2021-44531 https://access.redhat.com/security/cve/CVE-2021-44532 https://access.redhat.com/security/cve/CVE-2021-44533 https://access.redhat.com/security/cve/CVE-2022-21824 https://access.redhat.com/security/cve/CVE-2022-35256",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H\", \"Score\": 8.2}}}",
+                        "name": "RHSA-2022:7830: nodejs:14 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    },
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: DNS rebinding in --inspect via invalid IP addresses (CVE-2022-32212)\n\n* nodejs: HTTP request smuggling due to flawed parsing of Transfer-Encoding (CVE-2022-32213)\n\n* nodejs: HTTP request smuggling due to improper delimiting of header fields (CVE-2022-32214)\n\n* nodejs: HTTP request smuggling due to incorrect parsing of multi-line Transfer-Encoding (CVE-2022-32215)\n\n* got: missing verification of requested URLs allows redirects to UNIX sockets (CVE-2022-33987)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nBug Fix(es):\n\n* nodejs:14/nodejs: rebase to latest upstream release (BZ#2106367)\n\n* nodejs:14/nodejs: Specify --with-default-icu-data-dir when using bootstrap build (BZ#2111417)",
+                        "fixedby": "1:14.20.0-2.module+el8.6.0+16231+7c1b33d9",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6448 https://access.redhat.com/security/cve/CVE-2022-32212 https://access.redhat.com/security/cve/CVE-2022-32213 https://access.redhat.com/security/cve/CVE-2022-32214 https://access.redhat.com/security/cve/CVE-2022-32215 https://access.redhat.com/security/cve/CVE-2022-33987",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 8.1}}}",
+                        "name": "RHSA-2022:6448: nodejs:14 security and bug fix update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "expat",
+                "version": "2.2.5-8.el8_6.2",
+                "vulnerabilities": [
+                    {
+                        "description": "Expat is a C library for parsing XML documents.\n\nSecurity Fix(es):\n\n* expat: a use-after-free in the doContent function in xmlparse.c (CVE-2022-40674)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:2.2.5-8.el8_6.3",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6878 https://access.redhat.com/security/cve/CVE-2022-40674",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:6878: expat security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "High"
+                    }
+                ]
+            },
+            {
+                "name": "systemd-pam",
+                "version": "239-58.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit.\n\nSecurity Fix(es):\n\n* systemd-resolved: use-after-free when dealing with DnsStream in resolved-dns-stream.c (CVE-2022-2526)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:239-58.el8_6.4",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6206 https://access.redhat.com/security/cve/CVE-2022-2526",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:6206: systemd security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
+                    }
+                ]
+            },
+            {
+                "name": "rsync",
+                "version": "3.1.3-14.el8_6.2",
+                "vulnerabilities": [
+                    {
+                        "description": "The rsync utility enables the users to copy and synchronize files locally or across a network. Synchronization with rsync is fast because rsync only sends the differences in files over the network instead of sending whole files. The rsync utility is also used as a mirroring tool.\n\nSecurity Fix(es):\n\n* zlib: heap-based buffer over-read and overflow in inflate() in inflate.c via a large gzip header extra field (CVE-2022-37434)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nAdditional Changes:\n\nFor detailed information on changes in this release, see the Red Hat Enterprise Linux 8.7 Release Notes linked from the References section.",
+                        "fixedby": "0:3.1.3-19.el8",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7793 https://access.redhat.com/security/cve/CVE-2022-37434",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:7793: rsync security and enhancement update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    },
+                    {
+                        "description": "The rsync utility enables the users to copy and synchronize files locally or across a network. Synchronization with rsync is fast because rsync only sends the differences in files over the network instead of sending whole files. The rsync utility is also used as a mirroring tool.\n\nSecurity Fix(es):\n\n* rsync: remote arbitrary files write inside the directories of connecting peers (CVE-2022-29154)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:3.1.3-14.el8_6.3",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6180 https://access.redhat.com/security/cve/CVE-2022-29154",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:H\", \"Score\": 7.4}}}",
+                        "name": "RHSA-2022:6180: rsync security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
+                    }
+                ]
+            },
+            {
+                "name": "openssl-devel",
+                "version": "1:1.1.1k-6.el8_5",
+                "vulnerabilities": [
+                    {
+                        "description": "OpenSSL is a toolkit that implements the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols, as well as a full-strength general-purpose cryptography library.\n\nSecurity Fix(es):\n\n* openssl: c_rehash script allows command injection (CVE-2022-1292)\n\n* openssl: the c_rehash script allows command injection (CVE-2022-2068)\n\n* openssl: AES OCB fails to encrypt some bytes (CVE-2022-2097)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "1:1.1.1k-7.el8_6",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:5818 https://access.redhat.com/security/cve/CVE-2022-1292 https://access.redhat.com/security/cve/CVE-2022-2068 https://access.redhat.com/security/cve/CVE-2022-2097",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:5818: openssl security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "npm",
+                "version": "1:6.14.15-1.14.18.2.2.module+el8.5.0+13644+8d46dafd",
+                "vulnerabilities": [
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: Improper handling of URI Subject Alternative Names (CVE-2021-44531)\n\n* nodejs: Certificate Verification Bypass via String Injection (CVE-2021-44532)\n\n* nodejs: Incorrect handling of certificate subject and issuer fields (CVE-2021-44533)\n\n* nodejs: HTTP Request Smuggling due to incorrect parsing of header fields (CVE-2022-35256)\n\n* nodejs: Prototype pollution via console.table properties (CVE-2022-21824)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "1:6.14.17-1.14.20.1.2.module+el8.7.0+16991+b0a68a3e",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7830 https://access.redhat.com/security/cve/CVE-2021-44531 https://access.redhat.com/security/cve/CVE-2021-44532 https://access.redhat.com/security/cve/CVE-2021-44533 https://access.redhat.com/security/cve/CVE-2022-21824 https://access.redhat.com/security/cve/CVE-2022-35256",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H\", \"Score\": 8.2}}}",
+                        "name": "RHSA-2022:7830: nodejs:14 security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    },
+                    {
+                        "description": "Node.js is a software development platform for building fast and scalable network applications in the JavaScript programming language. \n\nSecurity Fix(es):\n\n* nodejs: DNS rebinding in --inspect via invalid IP addresses (CVE-2022-32212)\n\n* nodejs: HTTP request smuggling due to flawed parsing of Transfer-Encoding (CVE-2022-32213)\n\n* nodejs: HTTP request smuggling due to improper delimiting of header fields (CVE-2022-32214)\n\n* nodejs: HTTP request smuggling due to incorrect parsing of multi-line Transfer-Encoding (CVE-2022-32215)\n\n* got: missing verification of requested URLs allows redirects to UNIX sockets (CVE-2022-33987)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nBug Fix(es):\n\n* nodejs:14/nodejs: rebase to latest upstream release (BZ#2106367)\n\n* nodejs:14/nodejs: Specify --with-default-icu-data-dir when using bootstrap build (BZ#2111417)",
+                        "fixedby": "1:6.14.17-1.14.20.0.2.module+el8.6.0+16231+7c1b33d9",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6448 https://access.redhat.com/security/cve/CVE-2022-32212 https://access.redhat.com/security/cve/CVE-2022-32213 https://access.redhat.com/security/cve/CVE-2022-32214 https://access.redhat.com/security/cve/CVE-2022-32215 https://access.redhat.com/security/cve/CVE-2022-33987",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 8.1}}}",
+                        "name": "RHSA-2022:6448: nodejs:14 security and bug fix update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "curl",
+                "version": "7.61.1-22.el8_6.3",
+                "vulnerabilities": [
+                    {
+                        "description": "The curl packages provide the libcurl library and the curl utility for downloading files from servers using various protocols, including HTTP, FTP, and LDAP.\n\nSecurity Fix(es):\n\n* curl: HTTP compression denial of service (CVE-2022-32206)\n\n* curl: FTP-KRB bad message verification (CVE-2022-32208)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:7.61.1-22.el8_6.4",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6159 https://access.redhat.com/security/cve/CVE-2022-32206 https://access.redhat.com/security/cve/CVE-2022-32208",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H\", \"Score\": 6.5}}}",
+                        "name": "RHSA-2022:6159: curl security update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "setuptools",
+                "version": "39.2.0",
+                "vulnerabilities": [
+                    {
+                        "description": "Python Packaging Authority (PyPA) setuptools before 65.5.1 allows remote attackers to cause a denial of service via HTML in a crafted package or custom PackageIndex page. There is a Regular Expression Denial of Service (ReDoS) in package_index.py.",
+                        "metadata": "{\"UpdatedBy\": \"pyupio\", \"RepoName\": \"pypi\", \"RepoLink\": \"https://pypi.org/simple\", \"DistroName\": \"\", \"DistroVersion\": \"\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H\", \"Score\": 7.5}}}",
+                        "name": "pyup.io-52495 (CVE-2022-40897)",
+                        "namespaceName": "pyupio",
+                        "severity": "High"
+                    }
+                ]
+            },
+            {
+                "name": "krb5-libs",
+                "version": "1.18.2-14.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "Kerberos is a network authentication system, which can improve the security of your network by eliminating the insecure practice of sending passwords over the network in unencrypted form. It allows clients and servers to authenticate to each other with the help of a trusted third party, the Kerberos key distribution center (KDC).\n\nSecurity Fix(es):\n\n* krb5: integer overflow vulnerabilities in PAC parsing (CVE-2022-42898)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:1.18.2-22.el8_7",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:8638 https://access.redhat.com/security/cve/CVE-2022-42898",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"\", \"Score\": \"\"}}}",
+                        "name": "RHSA-2022:8638: krb5 security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
+                    }
+                ]
+            },
+            {
+                "name": "libcom_err-devel",
+                "version": "1.45.6-4.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The e2fsprogs packages provide a number of utilities for creating, checking, modifying, and correcting the ext2, ext3, and ext4 file systems.\n\nSecurity Fix(es):\n\n* e2fsprogs: out-of-bounds read/write via crafted filesystem (CVE-2022-1304)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.\n\nAdditional Changes:\n\nFor detailed information on changes in this release, see the Red Hat Enterprise Linux 8.7 Release Notes linked from the References section.",
+                        "fixedby": "0:1.45.6-5.el8",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:7720 https://access.redhat.com/security/cve/CVE-2022-1304",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H\", \"Score\": 7.8}}}",
+                        "name": "RHSA-2022:7720: e2fsprogs security and bug fix update (Moderate)",
+                        "namespaceName": "RHEL8-rhel-8",
+                        "severity": "Medium"
+                    }
+                ]
+            },
+            {
+                "name": "systemd-libs",
+                "version": "239-58.el8",
+                "vulnerabilities": [
+                    {
+                        "description": "The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit.\n\nSecurity Fix(es):\n\n* systemd-resolved: use-after-free when dealing with DnsStream in resolved-dns-stream.c (CVE-2022-2526)\n\nFor more details about the security issue(s), including the impact, a CVSS score, acknowledgments, and other related information, refer to the CVE page(s) listed in the References section.",
+                        "fixedby": "0:239-58.el8_6.4",
+                        "link": "https://access.redhat.com/errata/RHSA-2022:6206 https://access.redhat.com/security/cve/CVE-2022-2526",
+                        "metadata": "{\"UpdatedBy\": \"RHEL8-rhel-8-including-unpatched\", \"RepoName\": \"cpe:/o:redhat:enterprise_linux:8::baseos\", \"RepoLink\": null, \"DistroName\": \"Red Hat Enterprise Linux Server\", \"DistroVersion\": \"8\", \"NVD\": {\"CVSSv3\": {\"Vectors\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\", \"Score\": 9.8}}}",
+                        "name": "RHSA-2022:6206: systemd security update (Important)",
+                        "namespaceName": "RHEL8-rhel-8-including-unpatched",
+                        "severity": "High"
                     }
                 ]
             }
         ],
-        "image": "quay.io/app-sre/centos",
-        "manifest": "sha256:9e0c275e0bcb495773b10a18e499985d782810e47b4fce076422acb4bc3da3dd"
+        "image": "quay.io/app-sre/unleash",
+        "manifest": "sha256:45cacb324a9c93f8ef6982e74631f42ffa4220d5cf9b5d34af99178ef5486778"
     },
     "status": {
         "affectedPods": {
-            "cso/sleep-6f84df5847-4bn9p": [
-                "cri-o://930f7f496a479adfbc626f2008d242dda1aae4141cbb7b474449bc3833511acf",
-                "cri-o://9082983cb6ef4830013d1e2acd3b5299a1d282d893e3ce65111655f562b37535"
+            "unleash/app-interface-84f4d66bfc-cd79p": [
+                "cri-o://dfbc2da844b34d502c59e90cb8577f9b1485f425ce82bdad3205e0149610d512"
             ],
-            "cso/sleep-6f84df5847-bctxz": [
-                "cri-o://fdee7a36879063dbf7230f95ef62cbc2ab7757995455011bc822958192fb63c2",
-                "cri-o://95c7afc839f6ec0c8e12dc869837fc04ddca473913d214b3b097a33503f51a6f"
+            "unleash/app-interface-84f4d66bfc-fvd4d": [
+                "cri-o://8d27457d33a223c8e4b37f32dd881a38882389c4abc072e53dac0c7b0d80e06e"
             ],
-            "cso/sleep-6f84df5847-dh9l8": [
-                "cri-o://9f9ffae372345e7f41289579383253a8175ce57ff9e52e13ee5f19f764bf5cb5",
-                "cri-o://4083bcd52a9254d8ee5751e0b0b5929f7a22a0fc607eb4f05d905ed6a0770d02"
+            "unleash/app-interface-84f4d66bfc-rc2ld": [
+                "cri-o://66755fa09874eb253f91f107be4fc4deb34a1955b7f95b81b5a61bbc493cdab0"
+            ],
+            "unleash/insights-f8ff54f8b-km974": [
+                "cri-o://71b9faea59268909b43559eb34480ce2e69c01ec065045be0fb720480620cf0c"
+            ],
+            "unleash/insights-f8ff54f8b-kp9vj": [
+                "cri-o://c1ffd53a3e2c53e7578184e2b373b67f7ac1c36eeb982e9b0b9c3c3cd4599a6e"
+            ],
+            "unleash/insights-f8ff54f8b-lhwsq": [
+                "cri-o://d2e6cdce4bc57eab8bb51a9776dea6b7f22732429f212f5441dcfd41ba0704aa"
+            ],
+            "unleash/managed-services-6c47f9bc55-2jpkv": [
+                "cri-o://d789ceea7303f4728785dd61ab1129cdf04202e8515722bc254500a5195072a9"
+            ],
+            "unleash/managed-services-6c47f9bc55-q2wfl": [
+                "cri-o://96427187e428e22cb455267216513b84f3ba395d89e6d72ca9bebc9eb1491e5d"
+            ],
+            "unleash/managed-services-6c47f9bc55-xv2gm": [
+                "cri-o://bc6698a96ed54f5f0e0943a7b1f85591358337a27320fe21c6bf735451bca845"
+            ],
+            "unleash/ocm-55668f7ff6-26nhw": [
+                "cri-o://1cb1d7fa93ca0e86431260f3b8fdf4a9f91edd3740a6aed7bfcaa978ffbd7c01"
+            ],
+            "unleash/ocm-55668f7ff6-dlwgj": [
+                "cri-o://55a9338f1961006d10ad80e39d059e36652c776285ec577a97191956aa505415"
+            ],
+            "unleash/ocm-55668f7ff6-ncn6b": [
+                "cri-o://c13212e81b93c387031dc56bed0721030d111083712978230244f4d84c63a7f9"
             ]
         },
-        "fixableCount": 30,
-        "highCount": 7,
+        "fixableCount": 45,
+        "highCount": 14,
         "highestSeverity": "High",
-        "lastUpdate": "2020-05-22 16:01:50.344204207 +0000 UTC",
-        "lowCount": 4,
-        "mediumCount": 19
+        "lastUpdate": "2023-01-05 11:13:29.861545758 +0000 UTC",
+        "mediumCount": 34
     }
 }
