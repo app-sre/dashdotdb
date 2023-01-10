@@ -25,7 +25,7 @@ def upgrade():
     op.create_index('ix_feature_name_version', 'feature', ['name', 'version'], unique=False)
     op.drop_column('feature', 'versionformat')
     op.drop_column('feature', 'namespacename')
-    op.add_column('vulnerability', sa.Column('namespacename', sa.String(length=10000), nullable=True))
+    op.add_column('vulnerability', sa.Column('namespacename', sa.String(length=128), nullable=True))
     # ### end Alembic commands ###
 
 

@@ -119,9 +119,9 @@ class Vulnerability(db.Model):
     __tablename__ = 'vulnerability'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(10000), unique=False, index=True)
+    name = db.Column(db.String(512), unique=False, index=True)
     description = db.Column(db.String(10000), unique=False)
-    namespacename = db.Column(db.String(10000), unique=False)
+    namespacename = db.Column(db.String(128), unique=False)
     fixedby = db.Column(db.String(10000), unique=False)
     link = db.Column(db.String(10000), unique=False)
     # No index in severity_id as we have a very small subset of severities
