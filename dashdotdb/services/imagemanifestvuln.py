@@ -75,7 +75,7 @@ class ImageManifestVuln:
         db_image = db.session.query(Image) \
             .filter_by(name=image_name, manifest=image_manifest).first()
 
-        features = manifest['spec']['features']
+        features = manifest['spec'].get('features', [])
         for feature in features:
             feature_name = feature['name']
             feature_version = feature['version']
@@ -95,7 +95,7 @@ class ImageManifestVuln:
                            version=feature_version,) \
                 .filter(Feature.images.any(id=db_image.id)).first()
 
-            vulnerabilities = feature['vulnerabilities']
+            vulnerabilities = feature.get('vulnerabilities', [])
             for vulnerability in vulnerabilities:
                 vulnerability_name = vulnerability['name']
                 vulnerability_descr = vulnerability.get('description')
