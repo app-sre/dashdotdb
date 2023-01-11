@@ -78,29 +78,21 @@ class ImageManifestVuln:
         features = manifest['spec']['features']
         for feature in features:
             feature_name = feature['name']
-            feature_namespacename = feature['namespaceName']
             feature_version = feature['version']
-            feature_versionformat = feature['versionformat']
             db_feature = db.session.query(Feature) \
                 .filter_by(name=feature_name,
-                           namespacename=feature_namespacename,
-                           version=feature_version,
-                           versionformat=feature_versionformat) \
+                           version=feature_version,) \
                 .filter(Feature.images.any(id=db_image.id)).first()
             if db_feature is None:
                 db.session.add(Feature(name=feature_name,
-                                       namespacename=feature_namespacename,
                                        version=feature_version,
-                                       versionformat=feature_versionformat,
                                        images=[db_image]))
                 db.session.commit()
                 self.log.info('feature %s created ', feature_name)
 
             db_feature = db.session.query(Feature) \
                 .filter_by(name=feature_name,
-                           namespacename=feature_namespacename,
-                           version=feature_version,
-                           versionformat=feature_versionformat) \
+                           version=feature_version,) \
                 .filter(Feature.images.any(id=db_image.id)).first()
 
             vulnerabilities = feature['vulnerabilities']
@@ -110,6 +102,7 @@ class ImageManifestVuln:
                 vulnerability_link = vulnerability.get('link')
                 vulnerability_fixedby = vulnerability.get('fixedby')
                 vulnerability_severity = vulnerability['severity']
+                vulnerability_namespacename = vulnerability['namespaceName']
                 db_severity = db.session.query(Severity) \
                     .filter_by(name=vulnerability_severity).first()
                 if db_severity is None:
@@ -125,6 +118,7 @@ class ImageManifestVuln:
                                description=vulnerability_descr,
                                fixedby=vulnerability_fixedby,
                                link=vulnerability_link,
+                               namespacename=vulnerability_namespacename,
                                severity_id=db_severity.id,
                                feature_id=db_feature.id).first()
                 if db_vulnerability is None:
@@ -133,6 +127,7 @@ class ImageManifestVuln:
                         description=vulnerability_descr,
                         fixedby=vulnerability_fixedby,
                         link=vulnerability_link,
+                        namespacename=vulnerability_namespacename,
                         severity_id=db_severity.id,
                         feature_id=db_feature.id
                     ))
