@@ -86,7 +86,7 @@ class Image(db.Model):
     __tablename__ = 'image'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False)
+    name = db.Column(db.String(128), unique=False)
     manifest = db.Column(db.String(1000), unique=False)
     features = db.relationship('Feature', secondary='imagefeature')
     pods = db.relationship('Pod', backref='image')
