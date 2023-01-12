@@ -34,8 +34,7 @@ class Pod(db.Model):
     name = db.Column(db.String(256), unique=False, index=True)
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
                              index=True)
-    image_id = db.Column(db.Integer, db.ForeignKey('image.id'),
-                         index=True)
+    images = db.relationship('Image', secondary='podimage', back_populates='pods')
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'),
                          index=True)
 
@@ -88,13 +87,24 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=False)
     manifest = db.Column(db.String(1000), unique=False)
-    features = db.relationship('Feature', secondary='imagefeature')
-    pods = db.relationship('Pod', backref='image')
+    features = db.relationship('Feature', secondary='imagefeature',
+                               back_populates='images')
+    pods = db.relationship('Pod', secondary='podimage', back_populates='images')
 
     # Indexes
     __table_args__ = (
         db.Index('ix_image_name_manifest', name, manifest),
     )
+
+
+class PodImage(db.Model):
+
+    __tablename__ = 'podimage'
+
+    pod_id = db.Column(db.Integer, db.ForeignKey('pod.id'),
+                       primary_key=True)
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'),
+                         primary_key=True)
 
 
 class Feature(db.Model):
@@ -104,7 +114,8 @@ class Feature(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False)
     version = db.Column(db.String(64), unique=False)
-    images = db.relationship('Image', secondary='imagefeature')
+    images = db.relationship('Image', secondary='imagefeature',
+                             back_populates='features')
     vulnerabilities = db.relationship('Vulnerability', backref='feature')
 
     # Indexes
