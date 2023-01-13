@@ -2,18 +2,21 @@ import logging
 
 from sqlalchemy import func
 
-from dashdotdb.models.dashdotdb import db
-from dashdotdb.models.dashdotdb import Token
-from dashdotdb.models.dashdotdb import LatestTokens
-from dashdotdb.models.dashdotdb import Cluster
-from dashdotdb.models.dashdotdb import Namespace
-from dashdotdb.models.dashdotdb import Pod
-from dashdotdb.models.dashdotdb import Image
-from dashdotdb.models.dashdotdb import ImageFeature
-from dashdotdb.models.dashdotdb import Feature
-from dashdotdb.models.dashdotdb import Vulnerability
-from dashdotdb.models.dashdotdb import Severity
-from dashdotdb.services import DataTypes
+from dashdotdb.models.dashdotdb import (
+    db,
+    Token,
+    LatestTokens,
+    Cluster,
+    Namespace,
+    Pod,
+    PodImage,
+    Image,
+    ImageFeature,
+    Feature,
+    Vulnerability,
+    Severity,
+    DataTypes,
+)
 from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
                                          TOKEN_NOT_FOUND_MSG)
 
@@ -140,12 +143,12 @@ class ImageManifestVuln:
             db_pod = db.session.query(Pod) \
                 .filter_by(name=pod,
                            namespace_id=db_namespace.id,
-                           image_id=db_image.id,
-                           token_id=db_token.id).first()
+                           token_id=db_token.id) \
+                .filter(Pod.images.any(id=db_image.id)).first()
             if db_pod is None:
                 db.session.add(Pod(name=pod,
                                    namespace_id=db_namespace.id,
-                                   image_id=db_image.id,
+                                   images=[db_image],
                                    token_id=db_token.id))
                 db.session.commit()
                 self.log.info('pod %s created', pod)
@@ -166,7 +169,8 @@ class ImageManifestVuln:
             return []
 
         images = db.session.query(Image) \
-            .filter(Image.id == Pod.image_id,
+            .filter(PodImage.pod_id == Pod.id,
+                    Image.id == PodImage.image_id,
                     Pod.token_id == token.id,
                     Pod.namespace_id == Namespace.id,
                     Namespace.name == self.namespace,
@@ -180,7 +184,7 @@ class ImageManifestVuln:
                     result.append(
                         {
                             'repository': image.name,
-                            'name': feature.namespacename,
+                            'name': vulnerability.namespacename,
                             'manifest': image.manifest[:14],
                             'affected_pods': len(image.pods),
                             'vulnerability': vulnerability.name,
@@ -225,7 +229,8 @@ class ImageManifestVuln:
             Vulnerability.feature_id == Feature.id,
             Feature.id == ImageFeature.feature_id,
             ImageFeature.image_id == Image.id,
-            Image.id == Pod.image_id,
+            PodImage.image_id == Image.id,
+            Pod.id == PodImage.pod_id,
             Pod.token_id == Token.id,
             Pod.namespace_id == Namespace.id,
             Namespace.cluster_id == Cluster.id,
