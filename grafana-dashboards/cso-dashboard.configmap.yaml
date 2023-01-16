@@ -28,7 +28,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "iteration": 1673863257200,
+      "iteration": 1673866205239,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -94,7 +94,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Critical Vulnerabilities",
+          "title": "Critical Vulnerabilities (sum over all pods in namespace)",
           "type": "stat"
         },
         {
@@ -159,8 +159,234 @@ data:
               "refId": "A"
             }
           ],
-          "title": "High Vulnerabilities",
+          "title": "Total High Vulnerabilities (sum over all pods in namespace)",
           "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 8
+          },
+          "id": 33,
+          "panels": [],
+          "title": "Critical Vulnerabilities",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          },
+          "id": 31,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 0,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "pod"
+              }
+            ]
+          },
+          "pluginVersion": "9.0.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "builder",
+              "expr": "imagemanifestvuln_total{cluster=\"$cluster\", exported_namespace=\"$namespace\", severity=\"Critical\"}",
+              "format": "table",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Critical Vulnerabilities",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": false,
+                  "Value": true,
+                  "__name__": true,
+                  "cluster": true,
+                  "container": true,
+                  "endpoint": true,
+                  "exported_namespace": true,
+                  "instance": true,
+                  "job": true,
+                  "namespace": true,
+                  "pod": true,
+                  "service": true
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "Time": "Detected"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 22
+          },
+          "id": 35,
+          "title": "High Vulnerabilities",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 23
+          },
+          "id": 36,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 0,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "pod"
+              }
+            ]
+          },
+          "pluginVersion": "9.0.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "builder",
+              "expr": "imagemanifestvuln_total{cluster=\"$cluster\", exported_namespace=\"$namespace\", severity=\"High\"}",
+              "format": "table",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "High Vulnerabilities",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": false,
+                  "Value": true,
+                  "__name__": true,
+                  "cluster": true,
+                  "container": true,
+                  "endpoint": true,
+                  "exported_namespace": true,
+                  "instance": true,
+                  "job": true,
+                  "namespace": true,
+                  "pod": true,
+                  "service": true
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "Time": "Detected"
+                }
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
       "schemaVersion": 36,
@@ -187,7 +413,7 @@ data:
           },
           {
             "current": {
-              "selected": false,
+              "selected": true,
               "text": "appsrep05ue1",
               "value": "appsrep05ue1"
             },
@@ -213,7 +439,7 @@ data:
           },
           {
             "current": {
-              "selected": false,
+              "selected": true,
               "text": "app-interface-production",
               "value": "app-interface-production"
             },
@@ -271,7 +497,7 @@ data:
       "timezone": "",
       "title": "DashdotDB CSO",
       "uid": "8d5fd520-9589-11ed-8b70-3bc0ff8a005d",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
 kind: ConfigMap
