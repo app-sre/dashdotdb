@@ -7,25 +7,37 @@ data:
         "list": [
           {
             "builtIn": 1,
-            "datasource": "-- Grafana --",
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
             "enable": true,
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
             "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
             "type": "dashboard"
           }
         ]
       },
       "editable": true,
-      "gnetId": null,
+      "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 19,
-      "iteration": 1633726728195,
+      "iteration": 1674218650583,
       "links": [],
+      "liveNow": false,
       "panels": [
         {
           "collapsed": false,
-          "datasource": null,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PD776AFABBE26000A"
+          },
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -34,33 +46,40 @@ data:
           },
           "id": 19,
           "panels": [],
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PD776AFABBE26000A"
+              },
+              "refId": "A"
+            }
+          ],
           "title": "Summary",
           "type": "row"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "$datasource",
+          "datasource": {
+            "type": "postgres",
+            "uid": "$datasource"
+          },
           "description": "",
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "align": null,
-                "filterable": false
-              },
               "displayName": "$__cell_0",
               "mappings": [
                 {
-                  "from": "",
-                  "id": 1,
-                  "operator": "",
-                  "text": "0",
-                  "to": "",
-                  "type": 1,
-                  "value": "null"
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "green",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
                 }
               ],
               "min": 0.1,
-              "nullValueMode": "connected",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -85,10 +104,11 @@ data:
             "y": 1
           },
           "id": 12,
-          "interval": null,
           "links": [],
           "options": {
             "displayMode": "lcd",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
             "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
@@ -99,14 +119,17 @@ data:
             },
             "showUnfilled": true
           },
-          "pluginVersion": "7.2.1",
+          "pluginVersion": "9.0.3",
           "targets": [
             {
+              "datasource": {
+                "uid": "$datasource"
+              },
               "format": "table",
               "group": [],
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "WITH last_token as (\n            SELECT token.id\n            FROM token\n            WHERE token.data_type = 'CSODataType'\n            ORDER BY token.timestamp DESC\n            LIMIT 1),\nvulnerabilities as (\n        SELECT\n            DISTINCT vulnerability.name as vulnerability,\n                     feature.name as feature,\n                     severity.name as severity\n        FROM cluster,\n             namespace,\n             pod,\n             image,\n             imagefeature,\n             feature,\n             vulnerability,\n             severity,\n             last_token\n        WHERE pod.namespace_id = namespace.id\n          AND namespace.cluster_id = cluster.id\n          AND cluster.id = namespace.cluster_id\n          AND pod.image_id = image.id\n          AND image.id = imagefeature.image_id\n          AND imagefeature.feature_id = feature.id\n          AND feature.id = vulnerability.feature_id\n          AND vulnerability.severity_id = severity.id\n          AND pod.token_id = last_token.id\n          AND cluster.name =  '$cluster'\n          AND namespace.name = '$namespace'\n        GROUP BY feature.name,\n                 vulnerability.name,\n                 severity.name)\nSELECT severity as metric,\n       count(feature) as value\nFROM vulnerabilities\nGROUP BY severity;",
+              "rawSql": "WITH last_token as (\n            SELECT token.id\n            FROM token\n            WHERE token.data_type = 'CSODataType'\n            ORDER BY token.timestamp DESC\n            LIMIT 1),\nvulnerabilities as (\n        SELECT\n            DISTINCT vulnerability.name as vulnerability,\n                     feature.name as feature,\n                     severity.name as severity\n        FROM cluster,\n             namespace,\n             pod,\n             podimage,\n             image,\n             imagefeature,\n             feature,\n             vulnerability,\n             severity,\n             last_token\n        WHERE pod.namespace_id = namespace.id\n          AND namespace.cluster_id = cluster.id\n          AND cluster.id = namespace.cluster_id\n          AND podimage.image_id = image.id\n          AND pod.id = podimage.pod_id\n          AND image.id = imagefeature.image_id\n          AND imagefeature.feature_id = feature.id\n          AND feature.id = vulnerability.feature_id\n          AND vulnerability.severity_id = severity.id\n          AND pod.token_id = last_token.id\n          AND cluster.name =  '$cluster'\n          AND namespace.name = '$namespace'\n        GROUP BY feature.name,\n                 vulnerability.name,\n                 severity.name)\nSELECT severity as metric,\n       count(feature) as value\nFROM vulnerabilities\nGROUP BY severity;",
               "refId": "A",
               "select": [
                 [
@@ -128,36 +151,31 @@ data:
               ]
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Vulnerabilities",
           "transparent": true,
           "type": "bargauge"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "$datasource",
+          "datasource": {
+            "uid": "$datasource"
+          },
           "description": "",
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "align": null,
-                "filterable": false
-              },
               "displayName": "$__cell_0",
               "mappings": [
                 {
-                  "from": "",
-                  "id": 1,
-                  "operator": "",
-                  "text": "0",
-                  "to": "",
-                  "type": 1,
-                  "value": "null"
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "green",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
                 }
               ],
               "min": 0.1,
-              "nullValueMode": "connected",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -182,10 +200,11 @@ data:
             "y": 1
           },
           "id": 22,
-          "interval": null,
           "links": [],
           "options": {
             "displayMode": "basic",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
             "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
@@ -196,9 +215,12 @@ data:
             },
             "showUnfilled": true
           },
-          "pluginVersion": "7.2.1",
+          "pluginVersion": "9.0.3",
           "targets": [
             {
+              "datasource": {
+                "uid": "$datasource"
+              },
               "format": "table",
               "group": [],
               "metricColumn": "none",
@@ -225,15 +247,16 @@ data:
               ]
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Validations",
           "transparent": true,
           "type": "bargauge"
         },
         {
           "collapsed": true,
-          "datasource": null,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PD776AFABBE26000A"
+          },
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -244,12 +267,9 @@ data:
           "panels": [
             {
               "columns": [],
-              "datasource": "$datasource",
-              "fieldConfig": {
-                "defaults": {
-                  "custom": {}
-                },
-                "overrides": []
+              "datasource": {
+                "type": "postgres",
+                "uid": "$datasource"
               },
               "fontSize": "100%",
               "gridPos": {
@@ -260,7 +280,6 @@ data:
               },
               "id": 8,
               "links": [],
-              "pageSize": null,
               "scroll": true,
               "showHeader": true,
               "sort": {
@@ -278,7 +297,6 @@ data:
                 {
                   "alias": "",
                   "align": "auto",
-                  "colorMode": null,
                   "colors": [
                     "rgba(245, 54, 54, 0.9)",
                     "rgba(237, 129, 40, 0.89)",
@@ -293,11 +311,14 @@ data:
               ],
               "targets": [
                 {
+                  "datasource": {
+                    "uid": "$datasource"
+                  },
                   "format": "table",
                   "group": [],
                   "metricColumn": "none",
                   "rawQuery": true,
-                  "rawSql": "        WITH last_token as (\n            SELECT token.id as id\n            FROM token\n            WHERE token.data_type = 'CSODataType'\n            ORDER BY token.timestamp DESC\n            LIMIT 1)\n        SELECT\n            image.name as image,\n            vulnerability.namespacename as source,\n            SUBSTR(image.manifest, 1, 14) as manifest,\n            COUNT(pod.name) as affected_pods,\n            vulnerability.name as vulnerability,\n            severity.name as severity,\n            feature.name as package,\n            feature.version as current_version,\n            vulnerability.fixedby as fixed_in_version,\n            vulnerability.link as url\n        FROM cluster,\n             namespace,\n             pod,\n             image,\n             imagefeature,\n             feature,\n             vulnerability,\n             severity,\n             last_token\n        WHERE pod.namespace_id = namespace.id\n          AND namespace.cluster_id = cluster.id\n          AND cluster.id = namespace.cluster_id\n          AND pod.image_id = image.id\n          AND image.id = imagefeature.image_id\n          AND imagefeature.feature_id = feature.id\n          AND feature.id = vulnerability.feature_id\n          AND vulnerability.severity_id = severity.id\n          AND pod.token_id = last_token.id\n          AND cluster.name = '$cluster'\n          AND namespace.name = '$namespace'\n        GROUP BY\n            image.name,\n            vulnerability.namespacename,\n            image.manifest,\n            vulnerability.name,\n            severity.name,\n            feature.name,\n            feature.version,\n            vulnerability.fixedby,\n            vulnerability.link;",
+                  "rawSql": "        WITH last_token as (\n            SELECT token.id as id\n            FROM token\n            WHERE token.data_type = 'CSODataType'\n            ORDER BY token.timestamp DESC\n            LIMIT 1)\n        SELECT\n            image.name as image,\n            vulnerability.namespacename as source,\n            SUBSTR(image.manifest, 1, 14) as manifest,\n            COUNT(pod.name) as affected_pods,\n            vulnerability.name as vulnerability,\n            severity.name as severity,\n            feature.name as package,\n            feature.version as current_version,\n            vulnerability.fixedby as fixed_in_version,\n            vulnerability.link as url\n        FROM cluster,\n             namespace,\n             pod,\n             podimage,\n             image,\n             imagefeature,\n             feature,\n             vulnerability,\n             severity,\n             last_token\n        WHERE pod.namespace_id = namespace.id\n          AND namespace.cluster_id = cluster.id\n          AND cluster.id = namespace.cluster_id\n          AND podimage.image_id = image.id\n          AND pod.id = podimage.pod_id\n          AND image.id = imagefeature.image_id\n          AND imagefeature.feature_id = feature.id\n          AND feature.id = vulnerability.feature_id\n          AND vulnerability.severity_id = severity.id\n          AND pod.token_id = last_token.id\n          AND cluster.name = '$cluster'\n          AND namespace.name = '$namespace'\n        GROUP BY\n            image.name,\n            vulnerability.namespacename,\n            image.manifest,\n            vulnerability.name,\n            severity.name,\n            feature.name,\n            feature.version,\n            vulnerability.fixedby,\n            vulnerability.link;",
                   "refId": "A",
                   "select": [
                     [
@@ -325,12 +346,24 @@ data:
               "type": "table-old"
             }
           ],
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PD776AFABBE26000A"
+              },
+              "refId": "A"
+            }
+          ],
           "title": "Vulnerability Details",
           "type": "row"
         },
         {
           "collapsed": true,
-          "datasource": null,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PD776AFABBE26000A"
+          },
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -341,12 +374,8 @@ data:
           "panels": [
             {
               "columns": [],
-              "datasource": "$datasource",
-              "fieldConfig": {
-                "defaults": {
-                  "custom": {}
-                },
-                "overrides": []
+              "datasource": {
+                "uid": "$datasource"
               },
               "fontSize": "100%",
               "gridPos": {
@@ -357,7 +386,6 @@ data:
               },
               "id": 21,
               "links": [],
-              "pageSize": null,
               "scroll": true,
               "showHeader": true,
               "sort": {
@@ -375,7 +403,6 @@ data:
                 {
                   "alias": "",
                   "align": "auto",
-                  "colorMode": null,
                   "colors": [
                     "rgba(245, 54, 54, 0.9)",
                     "rgba(237, 129, 40, 0.89)",
@@ -390,6 +417,9 @@ data:
               ],
               "targets": [
                 {
+                  "datasource": {
+                    "uid": "$datasource"
+                  },
                   "format": "table",
                   "group": [],
                   "metricColumn": "none",
@@ -422,12 +452,21 @@ data:
               "type": "table-old"
             }
           ],
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PD776AFABBE26000A"
+              },
+              "refId": "A"
+            }
+          ],
           "title": "Validation Details",
           "type": "row"
         }
       ],
       "refresh": false,
-      "schemaVersion": 26,
+      "schemaVersion": 36,
       "style": "dark",
       "tags": [],
       "templating": {
@@ -440,7 +479,6 @@ data:
             },
             "hide": 0,
             "includeAll": false,
-            "label": null,
             "multi": false,
             "name": "datasource",
             "options": [],
@@ -452,17 +490,19 @@ data:
             "type": "datasource"
           },
           {
-            "allValue": null,
             "current": {
+              "isNone": true,
               "selected": true,
-              "text": "app-sre-prod-01",
-              "value": "app-sre-prod-01"
+              "text": "None",
+              "value": ""
             },
-            "datasource": "dashdotdb-rds",
+            "datasource": {
+              "type": "postgres",
+              "uid": "PDF0D305A66BF6B52"
+            },
             "definition": "select cluster.name from cluster order by cluster.name;",
             "hide": 0,
             "includeAll": false,
-            "label": null,
             "multi": false,
             "name": "cluster",
             "options": [],
@@ -472,23 +512,24 @@ data:
             "skipUrlSync": false,
             "sort": 0,
             "tagValuesQuery": "",
-            "tags": [],
             "tagsQuery": "",
             "type": "query",
             "useTags": false
           },
           {
-            "allValue": null,
             "current": {
-              "selected": true,
-              "text": "app-interface-production",
-              "value": "app-interface-production"
+              "isNone": true,
+              "selected": false,
+              "text": "None",
+              "value": ""
             },
-            "datasource": "dashdotdb-rds",
+            "datasource": {
+              "type": "postgres",
+              "uid": "PDF0D305A66BF6B52"
+            },
             "definition": "select namespace.name from cluster, namespace where cluster.id = namespace.cluster_id and cluster.name = '$cluster' order by namespace.name;",
             "hide": 0,
             "includeAll": false,
-            "label": null,
             "multi": false,
             "name": "namespace",
             "options": [],
@@ -498,7 +539,6 @@ data:
             "skipUrlSync": false,
             "sort": 0,
             "tagValuesQuery": "",
-            "tags": [],
             "tagsQuery": "",
             "type": "query",
             "useTags": false
@@ -537,7 +577,8 @@ data:
       "timezone": "",
       "title": "Dash.DB",
       "uid": "5f386846-91b1-11ed-a887-0ffd83a21c6b",
-      "version": 1
+      "version": 2,
+      "weekStart": ""
     }
 kind: ConfigMap
 metadata:
