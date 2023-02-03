@@ -183,6 +183,7 @@ class DeploymentValidationData:
             Namespace,
             DeploymentValidation,
             Validation,
+            # pylint: disable=not-callable
             func.count(Validation.name).label('Count')
         ).filter(
             DeploymentValidation.validation_id == Validation.id,

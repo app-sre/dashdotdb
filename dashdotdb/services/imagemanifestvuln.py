@@ -223,6 +223,7 @@ class ImageManifestVuln:
             Cluster,
             Namespace,
             Severity,
+            # pylint: disable=not-callable
             func.count(Vulnerability.name).label('Count')
         ).filter(
             Vulnerability.severity_id == Severity.id,
