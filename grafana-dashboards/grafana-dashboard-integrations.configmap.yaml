@@ -576,8 +576,8 @@ data:
       },
       "timezone": "",
       "title": "Dash.DB",
-      "uid": "5f386846-91b1-11ed-a887-0ffd83a21c6b",
-      "version": 2,
+      "uid": "dashdotdb",
+      "version": 3,
       "weekStart": ""
     }
 kind: ConfigMap
