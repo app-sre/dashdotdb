@@ -669,7 +669,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "WITH last_token as (\n            SELECT token.id\n            FROM token\n            WHERE token.data_type = 'CSODataType'\n            ORDER BY token.timestamp DESC\n            LIMIT 1),\nvulnerabilities as (\n        SELECT\n            DISTINCT vulnerability.name as vulnerability,\n                     feature.name as feature,\n                     severity.name as severity,\n                     cluster.name as cluster,\n                     namespace.name as namespace\n        FROM cluster,\n             namespace,\n             pod,\n             podimage,\n             image,\n             imagefeature,\n             feature,\n             vulnerability,\n             severity,\n             last_token\n        WHERE pod.namespace_id = namespace.id\n          AND namespace.cluster_id = cluster.id\n          AND cluster.id = namespace.cluster_id\n          AND podimage.image_id = image.id\n          AND pod.id = podimage.pod_id\n          AND image.id = imagefeature.image_id\n          AND imagefeature.feature_id = feature.id\n          AND feature.id = vulnerability.feature_id\n          AND vulnerability.severity_id = severity.id\n          AND pod.token_id = last_token.id\n          AND LOWER(severity.NAME) LIKE '$severity'\n          AND cluster.name LIKE '$cluster'\n          AND namespace.name LIKE '$namespace'\n        GROUP BY cluster.name, namespace.name, feature.name,\n                 vulnerability.name,\n                 severity.name)\nSELECT cluster, namespace, severity as metric,\n       count(feature) as value\nFROM vulnerabilities\nGROUP BY cluster, namespace, severity\nORDER BY metric, value DESC;",
+              "rawSql": "WITH last_token as (\n            SELECT token.id\n            FROM token\n            WHERE token.data_type = 'CSODataType'\n            ORDER BY token.timestamp DESC\n            LIMIT 1),\nvulnerabilities as (\n        SELECT\n            DISTINCT vulnerability.name as vulnerability,\n                     feature.name as feature,\n                     severity.name as severity,\n                     cluster.name as cluster,\n                     namespace.name as namespace\n        FROM cluster,\n             namespace,\n             pod,\n             podimage,\n             image,\n             imagefeature,\n             feature,\n             vulnerability,\n             severity,\n             last_token\n        WHERE pod.namespace_id = namespace.id\n          AND namespace.cluster_id = cluster.id\n          AND cluster.id = namespace.cluster_id\n          AND podimage.image_id = image.id\n          AND pod.id = podimage.pod_id\n          AND image.id = imagefeature.image_id\n          AND imagefeature.feature_id = feature.id\n          AND feature.id = vulnerability.feature_id\n          AND vulnerability.severity_id = severity.id\n          AND pod.token_id = last_token.id\n          AND LOWER(severity.NAME) LIKE $severity\n          AND cluster.name LIKE $cluster\n          AND namespace.name LIKE $namespace\n        GROUP BY cluster.name, namespace.name, feature.name,\n                 vulnerability.name,\n                 severity.name)\nSELECT cluster, namespace, severity as metric,\n       count(feature) as value\nFROM vulnerabilities\nGROUP BY cluster, namespace, severity\nORDER BY metric, value DESC;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -718,7 +718,7 @@ data:
             "type": "datasource"
           },
           {
-            "allValue": "%",
+            "allValue": "'%'",
             "current": {
               "selected": true,
               "text": "All",
@@ -766,7 +766,7 @@ data:
             "type": "custom"
           },
           {
-            "allValue": "%",
+            "allValue": "'%'",
             "current": {
               "selected": true,
               "text": "All",
@@ -790,7 +790,7 @@ data:
             "type": "query"
           },
           {
-            "allValue": "%",
+            "allValue": "'%'",
             "current": {
               "selected": true,
               "text": "All",
@@ -800,13 +800,13 @@ data:
               "type": "postgres",
               "uid": "${datasource}"
             },
-            "definition": "select namespace.name from cluster, namespace where cluster.id = namespace.cluster_id and cluster.name = '$cluster' order by namespace.name;",
+            "definition": "select namespace.name from cluster, namespace where cluster.id = namespace.cluster_id and cluster.name LIKE $cluster order by namespace.name;",
             "hide": 0,
             "includeAll": true,
             "multi": false,
             "name": "namespace",
             "options": [],
-            "query": "select namespace.name from cluster, namespace where cluster.id = namespace.cluster_id and cluster.name = '$cluster' order by namespace.name;",
+            "query": "select namespace.name from cluster, namespace where cluster.id = namespace.cluster_id and cluster.name LIKE $cluster order by namespace.name;",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
