@@ -580,6 +580,252 @@ data:
       "version": 3,
       "weekStart": ""
     }
+  dashdotdb-overview.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 18,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 2,
+          "options": {
+            "footer": {
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "9.3.8",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "WITH last_token as (\n            SELECT token.id\n            FROM token\n            WHERE token.data_type = 'CSODataType'\n            ORDER BY token.timestamp DESC\n            LIMIT 1),\nvulnerabilities as (\n        SELECT\n            DISTINCT vulnerability.name as vulnerability,\n                     feature.name as feature,\n                     severity.name as severity,\n                     cluster.name as cluster,\n                     namespace.name as namespace\n        FROM cluster,\n             namespace,\n             pod,\n             podimage,\n             image,\n             imagefeature,\n             feature,\n             vulnerability,\n             severity,\n             last_token\n        WHERE pod.namespace_id = namespace.id\n          AND namespace.cluster_id = cluster.id\n          AND cluster.id = namespace.cluster_id\n          AND podimage.image_id = image.id\n          AND pod.id = podimage.pod_id\n          AND image.id = imagefeature.image_id\n          AND imagefeature.feature_id = feature.id\n          AND feature.id = vulnerability.feature_id\n          AND vulnerability.severity_id = severity.id\n          AND pod.token_id = last_token.id\n          AND LOWER(severity.NAME) LIKE '$severity'\n          AND cluster.name LIKE '$cluster'\n          AND namespace.name LIKE '$namespace'\n        GROUP BY cluster.name, namespace.name, feature.name,\n                 vulnerability.name,\n                 severity.name)\nSELECT cluster, namespace, severity as metric,\n       count(feature) as value\nFROM vulnerabilities\nGROUP BY cluster, namespace, severity\nORDER BY metric, value DESC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Vulnerabilities by Severity",
+          "type": "table"
+        }
+      ],
+      "schemaVersion": 37,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "dashdotdb-rds",
+              "value": "dashdotdb-rds"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "multi": false,
+            "name": "datasource",
+            "options": [],
+            "query": "postgres",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "/^dash/",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
+            "allValue": "%",
+            "current": {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            "hide": 0,
+            "includeAll": true,
+            "multi": false,
+            "name": "severity",
+            "options": [
+              {
+                "selected": true,
+                "text": "All",
+                "value": "$__all"
+              },
+              {
+                "selected": false,
+                "text": "critical",
+                "value": "critical"
+              },
+              {
+                "selected": false,
+                "text": "high",
+                "value": "high"
+              },
+              {
+                "selected": false,
+                "text": "medium",
+                "value": "medium"
+              },
+              {
+                "selected": false,
+                "text": "low",
+                "value": "low"
+              },
+              {
+                "selected": false,
+                "text": "unknown",
+                "value": "unknown"
+              }
+            ],
+            "query": "critical, high, medium, low, unknown",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          },
+          {
+            "allValue": "%",
+            "current": {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": {
+              "type": "postgres",
+              "uid": "${datasource}"
+            },
+            "definition": "select cluster.name from cluster order by cluster.name;",
+            "hide": 0,
+            "includeAll": true,
+            "multi": false,
+            "name": "cluster",
+            "options": [],
+            "query": "select cluster.name from cluster order by cluster.name;",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          },
+          {
+            "allValue": "%",
+            "current": {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": {
+              "type": "postgres",
+              "uid": "${datasource}"
+            },
+            "definition": "select namespace.name from cluster, namespace where cluster.id = namespace.cluster_id and cluster.name = '$cluster' order by namespace.name;",
+            "hide": 0,
+            "includeAll": true,
+            "multi": false,
+            "name": "namespace",
+            "options": [],
+            "query": "select namespace.name from cluster, namespace where cluster.id = namespace.cluster_id and cluster.name = '$cluster' order by namespace.name;",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Dash.DB Vulnerabilities Overview",
+      "uid": "dashdotdbvulnerabilitiesoverview",
+      "version": 0,
+      "weekStart": ""
+    }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
