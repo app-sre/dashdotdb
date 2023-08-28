@@ -128,7 +128,7 @@ objects:
           resources:
             requests:
               memory: 200Mi
-              cpu: 500m
+              cpu: 10m
             limits:
               memory: 300Mi
           ports:
@@ -166,7 +166,7 @@ objects:
           resources:
             requests:
               memory: 200Mi
-              cpu: 500m
+              cpu: 10m
             limits:
               memory: 300Mi
           env:
