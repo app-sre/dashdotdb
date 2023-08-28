@@ -73,6 +73,8 @@ objects:
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
+    annotations:
+      ignore-check.kube-linter.io/unset-cpu-requirements: "no cpu limits"
     labels:
       app: dashdotdb
     name: dashdotdb
@@ -129,7 +131,6 @@ objects:
               cpu: 500m
             limits:
               memory: 300Mi
-              cpu: 800m
           ports:
           - name: auth-proxy
             containerPort: 8000
@@ -168,7 +169,6 @@ objects:
               cpu: 500m
             limits:
               memory: 300Mi
-              cpu: 800m
           env:
             - name: DATABASE_HOST
               valueFrom:
