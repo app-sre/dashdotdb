@@ -267,6 +267,29 @@ paths:
           description: invalid token
         "404":
           description: token not found
+
+  # Deployments and DORA LTTC
+  /dora:
+    post:
+      summary: Post new DORA metrics
+      security:
+        - TokenAuth: []
+      requestBody:
+        description: DORA metrics
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DORA'
+      responses:
+        "200":
+          description: successful operation
+        "401":
+          description: invalid token
+        "404":
+          description: token not found
+        "409":
+          description: data already present in database
+
 components:
   schemas:
     ImageManifestVulnReport:
@@ -531,6 +554,10 @@ components:
                       oneOf:
                         - type: number
                         - type: string
+    DORA:
+      type: object
+      # properties:
+      # TODO
   securitySchemes:
     TokenAuth:
       type: apiKey
