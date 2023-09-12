@@ -1,13 +1,15 @@
 import logging
 import datetime
 
-from sqlalchemy import func
+from jsonschema import validate, ValidationError
+
+# from sqlalchemy import func
 
 from dashdotdb.models.dashdotdb import (
     db,
     Token,
     DataTypes,
-    LatestTokens,
+    # LatestTokens,
     DORADeployment,
     DORACommit
 )
@@ -31,8 +33,59 @@ class DORA:
                 'skipping validation: %s %s', TOKEN_NOT_FOUND_MSG, token)
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
-        # TODO: validate structure of manifest
-        # including timestamps
+        schema = {
+                "type": "object",
+                "properties": {
+                    "deployments": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "trigger_reason": {
+                                    "type": "string",
+                                    # TODO: Maybe relax pattern?
+                                    "pattern": r'https://gitlab\.cee\.redhat\.com/service/.*/commit/.*'
+                                    },
+                                "finish_timestamp": {
+                                    "type": "string",
+                                    # RFC 3339, optional 'T' separator
+                                    "pattern": r'^((?:(\d{4}-\d{2}-\d{2})(T| )(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+                                    },
+                                "app_name": {"type": "string"},
+                                "env_name": {"type": "string"},
+                                "pipeline": {"type": "string"},
+                                "commits": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "revision": {
+                                                "type": "string",
+                                                "pattern": r'[a-f0-9]{40}',
+                                                },
+                                            "timestamp": {
+                                                "type": "string",
+                                                "pattern": r'^((?:(\d{4}-\d{2}-\d{2})(T| )(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+                                                },
+                                            "repo": {
+                                                "type": "string",
+                                                # TODO: Maybe relax pattern?
+                                                "pattern": r'https://git.*\.com/.*/.*',
+                                                },
+                                            }
+                                        }
+                                    },
+                                }
+                            },
+                        }
+                    }
+                }
+
+        try:
+            validate(instance=manifest, schema=schema)
+        except ValidationError as e:
+            print("Invalid JSON: ", e)
+            return "bad request", 400
 
         for dep_data in manifest["deployments"]:
             finish_timestamp = datetime.datetime.fromisoformat(
