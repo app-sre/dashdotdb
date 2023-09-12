@@ -14,6 +14,8 @@ from dashdotdb.models.dashdotdb import (
     DORACommit
 )
 
+from dashdotdb.schemas.dora import dora_schema
+
 from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
                                          TOKEN_NOT_FOUND_MSG)
 
@@ -33,56 +35,8 @@ class DORA:
                 'skipping validation: %s %s', TOKEN_NOT_FOUND_MSG, token)
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
-        schema = {
-                "type": "object",
-                "properties": {
-                    "deployments": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "trigger_reason": {
-                                    "type": "string",
-                                    # TODO: Maybe relax pattern?
-                                    "pattern": r'https://gitlab\.cee\.redhat\.com/service/.*/commit/.*'
-                                    },
-                                "finish_timestamp": {
-                                    "type": "string",
-                                    # RFC 3339, optional 'T' separator
-                                    "pattern": r'^((?:(\d{4}-\d{2}-\d{2})(T| )(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
-                                    },
-                                "app_name": {"type": "string"},
-                                "env_name": {"type": "string"},
-                                "pipeline": {"type": "string"},
-                                "commits": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "revision": {
-                                                "type": "string",
-                                                "pattern": r'[a-f0-9]{40}',
-                                                },
-                                            "timestamp": {
-                                                "type": "string",
-                                                "pattern": r'^((?:(\d{4}-\d{2}-\d{2})(T| )(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
-                                                },
-                                            "repo": {
-                                                "type": "string",
-                                                # TODO: Maybe relax pattern?
-                                                "pattern": r'https://git.*\.com/.*/.*',
-                                                },
-                                            }
-                                        }
-                                    },
-                                }
-                            },
-                        }
-                    }
-                }
-
         try:
-            validate(instance=manifest, schema=schema)
+            validate(instance=manifest, schema=dora_schema())
         except ValidationError as e:
             print("Invalid JSON: ", e)
             return "bad request", 400
@@ -107,24 +61,29 @@ class DORA:
                 pipeline=dep_data['pipeline'],
             )
             db.session.add(deployment)
-            db.session.commit()
 
-            for commit_data in dep_data["commits"]:
-                timestamp = datetime.datetime.fromisoformat(commit_data['timestamp'])
-                if timestamp.tzinfo is None:
-                    timestamp = timestamp.replace(tzinfo=datetime.timezone.utc)
+            try:
+                for commit_data in dep_data["commits"]:
+                    timestamp = datetime.datetime.fromisoformat(commit_data['timestamp'])
+                    if timestamp.tzinfo is None:
+                        timestamp = timestamp.replace(tzinfo=datetime.timezone.utc)
 
-                lttc = finish_timestamp - timestamp
-                commit = DORACommit(
-                    deployment_id=deployment.id,
-                    timestamp=datetime.datetime.fromisoformat(commit_data['timestamp']),
-                    revision=commit_data['revision'],
-                    repo=commit_data['repo'],
-                    lttc=lttc
-                )
-                db.session.add(commit)
+                    lttc = finish_timestamp - timestamp
+                    commit = DORACommit(
+                        deployment_id=deployment.id,
+                        timestamp=datetime.datetime.fromisoformat(commit_data['timestamp']),
+                        revision=commit_data['revision'],
+                        repo=commit_data['repo'],
+                        lttc=lttc,
+                    )
+                    db.session.add(commit)
 
-        db.session.commit()
+                db.session.commit()
+            except:
+                # If any of the 'commits' fail, we throw away everything,
+                # including the 'deployment'
+                db.session.rollback()
+                return "bad request", 400
 
         return "ok", 200
 

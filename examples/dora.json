@@ -10,57 +10,68 @@
         {
           "revision": "8d5fa6ffd6ebec2f5887c966327f97ab306120c1",
           "timestamp": "2023-07-22 21:11:20+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "e4f610491021f8e7438b4edad9bd5e2a06c55825",
           "timestamp": "2023-07-22 21:56:01+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "a653e147d7cba50fc21becb867c81f5bea1667c1",
           "timestamp": "2023-07-22 22:38:49+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "81a236de5f38d1e5e5035ec95618b194087d4275",
           "timestamp": "2023-07-22 22:41:37+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "f30eefb5a4045143562f95dab203bede860559e5",
           "timestamp": "2023-07-22 22:52:45+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "284b10595b15c40a6c1c65c51eba40b860cb38b8",
           "timestamp": "2023-07-24 12:31:37+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "93033cb4276bc065e6e4023f38144edc3d0ca16e",
           "timestamp": "2023-07-24 12:31:47+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "4a816c765d4fd961a029e13e0ee6fab5695a80e1",
           "timestamp": "2023-07-24 14:40:45+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "82f1a2173d95d66194ce1c03f1246d8fd964571b",
           "timestamp": "2023-07-24 16:15:07+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "c1a5fcebbe8e61374cb5471d535a8602321f3bfc",
           "timestamp": "2023-07-25 13:30:23+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         },
         {
           "revision": "62ce1574fa581cdf5a06172058c3e1683b18e5c4",
           "timestamp": "2023-07-25 14:15:42+00:00",
-          "repo": "https://github.com/quay/quay"
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
         }
       ]
     }
