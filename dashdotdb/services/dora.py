@@ -128,9 +128,8 @@ class DORA:
 
         return "ok", 200
 
-    def get_latest_deployment(self, app_name, env_name, pipeline):
+    def get_latest_deployment(self, app_name, env_name):
         return db.session.query(DORADeployment).filter_by(
             app_name=app_name,
             env_name=env_name,
-            pipeline=pipeline,
         ).order_by(DORADeployment.finish_timestamp.desc()).first()

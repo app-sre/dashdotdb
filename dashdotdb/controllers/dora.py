@@ -12,8 +12,9 @@ def post(user, body):
         raise(e)
     return msg, code
 
-def latest_deployment(app_name, env_name, pipeline):
-    deployment = DORA().get_latest_deployment(app_name, env_name, pipeline)
+
+def latest_deployment(app_name, env_name):
+    deployment = DORA().get_latest_deployment(app_name, env_name)
     if deployment is None:
         return "Not found", 404
 

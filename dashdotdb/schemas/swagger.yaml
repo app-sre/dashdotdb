@@ -305,11 +305,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: pipeline
-          in: query
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: successful operation
