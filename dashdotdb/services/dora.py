@@ -1,7 +1,6 @@
 import logging
 import datetime
 
-from jsonschema import validate, ValidationError
 
 # from sqlalchemy import func
 
@@ -14,7 +13,6 @@ from dashdotdb.models.dashdotdb import (
     DORACommit
 )
 
-from dashdotdb.schemas.dora import dora_schema
 
 from dashdotdb.controllers.token import (TOKEN_NOT_FOUND_CODE,
                                          TOKEN_NOT_FOUND_MSG)
@@ -25,7 +23,6 @@ class DORA:
         self.log = logging.getLogger()
 
     def insert(self, token, manifest):
-
         db_token = db.session.query(Token) \
             .filter(Token.uuid == token,
                     Token.data_type == DataTypes.DORADataType).first()
@@ -34,12 +31,6 @@ class DORA:
             self.log.error(
                 'skipping validation: %s %s', TOKEN_NOT_FOUND_MSG, token)
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
-
-        try:
-            validate(instance=manifest, schema=dora_schema())
-        except ValidationError as e:
-            print("Invalid JSON: ", e)
-            return "bad request", 400
 
         for dep_data in manifest["deployments"]:
             finish_timestamp = datetime.datetime.fromisoformat(
