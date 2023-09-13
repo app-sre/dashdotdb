@@ -283,12 +283,25 @@ paths:
       responses:
         "200":
           description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/DORAResponse'
+                x-content-type: application/json
+        "400":
+          description: invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/DORAResponse'
+                x-content-type: application/json
         "401":
           description: invalid token
         "404":
           description: token not found
-        "409":
-          description: data already present in database
+
 
   /dora/latest:
     get:
@@ -306,8 +319,10 @@ paths:
           schema:
             type: string
       responses:
-        "200":
-          description: successful operation
+        "201":
+          description: successful creation
+        "400":
+          description: invalid request
 
 components:
   schemas:
@@ -573,6 +588,21 @@ components:
                       oneOf:
                         - type: number
                         - type: string
+    DORAResponse:
+      type: object
+      properties:
+        committed:
+          type: array
+          items:
+            type: string
+        duplicate:
+          type: array
+          items:
+            type: string
+        error:
+          type: array
+          items:
+            type: string
     DORA:
       type: object
       properties:

@@ -4,7 +4,7 @@ from dashdotdb.services.dora import DORA
 def post(user, body):
     stats = DORA().insert(token=user, manifest=body)
 
-    if stats['committed']:
+    if stats['committed'] or stats['duplicate']:
         code = 201
     else:
         code = 400
@@ -21,7 +21,7 @@ def latest_deployment(app_name, env_name):
         "app_name": deployment.app_name,
         "env_name": deployment.env_name,
         "pipeline": deployment.pipeline,
-        "finish_timestamp": deployment.finish_timestamp,
+        "finish_timestamp": deployment.finish_timestamp.isoformat(),
         "trigger_reason": deployment.trigger_reason,
     }
 
