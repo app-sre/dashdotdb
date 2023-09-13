@@ -1,6 +1,36 @@
 {
   "deployments": [
     {
+      "trigger_reason": "https://gitlab.cee.redhat.com/service/app-interface/commit/e4f610491021f8e7438b4edad9bd5e2a06c55825",
+      "finish_timestamp": "2023-08-30 12:18:28.769103",
+      "app_name": "quayio-py3",
+      "env_name": "quay-production",
+      "pipeline": "data/services/quayio/saas/quayio-py3.yaml--quayio-py3-app--/services/quayio/namespaces/quayp05ue1.yml",
+      "commits": [
+        {
+          "revision": "8d5fa6ffd6ebec2f5887c966327f97ab306120c1",
+          "timestamp": "2023-07-22 11:11:20+00:00",
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
+        }
+      ]
+    },
+    {
+      "trigger_reason": "https://gitlab.cee.redhat.com/service/app-interface/commit/019acb56317e2fb9ba3ee445dd8d47936854c057",
+      "finish_timestamp": "2023-08-30 13:18:28.769103",
+      "app_name": "quayio-py3",
+      "env_name": "quay-production",
+      "pipeline": "data/services/quayio/saas/quayio-py3.yaml--quayio-py3-app--/services/quayio/namespaces/quayp05ue1.yml",
+      "commits": [
+        {
+          "revision": "2717633701867e570a8951b0c942b5498aa34a25",
+          "timestamp": "2023-07-22 15:11:20+00:00",
+          "repo": "https://github.com/quay/quay",
+          "lttc": 1234
+        }
+      ]
+    },
+    {
       "trigger_reason": "https://gitlab.cee.redhat.com/service/app-interface/commit/ff2fb3d2540d113328aed6dcedfc3af9403d3740",
       "finish_timestamp": "2023-08-30 14:18:28.769103",
       "app_name": "quayio-py3",
