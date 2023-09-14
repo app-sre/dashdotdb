@@ -31,7 +31,10 @@ make test-data
 Run a PostgreSQL instance:
 
 ```
-docker run --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+docker run -d --rm --name dashdot-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+
+# optional: tail -f database logs
+docker logs dashdot-postgres -f
 ```
 
 Open a new terminal. Install the package:

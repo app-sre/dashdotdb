@@ -15,6 +15,7 @@ class Token(db.Model):
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='token')
     serviceslo = db.relationship('ServiceSLO', backref='token')
+    doradeployment = db.relationship('DORADeployment', backref='token')
 
 
 class LatestTokens(db.Model):
@@ -226,3 +227,49 @@ class ServiceSLO(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'), index=True)
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
                              index=True)
+
+
+class DORADeployment(db.Model):
+
+    __tablename__ = 'doradeployment'
+    __table_args__ = (
+        db.UniqueConstraint(
+            "app_name",
+            "env_name",
+            "pipeline",
+            "trigger_reason",
+            name="doradeployment_trigger_reason_app_name_env_name_pipeline_uc",
+        ),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)
+
+    trigger_reason = db.Column(db.String(256), unique=False, index=True)
+
+    # timestamp of the deployment event (not of the DB entry). It should
+    # be as close as possible to the end of the pipeline.
+    finish_timestamp = db.Column(db.DateTime, index=True)
+
+    app_name = db.Column(db.String(256), unique=False, index=True)
+    env_name = db.Column(db.String(256), unique=False, index=True)
+    pipeline = db.Column(db.String(256), unique=False, index=True)
+
+
+class DORACommit(db.Model):
+
+    __tablename__ = 'doracommit'
+    __table_args__ = (db.UniqueConstraint('deployment_id', 'revision',
+                      'repo', name='doracommit_depid_rev_repo_uc'),)
+
+    id = db.Column(db.Integer, primary_key=True)
+    deployment_id = db.Column(db.Integer, db.ForeignKey(
+        'doradeployment.id'), index=True)
+
+    # timestamp of the commit event (not of the DB entry)
+    timestamp = db.Column(db.DateTime, index=True)
+
+    revision = db.Column(db.String(40), unique=False)
+    repo = db.Column(db.String(256), unique=False)
+
+    lttc = db.Column(db.Interval)

@@ -19,8 +19,13 @@ TOKEN_UNKNOWN_SCOPE_MSG = 'unknown scope'
 scope_to_data_type = {
     "imagemanifestvuln": DataTypes.CSODataType,
     "deploymentvalidation": DataTypes.DVODataType,
-    "serviceslometrics": DataTypes.SLODataType
+    "serviceslometrics": DataTypes.SLODataType,
+    "dora": DataTypes.DORADataType
 }
+
+
+class TokenNotFound(Exception):
+    pass
 
 
 # pylint: disable=unused-argument

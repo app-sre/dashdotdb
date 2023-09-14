@@ -267,6 +267,79 @@ paths:
           description: invalid token
         "404":
           description: token not found
+
+  # Deployments and DORA LTTC
+  /dora:
+    post:
+      summary: Post new DORA metrics
+      security:
+        - TokenAuth: []
+      requestBody:
+        description: DORA metrics
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DORA'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/DORAResponse'
+                x-content-type: application/json
+        "400":
+          description: invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/DORAResponse'
+                x-content-type: application/json
+        "401":
+          description: invalid token
+        "404":
+          description: token not found
+
+
+  /dora/latest:
+    get:
+      summary: Gets the latest DORA deployment. Used by the collector
+      operationId: dashdotdb.controllers.dora.latest_deployment
+      parameters:
+        - name: app_name
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: env_name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: found the latest deployment
+          content:
+            application/json:
+              schema:
+                type: object
+                x-content-type: application/json
+                properties:
+                  app_name:
+                    type: string
+                  env_name:
+                    type: string
+                  pipeline:
+                    type: string
+                  finish_timestamp:
+                    type: string
+                  trigger_reason:
+                    type: string
+        "404":
+          description: not found
+
 components:
   schemas:
     ImageManifestVulnReport:
@@ -531,6 +604,69 @@ components:
                       oneOf:
                         - type: number
                         - type: string
+    DORAResponse:
+      type: object
+      properties:
+        committed:
+          type: array
+          items:
+            type: string
+        duplicate:
+          type: array
+          items:
+            type: string
+        error:
+          type: array
+          items:
+            type: string
+    DORA:
+      type: object
+      properties:
+        deployments:
+          type: array
+          items:
+            type: object
+            required:
+            - trigger_reason
+            - finish_timestamp
+            - app_name
+            - env_name
+            - pipeline
+            - commits
+            properties:
+              trigger_reason:
+                type: string
+                pattern: https://gitlab\.cee\.redhat\.com/service/.*/commit/.*
+              finish_timestamp:
+                type: string
+                pattern: ^((?:(\d{4}-\d{2}-\d{2})(T| )(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+              app_name:
+                type: string
+              env_name:
+                type: string
+              pipeline:
+                type: string
+              commits:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - revision
+                  - timestamp
+                  - repo
+                  - lttc
+                  properties:
+                    revision:
+                      type: string
+                      pattern: '[a-f0-9]{40}'
+                    timestamp:
+                      type: string
+                      pattern: ^((?:(\d{4}-\d{2}-\d{2})(T| )(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+                    repo:
+                      type: string
+                      pattern: https://git.*\.com/.*/.*
+                    lttc:
+                      type: integer
   securitySchemes:
     TokenAuth:
       type: apiKey

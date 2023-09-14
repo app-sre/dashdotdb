@@ -13,3 +13,5 @@ class DataTypes(enum.Enum):
     DVODataType = 2
     # pylint: disable=invalid-name
     SLODataType = 3
+    # pylint: disable=invalid-name
+    DORADataType = 4
