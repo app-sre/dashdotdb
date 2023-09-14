@@ -319,10 +319,26 @@ paths:
           schema:
             type: string
       responses:
-        "201":
-          description: successful creation
-        "400":
-          description: invalid request
+        "200":
+          description: found the latest deployment
+          content:
+            application/json:
+              schema:
+                type: object
+                x-content-type: application/json
+                properties:
+                  app_name:
+                    type: string
+                  env_name:
+                    type: string
+                  pipeline:
+                    type: string
+                  finish_timestamp:
+                    type: string
+                  trigger_reason:
+                    type: string
+        "404":
+          description: not found
 
 components:
   schemas:

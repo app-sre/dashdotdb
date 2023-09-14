@@ -1,10 +1,14 @@
-from dashdotdb.services.dora import DORA
+from typing import Any
+
+from dashdotdb.services.dora import DORA, DORAInsertStats
 
 
-def post(user, body):
+def post(user, body) -> tuple[DORAInsertStats, int]:
     stats = DORA().insert(token=user, manifest=body)
 
-    if stats['committed'] or stats['duplicate']:
+    # if there's at least one entry created (or marked as duplicate), then this
+    # the post has been successful, but we report the errors.
+    if stats.created or stats.duplicated:
         code = 201
     else:
         code = 400
@@ -12,8 +16,9 @@ def post(user, body):
     return stats, code
 
 
-def latest_deployment(app_name, env_name):
+def latest_deployment(app_name, env_name) -> tuple[dict[str, Any], int]:
     deployment = DORA().get_latest_deployment(app_name, env_name)
+
     if deployment is None:
         return "Not found", 404
 

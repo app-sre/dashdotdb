@@ -1,5 +1,7 @@
 import logging
 import datetime
+from dataclasses import dataclass, field
+from typing import List
 
 from psycopg2.errors import UniqueViolation
 from sqlalchemy import exc
@@ -8,11 +10,18 @@ from dashdotdb.models.dashdotdb import db, Token, DataTypes, DORADeployment, DOR
 from dashdotdb.controllers.token import TOKEN_NOT_FOUND_CODE, TOKEN_NOT_FOUND_MSG
 
 
+@dataclass
+class DORAInsertStats:
+    created: List[str] = field(default_factory=lambda: [])
+    duplicated: List[str] = field(default_factory=lambda: [])
+    error: List[str] = field(default_factory=lambda: [])
+
+
 class DORA:
-    def __init__(self):
+    def __init__(self) -> None:
         self.log = logging.getLogger()
 
-    def insert(self, token, manifest):
+    def insert(self, token, manifest) -> DORAInsertStats:
         db_token = (
             db.session.query(Token)
             .filter(Token.uuid == token, Token.data_type == DataTypes.DORADataType)
@@ -23,11 +32,7 @@ class DORA:
             self.log.error("skipping validation: %s %s", TOKEN_NOT_FOUND_MSG, token)
             return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
-        stats = {
-            "committed": [],
-            "duplicate": [],
-            "error": [],
-        }
+        stats = DORAInsertStats()
 
         for dep_data in manifest["deployments"]:
             # start transaction - we want to do an atomic
@@ -83,19 +88,19 @@ class DORA:
                 if isinstance(e, exc.IntegrityError) and isinstance(
                     e.orig, UniqueViolation
                 ):
-                    stats["duplicate"].append(dep_short_name)
+                    stats.duplicated.append(dep_short_name)
                     self.log.info("DUPLICATE deployment: %s", dep_short_name)
                 else:
-                    stats["error"].append(dep_short_name)
+                    stats.error.append(dep_short_name)
                     self.log.error("ERROR deployment: %s - %s", dep_short_name, e)
 
                 db.session.rollback()
             else:
-                stats["committed"].append(dep_short_name)
+                stats.created.append(dep_short_name)
 
         return stats
 
-    def get_latest_deployment(self, app_name, env_name):
+    def get_latest_deployment(self, app_name, env_name) -> DORADeployment:
         return (
             db.session.query(DORADeployment)
             .filter_by(
