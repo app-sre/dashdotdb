@@ -1,10 +1,18 @@
 from typing import Any
 
 from dashdotdb.services.dora import DORA, DORAInsertStats
+from dashdotdb.controllers.token import (
+    TokenNotFound,
+    TOKEN_NOT_FOUND_CODE,
+    TOKEN_NOT_FOUND_MSG,
+)
 
 
-def post(user, body) -> tuple[DORAInsertStats, int]:
-    stats = DORA().insert(token=user, manifest=body)
+def post(user, body) -> tuple[str, int] | tuple[DORAInsertStats, int]:
+    try:
+        stats = DORA().insert(token=user, manifest=body)
+    except TokenNotFound:
+        return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
     # if there's at least one entry created (or marked as duplicate), then this
     # the post has been successful, but we report the errors.
@@ -16,7 +24,9 @@ def post(user, body) -> tuple[DORAInsertStats, int]:
     return stats, code
 
 
-def latest_deployment(app_name, env_name) -> tuple[dict[str, Any], int]:
+def latest_deployment(
+    app_name, env_name
+) -> tuple[str, int] | tuple[dict[str, Any], int]:
     deployment = DORA().get_latest_deployment(app_name, env_name)
 
     if deployment is None:

@@ -232,8 +232,15 @@ class ServiceSLO(db.Model):
 class DORADeployment(db.Model):
 
     __tablename__ = 'doradeployment'
-    __table_args__ = (db.UniqueConstraint('app_name', 'env_name', 'pipeline', 'trigger_reason',
-                      name='doradeployment_trigger_reason_app_name_env_name_pipeline_uc'),)
+    __table_args__ = (
+        db.UniqueConstraint(
+            "app_name",
+            "env_name",
+            "pipeline",
+            "trigger_reason",
+            name="doradeployment_trigger_reason_app_name_env_name_pipeline_uc",
+        ),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)

@@ -24,6 +24,10 @@ scope_to_data_type = {
 }
 
 
+class TokenNotFound(Exception):
+    pass
+
+
 # pylint: disable=unused-argument
 def auth_token(token, required_scopes):
     db_token = db.session.query(Token) \

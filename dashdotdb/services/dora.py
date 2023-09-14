@@ -3,11 +3,11 @@ import datetime
 from dataclasses import dataclass, field
 from typing import List
 
-from psycopg2.errors import UniqueViolation
+from psycopg2.errors import UniqueViolation  # pylint: disable-msg=E0611
 from sqlalchemy import exc
 
 from dashdotdb.models.dashdotdb import db, Token, DataTypes, DORADeployment, DORACommit
-from dashdotdb.controllers.token import TOKEN_NOT_FOUND_CODE, TOKEN_NOT_FOUND_MSG
+from dashdotdb.controllers.token import TokenNotFound
 
 
 @dataclass
@@ -29,8 +29,7 @@ class DORA:
         )
 
         if db_token is None:
-            self.log.error("skipping validation: %s %s", TOKEN_NOT_FOUND_MSG, token)
-            return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
+            raise TokenNotFound()
 
         stats = DORAInsertStats()
 
@@ -40,12 +39,10 @@ class DORA:
             db.session.begin_nested()
 
             dep_short_name = (
-                "app_name={},env_name={},pipeline={},trigger_reason={}".format(
-                    dep_data["app_name"],
-                    dep_data["env_name"],
-                    dep_data["pipeline"],
-                    dep_data["trigger_reason"],
-                )
+                f"app_name={dep_data['app_name']},"
+                f"env_name={dep_data['env_name']},"
+                f"pipeline={dep_data['pipeline']},"
+                f"trigger_reason={dep_data['trigger_reason']}"
             )
 
             try:
@@ -84,15 +81,17 @@ class DORA:
                     )
                     db.session.add(commit)
                 db.session.commit()
-            except Exception as e:
-                if isinstance(e, exc.IntegrityError) and isinstance(
-                    e.orig, UniqueViolation
+            except exc.SQLAlchemyError as exception:
+                if isinstance(exception, exc.IntegrityError) and isinstance(
+                    exception.orig, UniqueViolation
                 ):
                     stats.duplicated.append(dep_short_name)
                     self.log.info("DUPLICATE deployment: %s", dep_short_name)
                 else:
                     stats.error.append(dep_short_name)
-                    self.log.error("ERROR deployment: %s - %s", dep_short_name, e)
+                    self.log.error(
+                        "ERROR deployment: %s - %s", dep_short_name, exception
+                    )
 
                 db.session.rollback()
             else:
