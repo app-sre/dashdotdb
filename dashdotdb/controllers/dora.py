@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union
 
 from dashdotdb.services.dora import DORA, DORAInsertStats
 from dashdotdb.controllers.token import (
@@ -8,7 +8,7 @@ from dashdotdb.controllers.token import (
 )
 
 
-def post(user, body) -> tuple[str, int] | tuple[DORAInsertStats, int]:
+def post(user, body) -> Union[tuple[str, int], tuple[DORAInsertStats, int]]:
     try:
         stats = DORA().insert(token=user, manifest=body)
     except TokenNotFound:
@@ -26,7 +26,7 @@ def post(user, body) -> tuple[str, int] | tuple[DORAInsertStats, int]:
 
 def latest_deployment(
     app_name, env_name
-) -> tuple[str, int] | tuple[dict[str, Any], int]:
+) -> Union[tuple[str, int], tuple[dict[str, Any], int]]:
     deployment = DORA().get_latest_deployment(app_name, env_name)
 
     if deployment is None:
