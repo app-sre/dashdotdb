@@ -632,6 +632,7 @@ components:
             - app_name
             - env_name
             - pipeline
+            - commits
             properties:
               trigger_reason:
                 type: string
