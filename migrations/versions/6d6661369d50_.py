@@ -63,7 +63,6 @@ def upgrade():
     # ### end Alembic commands ###
 
     # Manually added to add a new type to datatypes
-    # op.execute("ALTER TYPE " + enum_name + " ADD VALUE 'DORADataType'")
     op.execute("ALTER TYPE " + enum_name + " RENAME TO " + tmp_enum_name)
     new_type.create(op.get_bind())
     op.execute("ALTER TABLE " + table_name + " ALTER COLUMN " + column_name +
@@ -85,22 +84,6 @@ def downgrade():
     op.drop_index(op.f('ix_doradeployment_app_name'), table_name='doradeployment')
     op.drop_table('doradeployment')
     # ### end Alembic commands ###
-
-    # TODO: removing DORADataType. The following code doesn't work
-    # enum_type = sa.Enum('CSODataType', 'DVODataType', 'SLODataType', name='datatypes')
-    # op.execute('ALTER TYPE datatypes RENAME TO datatypes_old')
-    # enum_type.create(op.get_bind())
-    # op.alter_column(
-    #     table_name='token',
-    #     column_name='data_type',
-    #     nullable=True,
-    #     type_=enum_type,
-    #     postgresql_using='data_type::datatypes'
-    # )
-    # op.execute('DROP TYPE datatypes_old')
-    #
-    # Gives this error:
-    # ERROR:  cannot cast type datatypes_old to datatypes
 
     # @REF [Creating migrations when changing an enum in Python using SQLAlchemy](https://markrailton.com/blog/creating-migrations-when-changing-an-enum-in-python-using-sql-alchemy)
     # Instatiate db query
