@@ -14,7 +14,7 @@ def post(user, body) -> Union[tuple[str, int], tuple[DORAInsertStats, int]]:
     except TokenNotFound:
         return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
 
-    # if there's at least one entry created (or marked as duplicate), then this
+    # if there's at least one entry created (or marked as duplicate), then
     # the post has been successful, but we report the errors.
     if stats.created or stats.duplicated:
         code = 201
