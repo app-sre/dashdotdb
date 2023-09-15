@@ -1,18 +1,10 @@
 from typing import Any, Union
 
 from dashdotdb.services.dora import DORA, DORAInsertStats
-from dashdotdb.controllers.token import (
-    TokenNotFound,
-    TOKEN_NOT_FOUND_CODE,
-    TOKEN_NOT_FOUND_MSG,
-)
 
 
-def post(user, body) -> Union[tuple[str, int], tuple[DORAInsertStats, int]]:
-    try:
-        stats = DORA().insert(token=user, manifest=body)
-    except TokenNotFound:
-        return TOKEN_NOT_FOUND_MSG, TOKEN_NOT_FOUND_CODE
+def post(body) -> Union[tuple[str, int], tuple[DORAInsertStats, int]]:
+    stats = DORA().insert(manifest=body)
 
     # if there's at least one entry created (or marked as duplicate), then
     # the post has been successful, but we report the errors.
