@@ -15,7 +15,6 @@ class Token(db.Model):
     deploymentvalidation = db.relationship('DeploymentValidation',
                                            backref='token')
     serviceslo = db.relationship('ServiceSLO', backref='token')
-    doradeployment = db.relationship('DORADeployment', backref='token')
 
 
 class LatestTokens(db.Model):
@@ -243,7 +242,6 @@ class DORADeployment(db.Model):
     )
 
     id = db.Column(db.Integer, primary_key=True)
-    token_id = db.Column(db.Integer, db.ForeignKey('token.id'), index=True)
 
     trigger_reason = db.Column(db.String(256), unique=False, index=True)
 

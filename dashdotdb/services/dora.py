@@ -6,8 +6,7 @@ from typing import List
 from psycopg2.errors import UniqueViolation  # pylint: disable-msg=E0611
 from sqlalchemy import exc
 
-from dashdotdb.models.dashdotdb import db, Token, DataTypes, DORADeployment, DORACommit
-from dashdotdb.controllers.token import TokenNotFound
+from dashdotdb.models.dashdotdb import db, DORADeployment, DORACommit
 
 
 @dataclass
@@ -21,16 +20,7 @@ class DORA:
     def __init__(self) -> None:
         self.log = logging.getLogger()
 
-    def insert(self, token, manifest) -> DORAInsertStats:
-        db_token = (
-            db.session.query(Token)
-            .filter(Token.uuid == token, Token.data_type == DataTypes.DORADataType)
-            .first()
-        )
-
-        if db_token is None:
-            raise TokenNotFound()
-
+    def insert(self, manifest) -> DORAInsertStats:
         stats = DORAInsertStats()
 
         for dep_data in manifest["deployments"]:
@@ -59,7 +49,6 @@ class DORA:
                     )
 
                 deployment = DORADeployment(
-                    token_id=db_token.id,
                     finish_timestamp=finish_timestamp,
                     trigger_reason=dep_data["trigger_reason"],
                     app_name=dep_data["app_name"],
