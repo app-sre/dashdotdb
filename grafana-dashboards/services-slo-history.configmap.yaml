@@ -1,0 +1,239 @@
+---
+apiVersion: v1
+data:
+  dashdotdb-service-slo-history.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "Services SLO history as recorded in Dash.DB",
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 951531,
+      "links": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${datasource}"
+          },
+          "description": "Shows the recorded SLO for each services, as configured in app-interface SLO documents",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "format": "time_series",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  token.timestamp as time,\n  service.name as \"service\",\n  serviceslo.name as \"slo\",\n  slitype.name as \"sli\",\n  cluster.name as \"cluster\",\n  namespace.name as \"namespace\",\n  serviceslo.value\nFROM\n  serviceslo,\n  token,\n  service,\n  slitype,\n  namespace,\n  cluster\nWHERE\n  serviceslo.token_id = token.id\n  AND serviceslo.service_id = service.id\n  AND serviceslo.slitype_id = slitype.id\n  AND serviceslo.namespace_id = namespace.id\n  AND namespace.cluster_id = cluster.id\n  AND token.timestamp > $__timeFrom()\n  AND service.name in ($service)\n  AND serviceslo.name in ($slo)\nORDER BY\n  token.timestamp ASC\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "services SLO history",
+          "transparent": true,
+          "type": "timeseries"
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "dashdotdb-rds",
+              "value": "PDF0D305A66BF6B52"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "multi": false,
+            "name": "datasource",
+            "options": [],
+            "query": "grafana-postgresql-datasource",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "/dashdotdb/",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "${datasource}"
+            },
+            "definition": "select service.name from service",
+            "hide": 0,
+            "includeAll": true,
+            "multi": true,
+            "name": "service",
+            "options": [],
+            "query": "select service.name from service",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "${datasource}"
+            },
+            "definition": "select distinct serviceslo.name from serviceslo, service where serviceslo.service_id = service.id and service.name in ($service)",
+            "hide": 0,
+            "includeAll": true,
+            "multi": true,
+            "name": "slo",
+            "options": [],
+            "query": "select distinct serviceslo.name from serviceslo, service where serviceslo.service_id = service.id and service.name in ($service)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-30d",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Dash.DB Services SLO history",
+      "uid": "edzqrg1ms1tkwe",
+      "version": 2,
+      "weekStart": ""
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: grafana-dashboard-dashdotdb-services-slo-history
+  labels:
+    grafana_dashboard: "true"
+  annotations:
+    grafana-folder: /grafana-dashboard-definitions/AppSRE
