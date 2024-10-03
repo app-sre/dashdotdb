@@ -133,6 +133,35 @@ data:
                 ],
                 "limit": 50
               }
+            },
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "hide": false,
+              "rawQuery": true,
+              "rawSql": "SELECT\n  token.timestamp as time,\n  service.name as \"service\",\n  serviceslo.name as \"slo\",\n  slitype.name as \"sli\",\n  cluster.name as \"cluster\",\n  namespace.name as \"namespace\",\n  serviceslo.target\nFROM\n  serviceslo,\n  token,\n  service,\n  slitype,\n  namespace,\n  cluster\nWHERE\n  serviceslo.token_id = token.id\n  AND serviceslo.service_id = service.id\n  AND serviceslo.slitype_id = slitype.id\n  AND serviceslo.namespace_id = namespace.id\n  AND namespace.cluster_id = cluster.id\n  AND token.timestamp > $__timeFrom()\n  AND service.name in ($service)\n  AND serviceslo.name in ($slo)\nORDER BY\n  token.timestamp ASC\n",
+              "refId": "B",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
             }
           ],
           "title": "services SLO history",
@@ -226,7 +255,7 @@ data:
       "timezone": "",
       "title": "Dash.DB Services SLO history",
       "uid": "edzqrg1ms1tkwe",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
 kind: ConfigMap
