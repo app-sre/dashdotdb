@@ -23,7 +23,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 951531,
+      "id": 758483,
       "links": [],
       "panels": [
         {
@@ -84,7 +84,30 @@ data:
                 ]
               }
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "target"
+                },
+                "properties": [
+                  {
+                    "id": "custom.pointSize",
+                    "value": 1
+                  },
+                  {
+                    "id": "custom.lineStyle",
+                    "value": {
+                      "dash": [
+                        10,
+                        25
+                      ],
+                      "fill": "dash"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 22,
@@ -95,8 +118,10 @@ data:
           "id": 1,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "table",
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "list",
               "placement": "bottom",
               "showLegend": true
             },
@@ -114,7 +139,7 @@ data:
               "editorMode": "code",
               "format": "time_series",
               "rawQuery": true,
-              "rawSql": "SELECT\n  token.timestamp as time,\n  service.name as \"service\",\n  serviceslo.name as \"slo\",\n  slitype.name as \"sli\",\n  cluster.name as \"cluster\",\n  namespace.name as \"namespace\",\n  serviceslo.value\nFROM\n  serviceslo,\n  token,\n  service,\n  slitype,\n  namespace,\n  cluster\nWHERE\n  serviceslo.token_id = token.id\n  AND serviceslo.service_id = service.id\n  AND serviceslo.slitype_id = slitype.id\n  AND serviceslo.namespace_id = namespace.id\n  AND namespace.cluster_id = cluster.id\n  AND token.timestamp > $__timeFrom()\n  AND service.name in ($service)\n  AND serviceslo.name in ($slo)\nORDER BY\n  token.timestamp ASC\n",
+              "rawSql": "SELECT\n  token.timestamp as time,\n  service.name as \"service\",\n  serviceslo.name as \"slo\",\n  slitype.name as \"sli\",\n  cluster.name as \"cluster\",\n  namespace.name as \"namespace\",\n  ${selectTargets}\n  serviceslo.value\nFROM\n  serviceslo,\n  token,\n  service,\n  slitype,\n  namespace,\n  cluster\nWHERE\n  serviceslo.token_id = token.id\n  AND serviceslo.service_id = service.id\n  AND serviceslo.slitype_id = slitype.id\n  AND serviceslo.namespace_id = namespace.id\n  AND namespace.cluster_id = cluster.id\n  AND token.timestamp > $__timeFrom()\n  AND service.name in ($service)\n  AND serviceslo.name in ($slo)\nORDER BY\n  token.timestamp ASC\n",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -146,7 +171,7 @@ data:
         "list": [
           {
             "current": {
-              "selected": true,
+              "selected": false,
               "text": "dashdotdb-rds",
               "value": "PDF0D305A66BF6B52"
             },
@@ -215,6 +240,34 @@ data:
             "skipUrlSync": false,
             "sort": 0,
             "type": "query"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": "NO",
+              "value": "-- serviceslo.target,"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "show SLO targets",
+            "multi": false,
+            "name": "selectTargets",
+            "options": [
+              {
+                "selected": false,
+                "text": "YES",
+                "value": "serviceslo.target,"
+              },
+              {
+                "selected": true,
+                "text": "NO",
+                "value": "-- serviceslo.target,"
+              }
+            ],
+            "query": "YES : serviceslo.target\\,, NO : -- serviceslo.target\\,",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
           }
         ]
       },
@@ -226,7 +279,7 @@ data:
       "timezone": "",
       "title": "Dash.DB Services SLO history",
       "uid": "edzqrg1ms1tkwe",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
 kind: ConfigMap
