@@ -17,7 +17,11 @@ test_data() {
 make ci
 
 # now run some checks against test data
-podman-compose up -d --wait
+podman-compose up -d
+
+# https://github.com/containers/podman-compose/issues/710
+# --wait not supported in podman compose yet
+sleep 10
 
 test_data imagemanifestvuln
 test_data serviceslometrics
