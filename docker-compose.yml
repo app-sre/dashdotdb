@@ -8,9 +8,21 @@ services:
       - POSTGRESQL_DATABASE=dashdotdb
     networks:
     - dashdotdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dashdotdb -d dashdotdb"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
   app:
+    stdin_open: true
+    tty: true
     container_name: ${WEB_CONTAINER_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
     networks:
     - dashdotdb
     build:

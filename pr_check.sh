@@ -1,6 +1,13 @@
 #!/bin/bash
-
 set -xvo pipefail
+
+# This script performs a build of the Dockerfile.ci image which performs type checking and linting
+# This is followed by an integration test of the application using a Postgres DB that is spun up with
+# Podman. The reason I'm using these raw podman commands rather than podman-compose is due to limitations
+# in Podman compose, specifically that the `depends_on` healthcheck feature isn't supported
+# (see: https://github.com/containers/podman-compose/issues/866)
+# once the DB & web-app are spun up, several queries are run to validate the DB functionality
+# and finally everything is torn down in the end
 
 # $1: api_type
 # $2: web app port
