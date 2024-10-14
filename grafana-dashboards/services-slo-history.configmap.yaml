@@ -110,7 +110,7 @@ data:
             ]
           },
           "gridPos": {
-            "h": 22,
+            "h": 28,
             "w": 24,
             "x": 0,
             "y": 0
@@ -139,7 +139,7 @@ data:
               "editorMode": "code",
               "format": "time_series",
               "rawQuery": true,
-              "rawSql": "SELECT\n  token.timestamp as time,\n  service.name as \"service\",\n  serviceslo.name as \"slo\",\n  slitype.name as \"sli\",\n  cluster.name as \"cluster\",\n  namespace.name as \"namespace\",\n  ${selectTargets}\n  serviceslo.value\nFROM\n  serviceslo,\n  token,\n  service,\n  slitype,\n  namespace,\n  cluster\nWHERE\n  serviceslo.token_id = token.id\n  AND serviceslo.service_id = service.id\n  AND serviceslo.slitype_id = slitype.id\n  AND serviceslo.namespace_id = namespace.id\n  AND namespace.cluster_id = cluster.id\n  AND token.timestamp > $__timeFrom()\n  AND service.name in ($service)\n  AND serviceslo.name in ($slo)\nORDER BY\n  token.timestamp ASC\n",
+              "rawSql": "SELECT\n  token.timestamp as time,\n  service.name as \"service\",\n  serviceslo.name as \"slo\",\n  slitype.name as \"sli\",\n  cluster.name as \"cluster\",\n  namespace.name as \"namespace\",\n  ${selectTargets}\n  serviceslo.value\nFROM\n  serviceslo,\n  token,\n  service,\n  slitype,\n  namespace,\n  cluster\nWHERE\n  serviceslo.token_id = token.id\n  AND serviceslo.service_id = service.id\n  AND serviceslo.slitype_id = slitype.id\n  AND serviceslo.namespace_id = namespace.id\n  AND namespace.cluster_id = cluster.id\n  AND token.timestamp >= $__timeFrom()\n  AND token.timestamp <= $__timeTo()\n  AND service.name in ($service)\n  AND serviceslo.name in ($slo)\nORDER BY\n  token.timestamp ASC\n",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -165,6 +165,7 @@ data:
           "type": "timeseries"
         }
       ],
+      "refresh": "",
       "schemaVersion": 39,
       "tags": [],
       "templating": {
@@ -228,13 +229,13 @@ data:
               "type": "grafana-postgresql-datasource",
               "uid": "${datasource}"
             },
-            "definition": "select distinct serviceslo.name from serviceslo, service where serviceslo.service_id = service.id and service.name in ($service)",
+            "definition": "select distinct serviceslo.name from serviceslo, service, token where serviceslo.service_id = service.id and service.name in ($service) and serviceslo.token_id=token.id and token.timestamp >= $__timeFrom() and token.timestamp <= $__timeTo()\n",
             "hide": 0,
             "includeAll": true,
             "multi": true,
             "name": "slo",
             "options": [],
-            "query": "select distinct serviceslo.name from serviceslo, service where serviceslo.service_id = service.id and service.name in ($service)",
+            "query": "select distinct serviceslo.name from serviceslo, service, token where serviceslo.service_id = service.id and service.name in ($service) and serviceslo.token_id=token.id and token.timestamp >= $__timeFrom() and token.timestamp <= $__timeTo()\n",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
@@ -245,7 +246,7 @@ data:
             "current": {
               "selected": true,
               "text": "NO",
-              "value": "-- serviceslo.target,"
+              "value": "/**/"
             },
             "hide": 0,
             "includeAll": false,
@@ -261,10 +262,10 @@ data:
               {
                 "selected": true,
                 "text": "NO",
-                "value": "-- serviceslo.target,"
+                "value": "/**/"
               }
             ],
-            "query": "YES : serviceslo.target\\,, NO : -- serviceslo.target\\,",
+            "query": "YES : serviceslo.target\\,, NO : /**/",
             "queryValue": "",
             "skipUrlSync": false,
             "type": "custom"
