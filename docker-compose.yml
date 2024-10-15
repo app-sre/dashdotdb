@@ -1,23 +1,38 @@
 ---
-version: "3.9"
 services:
   db:
-    container_name: dashdot-postgres
-    image: postgres
+    image: registry.redhat.io/rhel9/postgresql-15
     environment:
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - 5432:5432
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_USER=dashdotdb
+      - POSTGRESQL_DATABASE=dashdotdb
+    networks:
+    - dashdotdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dashdotdb -d dashdotdb"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
   app:
     stdin_open: true
     tty: true
-    links:
-      - db
+    container_name: ${WEB_CONTAINER_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    networks:
+    - dashdotdb
     build:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      - DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - DASHDOTDB_DATABASE_URL=postgresql://dashdotdb:postgres@db:5432/dashdotdb
     ports:
-      - 8080:8080
+      - 8080
+    restart: always
+
+networks:
+  dashdotdb:
