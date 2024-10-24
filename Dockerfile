@@ -1,6 +1,4 @@
-FROM        registry.access.redhat.com/ubi8/python-39:1-83
-
-WORKDIR     /dashdotdb
+FROM        registry.access.redhat.com/ubi8/python-39:1-201.1729679484
 
 COPY        . ./
 
