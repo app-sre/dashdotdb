@@ -18,7 +18,6 @@ services:
   app:
     stdin_open: true
     tty: true
-    container_name: ${WEB_CONTAINER_NAME}
     depends_on:
       db:
         condition: service_healthy
@@ -31,7 +30,7 @@ services:
     environment:
       - DASHDOTDB_DATABASE_URL=postgresql://dashdotdb:postgres@db:5432/dashdotdb
     ports:
-      - 8080
+      - 8080:8080
     restart: always
 
 networks:
