@@ -28,8 +28,8 @@ check:
 	pylint dashdotdb
 
 ci:
-	docker build -t app-sre-dashdotdb-ci:do-not-use -f Dockerfile.ci .
-	docker build -t app-sre-dashdotdb:do-not-use .
+	docker build -t app-sre-dashdotdb-ci:do-not-use --target test -f Dockerfile .
+	docker build -t app-sre-dashdotdb:do-not-use --target prod -f Dockerfile .
 
 test-data:
 	$(eval TOKEN := $(shell curl --silent localhost:8080/api/v1/token?scope=imagemanifestvuln | sed 's/"//g'))
