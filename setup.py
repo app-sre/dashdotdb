@@ -33,6 +33,6 @@ setup(name='dashdotdb',
             'openapi-schema-validator ~= 0.1.5',
             'jsonschema ~= 3.0',
             # Newer versions are not compatible with our Flask version
-            'markupsafe == 2.0.1'
+            'markupsafe ==2.1.5'
       ],
       )
