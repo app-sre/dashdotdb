@@ -22,27 +22,30 @@ test_data() {
 }
 
 make ci
-RETURN=$?
 
-IP=$(hostname -I | tr -d '[:blank:]')
-
-DB_CONTAINER=dashdotdb-pg
-APP_CONTAINER=dashdotdb-app
-
-podman run --rm -d -e POSTGRESQL_PASSWORD=postgres -e POSTGRESQL_USER=dashdotdb -e POSTGRESQL_DATABASE=dashdotdb --health-cmd "pg_isready -U dashdotdb -d dashdotdb" --name dashdotdb-pg -p 5432 registry.redhat.io/rhel9/postgresql-15
-podman wait --condition=healthy $DB_CONTAINER
-PG_PORT=$(podman port "${DB_CONTAINER}" | awk -F: '{print $2}')
-
-podman run --rm -d -e DASHDOTDB_DATABASE_URL=postgresql://dashdotdb:postgres@$IP:$PG_PORT/dashdotdb -p 8080 --health-cmd "curl -f http://localhost:8080/api/healthz/ready" --name $APP_CONTAINER app-sre-dashdotdb:do-not-use
-podman wait --condition=healthy $APP_CONTAINER
-
-
-WEB_PORT=$(podman port "${APP_CONTAINER}" | awk -F: '{print $2}')
-
-test_data imagemanifestvuln "$WEB_PORT"
-test_data serviceslometrics "$WEB_PORT"
-test_data deploymentvalidation "$WEB_PORT"
-
-podman stop $APP_CONTAINER $DB_CONTAINER
-
-exit $RETURN
+# This cannot run in parallel on jenkins nodes. Further, cleanup isnt ensured, so nodes get spammed with dangling containers
+# TODO: migrate this to Konflux
+#RETURN=$?
+#
+#IP=$(hostname -I | tr -d '[:blank:]')
+#
+#DB_CONTAINER=dashdotdb-pg
+#APP_CONTAINER=dashdotdb-app
+#
+#podman run --rm -d -e POSTGRESQL_PASSWORD=postgres -e POSTGRESQL_USER=dashdotdb -e POSTGRESQL_DATABASE=dashdotdb --health-cmd "pg_isready -U dashdotdb -d dashdotdb" --name dashdotdb-pg -p 5432 registry.redhat.io/rhel9/postgresql-15
+#podman wait --condition=healthy $DB_CONTAINER
+#PG_PORT=$(podman port "${DB_CONTAINER}" | awk -F: '{print $2}')
+#
+#podman run --rm -d -e DASHDOTDB_DATABASE_URL=postgresql://dashdotdb:postgres@$IP:$PG_PORT/dashdotdb -p 8080 --health-cmd "curl -f http://localhost:8080/api/healthz/ready" --name $APP_CONTAINER app-sre-dashdotdb:do-not-use
+#podman wait --condition=healthy $APP_CONTAINER
+#
+#
+#WEB_PORT=$(podman port "${APP_CONTAINER}" | awk -F: '{print $2}')
+#
+#test_data imagemanifestvuln "$WEB_PORT"
+#test_data serviceslometrics "$WEB_PORT"
+#test_data deploymentvalidation "$WEB_PORT"
+#
+#podman stop $APP_CONTAINER $DB_CONTAINER
+#
+#exit $RETURN
