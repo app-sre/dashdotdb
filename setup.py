@@ -21,7 +21,7 @@ setup(name='dashdotdb',
             'Programming Language :: Python :: 3.9',
       ],
       install_requires=[
-            'connexion[swagger-ui] ~= 2.14',
+            'connexion[swagger-ui] ~=3.1',
             'Flask ~= 1.1',
             'flask-healthz ~= 0.0.3',
             'Flask-Migrate ~= 2.7',
