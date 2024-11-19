@@ -31,7 +31,7 @@ setup(name='dashdotdb',
             'prometheus-client ~= 0.14',
             'gunicorn ~= 20.1',
             'openapi-schema-validator ~= 0.1.5',
-            'jsonschema ~= 3.0',
+            'jsonschema ~=4.23',
             # Newer versions are not compatible with our Flask version
             'markupsafe == 2.0.1'
       ],
