@@ -30,7 +30,7 @@ setup(name='dashdotdb',
             'psycopg2-binary ~= 2.9',
             'prometheus-client ~= 0.14',
             'gunicorn ~=23.0',
-            'openapi-schema-validator ~= 0.1.5',
+            'openapi-schema-validator ~=0.6.2',
             'jsonschema ~=4.23',
             # Newer versions are not compatible with our Flask version
             'markupsafe == 2.0.1'
