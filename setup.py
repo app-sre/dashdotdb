@@ -22,7 +22,7 @@ setup(name='dashdotdb',
       ],
       install_requires=[
             'connexion[swagger-ui] ~= 2.14',
-            'Flask ~= 1.1',
+            'Flask ~=3.1',
             'flask-healthz ~= 0.0.3',
             'Flask-Migrate ~= 2.7',
             'Flask-SQLAlchemy ~= 2.5',
