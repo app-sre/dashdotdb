@@ -1,4 +1,4 @@
-FROM        registry.access.redhat.com/ubi9/python-39:9.5-1739799514@sha256:9bbc4cfeac896544ab3eafa088c3d6995e82592362d374606f00d221f2986fe0 as prod
+FROM        registry.access.redhat.com/ubi9/python-39:9.5-1743508348@sha256:dd4267b8fae4fbaeefbc5396057cf4acfcc6e4147a5e1c1eb54240e2d6c1b1e6 as prod
 
 COPY        LICENSE /licenses/LICENSE
 USER        1001
@@ -14,7 +14,7 @@ RUN         pip3 install --no-cache-dir . && \
 
 ENTRYPOINT  ["./entrypoint.sh"]
 
-FROM        registry.access.redhat.com/ubi9/python-39:9.5-1739799514@sha256:9bbc4cfeac896544ab3eafa088c3d6995e82592362d374606f00d221f2986fe0 as test
+FROM        registry.access.redhat.com/ubi9/python-39:9.5-1743508348@sha256:dd4267b8fae4fbaeefbc5396057cf4acfcc6e4147a5e1c1eb54240e2d6c1b1e6 as test
 
 USER        root
 COPY        LICENSE /licenses/LICENSE
