@@ -1,6 +1,7 @@
 from dashdotdb.models.base import db
 from dashdotdb.services import DataTypes
 
+
 class Token(db.Model):
 
     __tablename__ = 'token'
