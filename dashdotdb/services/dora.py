@@ -40,8 +40,10 @@ class DORA:
                     dep_data["finish_timestamp"]
                 )
 
-                # finish_timestamp and timestamp may come offset-naive or offset-aware,
-                # and they can't be subtracted if they are different. Converting always
+                # finish_timestamp and timestamp may come offset-naive
+                # or offset-aware,
+                # and they can't be subtracted if they are different.
+                # Converting always
                 # to offset-aware. If no TZ data is provided, we assume UTC.
                 if finish_timestamp.tzinfo is None:
                     finish_timestamp = finish_timestamp.replace(

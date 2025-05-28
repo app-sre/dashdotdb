@@ -1,0 +1,73 @@
+[project]
+name = "dashdotdb"
+version = "0.1.0"
+requires-python = ">=3.9"
+# TODO (lseelye) Split these dependencies out into groups based on purpose
+# ex: types-psycopg2 and types-Flask-Migrate are explicitly for mypy
+# --install-types, it should be lumped in from requirements-check.txt and in
+# their own group.
+dependencies = [
+  # from requirements-check.txt
+  "flake8==7.1.2",
+  "pylint~=3.3",
+  "mypy==1.15.0",
+  # from setup.py
+  "connexion[swagger-ui] ~= 2.14",
+  "Flask ~= 1.1",
+  "flask-healthz ~= 0.0.3",
+  "Flask-Migrate ~= 2.7",
+  "Flask-SQLAlchemy ~= 2.5",
+  "SQLAlchemy[mypy] ~= 1.4.48",
+  "psycopg2-binary ~= 2.9",
+  "prometheus-client ~= 0.14",
+  "gunicorn ~=23.0",
+  "openapi-schema-validator ~=0.6.2",
+  "jsonschema ~=4.23",
+  # Newer versions are not compatible with our Flask version
+  "markupsafe == 2.0.1",
+  # for mypy
+  "types-psycopg2",
+  "types-Flask-Migrate",
+]
+license-files = [ "LICENSE" ]
+authors = [{ name = "Red Hat App-SRE Team", email = "sd-app-sre@redhat.com" }]
+readme = "README.md"
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Web Environment",
+  "Framework :: Flask",
+  "GNU General Public License v2 or later (GPLv2+)",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: ",
+  "Natural Language :: English",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3.9"
+]
+[build-system]
+requires = ["setuptools"]
+
+[tool.flake8]
+max-line-length = 88
+
+[tool.mypy]
+files = ["dashdotdb"]
+no_implicit_optional = true
+enable_error_code = ["truthy-bool", "redundant-expr"]
+plugins = [ "sqlalchemy.ext.mypy.plugin" ]
+
+# More context here: https://github.com/python/mypy/issues/9091
+[[tool.mypy.overrides]]
+module = [
+  "mypy-flask_sqlalchemy.*",
+  "mypy-sqlalchemy.*",
+  "mypy-connexion.exceptions.*",
+  "mypy-prometheus_client.*",
+  "mypy-flask_migrate.*",
+  "mypy-connexion.*",
+  "mypy-flask.*",
+  "mypy-psycopg2.*",
+]
+ignore_missing_imports = true
+
+[tool.setuptools]
+py-modules = []

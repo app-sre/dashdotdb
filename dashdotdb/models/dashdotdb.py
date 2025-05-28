@@ -1,7 +1,6 @@
 from dashdotdb.models.base import db
 from dashdotdb.services import DataTypes
 
-
 class Token(db.Model):
 
     __tablename__ = 'token'
@@ -34,7 +33,9 @@ class Pod(db.Model):
     name = db.Column(db.String(256), unique=False, index=True)
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
                              index=True)
-    images = db.relationship('Image', secondary='podimage', back_populates='pods')
+    images = db.relationship(
+        'Image', secondary='podimage', back_populates='pods'
+        )
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'),
                          index=True)
 
@@ -89,7 +90,9 @@ class Image(db.Model):
     manifest = db.Column(db.String(1000), unique=False)
     features = db.relationship('Feature', secondary='imagefeature',
                                back_populates='images')
-    pods = db.relationship('Pod', secondary='podimage', back_populates='images')
+    pods = db.relationship(
+        'Pod', secondary='podimage', back_populates='images'
+        )
 
     # Indexes
     __table_args__ = (
