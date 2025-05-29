@@ -2,22 +2,14 @@
 name = "dashdotdb"
 version = "0.1.0"
 requires-python = ">=3.9"
-# TODO (lseelye) Split these dependencies out into groups based on purpose
-# ex: types-psycopg2 and types-Flask-Migrate are explicitly for mypy
-# --install-types, it should be lumped in from requirements-check.txt and in
-# their own group.
 dependencies = [
-  # from requirements-check.txt
-  "flake8==7.1.2",
-  "pylint~=3.3",
-  "mypy==1.15.0",
   # from setup.py
   "connexion[swagger-ui] ~= 2.14",
   "Flask ~= 1.1",
   "flask-healthz ~= 0.0.3",
   "Flask-Migrate ~= 2.7",
   "Flask-SQLAlchemy ~= 2.5",
-  "SQLAlchemy[mypy] ~= 1.4.48",
+  "SQLAlchemy ~= 1.4.48",
   "psycopg2-binary ~= 2.9",
   "prometheus-client ~= 0.14",
   "gunicorn ~=23.0",
@@ -25,9 +17,6 @@ dependencies = [
   "jsonschema ~=4.23",
   # Newer versions are not compatible with our Flask version
   "markupsafe == 2.0.1",
-  # for mypy
-  "types-psycopg2",
-  "types-Flask-Migrate",
 ]
 license-files = [ "LICENSE" ]
 authors = [{ name = "Red Hat App-SRE Team", email = "sd-app-sre@redhat.com" }]
@@ -43,6 +32,21 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python :: 3.9"
 ]
+
+[dependency-groups]
+check = [
+  # required for mypy
+  "types-psycopg2",
+  "types-Flask-Migrate",
+  "types-gevent",
+  "types-pyOpenSSL",
+  "types-setuptools",
+  # from requirements-check.txt
+  "flake8==7.1.2",
+  "pylint~=3.3",
+  "mypy==1.15.0",
+]
+
 [build-system]
 requires = ["setuptools"]
 
@@ -58,14 +62,14 @@ plugins = [ "sqlalchemy.ext.mypy.plugin" ]
 # More context here: https://github.com/python/mypy/issues/9091
 [[tool.mypy.overrides]]
 module = [
-  "mypy-flask_sqlalchemy.*",
-  "mypy-sqlalchemy.*",
-  "mypy-connexion.exceptions.*",
-  "mypy-prometheus_client.*",
-  "mypy-flask_migrate.*",
-  "mypy-connexion.*",
-  "mypy-flask.*",
-  "mypy-psycopg2.*",
+  "flask_sqlalchemy.*",
+  "sqlalchemy.*",
+  "connexion.exceptions.*",
+  "prometheus_client.*",
+  "flask_migrate.*",
+  "connexion.*",
+  "flask.*",
+  "psycopg2.*",
 ]
 ignore_missing_imports = true
 
