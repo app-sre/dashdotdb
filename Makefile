@@ -1,57 +1,93 @@
+SHELL := /usr/bin/env bash
+
+# Want to skip this check? make CONTAINER_ENGINE=skip <target>
+# It can be anything, but bear in mind that commands want to be run with that first
 CONTAINER_ENGINE ?= $(shell which podman docker | head -n 1) 
 ifndef CONTAINER_ENGINE
 $(error CONTAINER_ENGINE is unset because it couldn't be auto-set; podman or docker missing from $$PATH. Skip this check with make CONTAINER_ENGINE=skip; but container commands will not work)
 endif
 
+# Don't want uv to use its local cache?
+# make IGNORE_UV_CACHE_FLAG=-n <target>
+IGNORE_UV_CACHE_FLAG ?= 
+
 include Makefile.devhelpers
 
+# Attempt to auto set LDFLAGS
+# MacOS needs to use homebrew to install openssl and then use these LDFLAGS.
+# But, Linux typically doesn't need to change them, so don't. No idea what to do
+# for Windows
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	LDFLAGS ?= "-I/opt/homebrew/opt/openssl/include -L/opt/homebrew/opt/openssl/lib"
+endif
 
 .PHONY: clean
 clean: pyproject.toml
 	rm -rf .venv
+	if [[ "xskip" != "x$${CONTAINER_ENGINE}" ]]; then \
+		$(CONTAINER_ENGINE) rmi app-sre-dashdotdb-ci:do-not-use app-sre-dashdotdb:do-not-use 2>/dev/null || true ;\
+	fi
 
 .venv:
-	@uv sync \
-	--no-group check
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi &&                 \
+	uv sync               \
+	--no-group dev        \
+	$(IGNORE_UV_CACHE_FLAG)
 
 .PHONY: sync
 sync: .venv pyproject.toml
 
 .PHONY: install
 install:
-	uv sync
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export  LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	uv sync \
+	$(IGNORE_UV_CACHE_FLAG)
 
 .PHONY: check
 check: flake8 pylint mypy
 
 .PHONY: flake8
 flake8: .venv
-	@uv run                 \
-	--quiet                \
-	--isolated             \
-	--group check          \
-	flake8                 \
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	uv run                  \
+	--isolated              \
+	--group dev             \
+	$(IGNORE_UV_CACHE_FLAG) \
+	flake8                  \
 	dashdotdb
 
 .PHONY: pylint
 pylint: .venv
-	@uv run                 \
-	--quiet                \
-	--isolated             \
-	--group check          \
-	pylint                 \
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	uv run                  \
+	--isolated              \
+	--group dev             \
+	$(IGNORE_UV_CACHE_FLAG) \
+	pylint                  \
 	dashdotdb
 
 
 .PHONY: mypy
 mypy: .venv
-	@uv run                 \
-	--quiet                \
-	--isolated             \
-	--group check          \
-	mypy                   \
-	--install-types        \
-	--non-interactive      \
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	uv run                  \
+	--isolated              \
+	--group dev             \
+	$(IGNORE_UV_CACHE_FLAG) \
+	mypy                    \
+	--install-types         \
+	--non-interactive       \
 	--follow-untyped-imports
 
 .PHONY: ci
@@ -103,4 +139,13 @@ test-data: test-data-imagemanifestvuln test-data-serviceslometrics test-data-dep
 
 .PHONY: help
 help:
-	echo "CONTAINER_ENGINE=$(CONTAINER_ENGINE)"
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	echo "CONTAINER_ENGINE=$(CONTAINER_ENGINE)" && \
+	echo "Makefile LDFLAGS=$(LDFLAGS)" && \
+	echo "UNAME_S=$(UNAME_S)" && \
+	echo "Shell thinks LDFLAGS=$${LDFLAGS}" && \
+	echo "You may need to change LDFLAGS based on your own system to get OpenSSL to link properly." && \
+	echo "In this case, you can use: make LDFLAGS=\"....\" <make target>".
+

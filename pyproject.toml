@@ -34,7 +34,7 @@ classifiers = [
 ]
 
 [dependency-groups]
-check = [
+dev = [
   # required for mypy
   "types-psycopg2",
   "types-Flask-Migrate",
@@ -45,6 +45,7 @@ check = [
   "flake8==7.1.2",
   "pylint~=3.3",
   "mypy==1.15.0",
+  "setuptools>=80.9.0",
 ]
 
 [build-system]

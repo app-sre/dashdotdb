@@ -1,5 +1,5 @@
-DATABASE_URL := postgresql://postgres:postgres@127.0.0.1:5432/postgres
-FLASK_APP := dashdotdb
+DATABASE_URL ?= postgresql://postgres:postgres@127.0.0.1:5432/postgres
+FLASK_APP ?= dashdotdb
 DASHDOTDB_DATABASE_CONTAINER_NAME ?= dashdot-postgres
 DASHDOTDB_FLASK_PORT ?= 8080
 
@@ -9,11 +9,15 @@ venv-init:
 
 .PHONY: run-service
 run-service:
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
 	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
 	uv run          \
 		--isolated    \
 		--quiet       \
-		--group check \
+		--group dev   \
+		$(IGNORE_UV_CACHE_FLAG) \
 		flask run     \
 			--debugger  \
 			--port $(DASHDOTDB_FLASK_PORT)
@@ -33,23 +37,31 @@ db-up:
 			sleep 2
 
 db-capture:
-	@FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
-	uv run          \
-		--quiet       \
-		--isolated    \
-		--group check \
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
+	uv run                    \
+		--quiet                 \
+		--isolated              \
+		--group dev             \
+		$(IGNORE_UV_CACHE_FLAG) \
 		flask db migrate
 
 db-init:
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
 	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
-	uv run           \
-		--quiet        \
-		--isolated     \
-		--group check  \
+	uv run                    \
+		--quiet                 \
+		--isolated              \
+		--group dev             \
+		$(IGNORE_UV_CACHE_FLAG) \
 		flask db upgrade
 
 db-status:
-	@$(CONTAINER_ENGINE) inspect \
+	\@$(CONTAINER_ENGINE) inspect \
 		--format "$(DASHDOTDB_DATABASE_CONTAINER_NAME): {{.State.Status}}" \
 		$(DASHDOTDB_DATABASE_CONTAINER_NAME) 2>/dev/null || echo "$(DASHDOTDB_DATABASE_CONTAINER_NAME): not-running"
 

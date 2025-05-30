@@ -31,6 +31,10 @@ make test-data
 Run a PostgreSQL instance:
 
 ```shell
+# using default settings
+make db-up
+
+# or, by hand
 docker run -d --rm --name dashdot-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 
 # optional: tail -f database logs
@@ -40,29 +44,36 @@ docker logs dashdot-postgres -f
 Open a new terminal. Install the package:
 
 ```shell
-uv sync --group check
+uv sync --group dev
 ```
 
-Export the `FLASK_APP` and the `DASHDOTDB_DATABASE_URL`:
+Export the `FLASK_APP` and `DASHDOTDB_DATABASE_URL` so Flask knows where to find the `dashdotdb` source code, and how to connect to the database:
 
 ```shell
 export FLASK_APP=dashdotdb
 export DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres
 ```
 
-Initialize the Database:
+Initialize the Database using default settings. `DASHDOTDB_DATABASE_URL` can be changed, if necessary.
 
 ```shell
-make FLASK_APP=dashdotdb db-init
+make db-init
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> c4f641d56546, Initial migration.
 ```
 
+With a custom `DASHDOTDB_DATABASE_URL`:
+
+```shell
+make DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres db-init
+```
+
 Run the service:
 
 ```shell
-flask run --debugger --port 8080
+# requires FLASK_APP and DASHDOTDB_DATABASE_URL environment variables set
+uv run --group dev flask run --debugger --port 8080
 ```
 
 ## Using the app
@@ -189,7 +200,7 @@ execute the migration before running the service. To execute the migration
 on your own database instance, run:
 
 ```shell
-FLASK_APP=dashdotdb flask db upgrade
+FLASK_APP=dashdotdb uv run --group dev flask db upgrade
 ```
 
 ### SQLAlchemy Debug
@@ -197,6 +208,6 @@ FLASK_APP=dashdotdb flask db upgrade
 To enable verbose SQLAlchemy logging, which will output the compiled queries
 add to the app.config object:
 
-```shell
+```python
 app.config['SQLALCHEMY_ECHO'] = True
 ```

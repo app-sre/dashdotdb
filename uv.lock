@@ -317,10 +317,11 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
-check = [
+dev = [
     { name = "flake8" },
     { name = "mypy" },
     { name = "pylint" },
+    { name = "setuptools" },
     { name = "types-flask-migrate" },
     { name = "types-gevent" },
     { name = "types-psycopg2" },
@@ -345,10 +346,11 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-check = [
+dev = [
     { name = "flake8", specifier = "==7.1.2" },
     { name = "mypy", specifier = "==1.15.0" },
     { name = "pylint", specifier = "~=3.3" },
+    { name = "setuptools", specifier = ">=80.9.0" },
     { name = "types-flask-migrate" },
     { name = "types-gevent" },
     { name = "types-psycopg2" },
@@ -1056,6 +1058,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/33/90/f7dcc66b9ae96bd6c7cd2355db565a0bc91e8b1dbbc601c83629abd34158/rpds_py-0.25.0-pp39-pypy39_pp73-musllinux_1_2_i686.whl", hash = "sha256:77910d6bec321c9fccfe9cf5e407fed9d2c48a5e510473b4f070d5cf2413c003", size = 592065, upload-time = "2025-05-15T13:41:56.598Z" },
     { url = "https://files.pythonhosted.org/packages/68/c4/13620f810872d96022e2a207c2a57c934ad02e01eca75d361014803f50a0/rpds_py-0.25.0-pp39-pypy39_pp73-musllinux_1_2_x86_64.whl", hash = "sha256:0ee0cc81f875e853ccdf3badb44b67f771fb9149baa9e752777ccdcaf052ad26", size = 558410, upload-time = "2025-05-15T13:41:58.897Z" },
     { url = "https://files.pythonhosted.org/packages/24/85/a88779bedd396172f20cd25aff7be154ddc5029ee8a1f992bc4dd3e70232/rpds_py-0.25.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:469054e6b2f8e41f1fe62b95f617082019d343eddeec3219ff3909067e672fb9", size = 231311, upload-time = "2025-05-15T13:42:02.337Z" },
+]
+
+[[package]]
+name = "setuptools"
+version = "80.9.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887f014ea83c24ae194cfcd12b9e0fda66b957c69d1fca/setuptools-80.9.0.tar.gz", hash = "sha256:f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c", size = 1319958, upload-time = "2025-05-27T00:56:51.443Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl", hash = "sha256:062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922", size = 1201486, upload-time = "2025-05-27T00:56:49.664Z" },
 ]
 
 [[package]]
