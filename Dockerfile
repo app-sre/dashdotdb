@@ -14,7 +14,8 @@ RUN \
   UV_DYNAMIC_VERSIONING_BYPASS="0.0.0" \
   uv \
     sync \
-      --frozen \
+      --no-group=dev \
+      --frozen       \
       --python /usr/bin/python3
 
 COPY        --chown=1001:0 . ./
@@ -32,8 +33,15 @@ RUN         chown -R 1001:0 /dashdotdb
 USER        1001
 COPY        --from=prod /dashdotdb ./
 
-# we run inside a container, so there won't be a container engine (eg podman or docker) available. 
-RUN make CONTAINER_ENGINE=skip check
+# we run inside a container, so there won't be a container engine (eg podman or
+# docker) available, so skip that check. Additionally, use a single environment
+# (eg, not --isolated) for `make check`; we're in a container, that's pretty
+# good isolation already.
+RUN \
+  make \
+    CONTAINER_ENGINE=skip \
+    UV_USE_ISOLATED=no \
+    check
 
 ENTRYPOINT  ["./entrypoint.sh"]
 

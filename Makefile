@@ -2,7 +2,7 @@ SHELL := /usr/bin/env bash
 
 # Want to skip this check? make CONTAINER_ENGINE=skip <target>
 # It can be anything, but bear in mind that commands want to be run with that first
-CONTAINER_ENGINE ?= $(shell which podman docker | head -n 1) 
+CONTAINER_ENGINE ?= $(shell which -a podman docker | head -n 1) 
 ifndef CONTAINER_ENGINE
 $(error CONTAINER_ENGINE is unset because it couldn't be auto-set; podman or docker missing from $$PATH. Skip this check with make CONTAINER_ENGINE=skip; but container commands will not work)
 endif
@@ -10,6 +10,14 @@ endif
 # Don't want uv to use its local cache?
 # make IGNORE_UV_CACHE_FLAG=-n <target>
 IGNORE_UV_CACHE_FLAG ?= 
+
+# Use an isolated UV environment?
+UV_USE_ISOLATED ?= yes
+__UV_USE_ISOLATED :=
+ifeq ($(UV_USE_ISOLATED),yes)
+	__UV_USE_ISOLATED := --isolated
+endif
+
 
 include Makefile.devhelpers
 
@@ -56,24 +64,26 @@ flake8: .venv
 	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
-	uv run                  \
-	--isolated              \
-	--group dev             \
-	$(IGNORE_UV_CACHE_FLAG) \
-	flake8                  \
-	dashdotdb
+	uv run $(__UV_USE_ISOLATED) \
+	--frozen                    \
+	--active                    \
+	--group dev                 \
+	$(IGNORE_UV_CACHE_FLAG)     \
+		flake8                    \
+		dashdotdb
 
 .PHONY: pylint
 pylint: .venv
 	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
-	uv run                  \
-	--isolated              \
-	--group dev             \
-	$(IGNORE_UV_CACHE_FLAG) \
-	pylint                  \
-	dashdotdb
+	uv run $(__UV_USE_ISOLATED) \
+	--frozen                    \
+	--active                    \
+	--group dev                 \
+	$(IGNORE_UV_CACHE_FLAG)     \
+		pylint                    \
+			dashdotdb
 
 
 .PHONY: mypy
@@ -81,14 +91,15 @@ mypy: .venv
 	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
-	uv run                  \
-	--isolated              \
-	--group dev             \
-	$(IGNORE_UV_CACHE_FLAG) \
-	mypy                    \
-	--install-types         \
-	--non-interactive       \
-	--follow-untyped-imports
+	uv run $(__UV_USE_ISOLATED) \
+	--frozen                    \
+	--active                    \
+	--group dev                 \
+	$(IGNORE_UV_CACHE_FLAG)     \
+		mypy                      \
+			--install-types         \
+			--non-interactive       \
+			--follow-untyped-imports
 
 .PHONY: ci
 ci:
@@ -146,6 +157,7 @@ help:
 	echo "Makefile LDFLAGS=$(LDFLAGS)" && \
 	echo "UNAME_S=$(UNAME_S)" && \
 	echo "Shell thinks LDFLAGS=$${LDFLAGS}" && \
+	echo "Isolated environments? UV_USE_ISOLATED=$(UV_USE_ISOLATED). Flag=$(__UV_USE_ISOLATED)"
 	echo "You may need to change LDFLAGS based on your own system to get OpenSSL to link properly." && \
 	echo "In this case, you can use: make LDFLAGS=\"....\" <make target>".
 

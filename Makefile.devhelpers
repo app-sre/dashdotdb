@@ -13,13 +13,13 @@ run-service:
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
 	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
-	uv run          \
-		--isolated    \
-		--quiet       \
-		--group dev   \
-		$(IGNORE_UV_CACHE_FLAG) \
-		flask run     \
-			--debugger  \
+	uv run $(__UV_USE_ISOLATED) \
+	--quiet                     \
+	--frozen                    \
+	--group dev                 \
+	$(IGNORE_UV_CACHE_FLAG)     \
+		flask run                 \
+			--debugger              \
 			--port $(DASHDOTDB_FLASK_PORT)
 
 db-down:
@@ -41,11 +41,11 @@ db-capture:
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
 	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
-	uv run                    \
-		--quiet                 \
-		--isolated              \
-		--group dev             \
-		$(IGNORE_UV_CACHE_FLAG) \
+	uv run $(__UV_USE_ISOLATED) \
+	--quiet                     \
+	--frozen                    \
+	--group dev                 \
+	$(IGNORE_UV_CACHE_FLAG)     \
 		flask db migrate
 
 db-init:
@@ -53,11 +53,11 @@ db-init:
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
 	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
-	uv run                    \
-		--quiet                 \
-		--isolated              \
-		--group dev             \
-		$(IGNORE_UV_CACHE_FLAG) \
+	uv run $(__UV_USE_ISOLATED) \
+	--quiet                     \
+	--frozen                    \
+	--group dev                 \
+		$(IGNORE_UV_CACHE_FLAG)     \
 		flask db upgrade
 
 db-status:
