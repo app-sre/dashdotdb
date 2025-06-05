@@ -25,6 +25,7 @@ include Makefile.devhelpers
 # MacOS needs to use homebrew to install openssl and then use these LDFLAGS.
 # But, Linux typically doesn't need to change them, so don't. No idea what to do
 # for Windows
+# Note: This is likely not needed with Python 3.11 and beyond.
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
 	LDFLAGS ?= "-I/opt/homebrew/opt/openssl/include -L/opt/homebrew/opt/openssl/lib"

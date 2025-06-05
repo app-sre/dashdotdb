@@ -11,7 +11,6 @@ ENV \
   UV_COMPILE_BYTECODE="true" \
   UV_NO_CACHE=true
 RUN \
-  UV_DYNAMIC_VERSIONING_BYPASS="0.0.0" \
   uv \
     sync \
       --no-group=dev \
