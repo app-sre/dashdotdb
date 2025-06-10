@@ -1,58 +1,82 @@
-DATABASE_URL := postgresql://postgres:postgres@127.0.0.1:5432/postgres
-FLASK_APP := dashdotdb
+DATABASE_URL ?= postgresql://postgres:postgres@127.0.0.1:5432/postgres
+FLASK_APP ?= dashdotdb
+DASHDOTDB_DATABASE_CONTAINER_NAME ?= dashdot-postgres
+DASHDOTDB_FLASK_PORT ?= 8080
 
-
+.PHONY: venv-init
 venv-init:
-	python3 -m venv venv && \
-	source venv/bin/activate && \
-	python3 setup.py develop
+	uv sync --group check
 
-
+.PHONY: run-service
 run-service:
-	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) flask run --debugger --port 8080
-
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
+	uv run $(__UV_USE_ISOLATED) \
+	--quiet                     \
+	--frozen                    \
+	--group dev                 \
+	$(IGNORE_UV_CACHE_FLAG)     \
+		flask run                 \
+			--debugger              \
+			--port $(DASHDOTDB_FLASK_PORT)
 
 db-down:
-	docker rm -f dashdot-postgres
-
+	$(CONTAINER_ENGINE) rm -f $(DASHDOTDB_DATABASE_CONTAINER_NAME)
 
 db-up:
-	 docker run -d --name dashdot-postgres --rm -it -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
-	 sleep 2
-
+	@$(CONTAINER_ENGINE) run                      \
+		-d                                          \
+		--name $(DASHDOTDB_DATABASE_CONTAINER_NAME) \
+		--rm                                        \
+		-it                                         \
+		-p 5432:5432                                \
+		-e POSTGRES_PASSWORD=postgres               \
+			postgres &&                               \
+			sleep 2
 
 db-capture:
-	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) flask db migrate
-
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
+	uv run $(__UV_USE_ISOLATED) \
+	--quiet                     \
+	--frozen                    \
+	--group dev                 \
+	$(IGNORE_UV_CACHE_FLAG)     \
+		flask db migrate
 
 db-init:
-	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) flask db upgrade
+	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
+		export LDFLAGS=$(LDFLAGS) ;\
+	fi && \
+	FLASK_APP=$(FLASK_APP) DASHDOTDB_DATABASE_URL=$(DATABASE_URL) \
+	uv run $(__UV_USE_ISOLATED) \
+	--quiet                     \
+	--frozen                    \
+	--group dev                 \
+		$(IGNORE_UV_CACHE_FLAG)     \
+		flask db upgrade
 
+db-status:
+	\@$(CONTAINER_ENGINE) inspect \
+		--format "$(DASHDOTDB_DATABASE_CONTAINER_NAME): {{.State.Status}}" \
+		$(DASHDOTDB_DATABASE_CONTAINER_NAME) 2>/dev/null || echo "$(DASHDOTDB_DATABASE_CONTAINER_NAME): not-running"
 
 db: db-down db-up db-init db-capture db-init
 
-
-dddb-import-imv:
-	curl --request POST \
-	--header "Content-Type: application/json" \
-	--data @examples/imagemanifestvuln.json \
-	localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
-
+.PHONY: db db-down db-up db-init db-capture db-init db-status
+.PHONY: dddb-query-imv dddb-query-dv dddb-metrics
 
 dddb-query-imv:
-	curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespace=cso"
-
-
-dddb-import-dv:
-	curl --request POST \
-	--header "Content-Type: application/json" \
-	--data @examples/deploymentvalidation.json \
-	localhost:8080/api/v1/deploymentvalidation/app-sre-prod-01
-
+	curl "localhost:$(DASHDOTDB_FLASK_PORT)/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespace=cso"
 
 dddb-query-dv:
-	curl "localhost:8080/api/v1/deploymentvalidation?cluster=app-sre-prod-01&namespace=app-interface-stage"
-
+	curl "localhost:$(DASHDOTDB_FLASK_PORT)/api/v1/deploymentvalidation?cluster=app-sre-prod-01&namespace=app-interface-stage"
 
 dddb-metrics:
-	curl "localhost:8080/api/v1/metrics"
+	@for metricsrc in imagemanifestvuln deploymentvalidation serviceslometrics; do \
+		curl "localhost:$(DASHDOTDB_FLASK_PORT)/api/v1/$${metricsrc}/metrics" ;\
+	done

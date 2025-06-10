@@ -16,13 +16,13 @@ expose the relevant insights via Grafana Dashboards and monthly reports.
 
 You can quickly run the app locally with docker-compose
 
-```
+```shell
 docker-compose up
 ```
 
 Test data can be generated via
 
-```
+```shell
 make test-data
 ```
 
@@ -30,7 +30,11 @@ make test-data
 
 Run a PostgreSQL instance:
 
-```
+```shell
+# using default settings
+make db-up
+
+# or, by hand
 docker run -d --rm --name dashdot-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 
 # optional: tail -f database logs
@@ -39,45 +43,50 @@ docker logs dashdot-postgres -f
 
 Open a new terminal. Install the package:
 
-```
-python -m venv venv
-source venv/bin/activate
-python setup.py develop
+```shell
+uv sync --group dev
 ```
 
-Export the `FLASK_APP` and the `DASHDOTDB_DATABASE_URL`:
+Export the `FLASK_APP` and `DASHDOTDB_DATABASE_URL` so Flask knows where to find the `dashdotdb` source code, and how to connect to the database:
 
-```
+```shell
 export FLASK_APP=dashdotdb
 export DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres
 ```
 
-Initialize the Database:
+Initialize the Database using default settings. `DASHDOTDB_DATABASE_URL` can be changed, if necessary.
 
-```
-$ FLASK_APP=dashdotdb flask db upgrade
+```shell
+make db-init
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> c4f641d56546, Initial migration.
 ```
 
+With a custom `DASHDOTDB_DATABASE_URL`:
+
+```shell
+make DASHDOTDB_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres db-init
+```
+
 Run the service:
 
-```
-flask run --debugger --port 8080
+```shell
+# requires FLASK_APP and DASHDOTDB_DATABASE_URL environment variables set
+uv run --group dev flask run --debugger --port 8080
 ```
 
 ## Using the app
 
 Open a new terminal. Get a token:
 
-```
+```shell
 TOKEN=$(curl --silent localhost:8080/api/v1/token?scope=imagemanifestvuln | sed 's/"//g')
 ```
 
 Apply `imagemanifestvuln` example data:
 
-```
+```shell
 $ curl --request POST \
 --header "Content-Type: application/json" \
 --header "X-Auth: $TOKEN" \
@@ -87,7 +96,7 @@ localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01
 
 Or, if you already have a live cluster:
 
-```
+```shell
 $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 --header "Content-Type: application/json" \
 --header "X-Auth: $TOKEN" \
@@ -95,17 +104,18 @@ $ oc get imagemanifestvuln <object_name> -o json | $ curl --request POST \
 "localhost:8080/api/v1/imagemanifestvuln/app-sre-prod-01"
 ...
 ```
+
 (Note: Data that is uploaded to dashdotDB is not actually available for query until the token that was used to upload it is deleted. The only data available for query at any given moment is that which was uploaded using the most recently deleted token.)
 
 Close the token (to make the latest data queryable):
 
-```
+```shell
 curl --request DELETE "localhost:8080/api/v1/token/$TOKEN?scope=imagemanifestvuln"
 ```
 
 Query vulnerabilities:
 
-```
+```shell
 $ curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespace=cso"
 [
   {
@@ -137,7 +147,7 @@ $ curl "localhost:8080/api/v1/imagemanifestvuln?cluster=app-sre-prod-01&namespac
 
 Prometheus metrics endpoint:
 
-```
+```shell
 $ curl "localhost:8080/api/v1/imagemanifestvuln/metrics"
 ...
 # HELP imagemanifestvuln_total Vulnerabilities total per severity
@@ -154,7 +164,7 @@ imagemanifestvuln_total{cluster="app-sre-prod-01",namespace="cso",severity="Crit
 
 The current Entity Relationship Diagram looks like this:
 
-![](docs/dashdotdb.png)
+![Current entity relationship diagram for dashdotdb. It depicts an UML diagram that outlines the complex model relationships for dashdotdb](docs/dashdotdb.png)
 
 ### ERD
 
@@ -168,13 +178,13 @@ The Dia application is known to have issues running on Mac OS. It may launch fin
 
 Reflect the changes to the ERD in the database model, either by updating an
 existing model or by creating new ones. Models are placed
-[here](/dashdotdb/models/).
+[in /dashdotdb/models](/dashdotdb/models/).
 
 ### DB Upgrade
 
 Create the upgrade routine executing the command:
 
-```
+```shell
 make db
 ```
 
@@ -189,8 +199,8 @@ For the deployed environments, the [entrypoint.sh](entrypoint.sh) will
 execute the migration before running the service. To execute the migration
 on your own database instance, run:
 
-```
-FLASK_APP=dashdotdb flask db upgrade
+```shell
+FLASK_APP=dashdotdb uv run --group dev flask db upgrade
 ```
 
 ### SQLAlchemy Debug
@@ -198,6 +208,6 @@ FLASK_APP=dashdotdb flask db upgrade
 To enable verbose SQLAlchemy logging, which will output the compiled queries
 add to the app.config object:
 
-```
+```python
 app.config['SQLALCHEMY_ECHO'] = True
 ```

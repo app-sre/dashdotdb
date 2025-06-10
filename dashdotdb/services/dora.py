@@ -40,35 +40,35 @@ class DORA:
                     dep_data["finish_timestamp"]
                 )
 
-                # finish_timestamp and timestamp may come offset-naive or offset-aware,
-                # and they can't be subtracted if they are different. Converting always
+                # finish_timestamp and timestamp may come offset-naive
+                # or offset-aware,
+                # and they can't be subtracted if they are different.
+                # Converting always
                 # to offset-aware. If no TZ data is provided, we assume UTC.
                 if finish_timestamp.tzinfo is None:
                     finish_timestamp = finish_timestamp.replace(
                         tzinfo=datetime.timezone.utc
                     )
 
-                deployment = DORADeployment(
-                    finish_timestamp=finish_timestamp,
-                    trigger_reason=dep_data["trigger_reason"],
-                    app_name=dep_data["app_name"],
-                    env_name=dep_data["env_name"],
-                    pipeline=dep_data["pipeline"],
-                )
+                deployment = DORADeployment()
+                deployment.finish_timestamp = finish_timestamp
+                deployment.trigger_reason = dep_data["trigger_reason"]
+                deployment.app_name = dep_data["app_name"]
+                deployment.env_name = dep_data["env_name"]
+                deployment.pipeline = dep_data["pipeline"]
                 db.session.add(deployment)
                 db.session.commit()
 
                 for commit_data in dep_data["commits"]:
-                    commit = DORACommit(
-                        deployment_id=deployment.id,
-                        timestamp=datetime.datetime.fromisoformat(
+                    comm = DORACommit()
+                    comm.deployment_id = deployment.id
+                    comm.timestamp = datetime.datetime.fromisoformat(
                             commit_data["timestamp"]
-                        ),
-                        revision=commit_data["revision"],
-                        repo=commit_data["repo"],
-                        lttc=datetime.timedelta(seconds=commit_data["lttc"]),
-                    )
-                    db.session.add(commit)
+                        )
+                    comm.revision = commit_data["revision"]
+                    comm.repo = commit_data["repo"]
+                    comm.lttc = datetime.timedelta(seconds=commit_data["lttc"])
+                    db.session.add(comm)
                 db.session.commit()
             except exc.SQLAlchemyError as exception:
                 if isinstance(exception, exc.IntegrityError) and isinstance(

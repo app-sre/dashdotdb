@@ -1,8 +1,9 @@
 from dashdotdb.models.base import db
+from dashdotdb.models.base import Model
 from dashdotdb.services import DataTypes
 
 
-class Token(db.Model):
+class Token(Model):
 
     __tablename__ = 'token'
 
@@ -17,7 +18,7 @@ class Token(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='token')
 
 
-class LatestTokens(db.Model):
+class LatestTokens(Model):
 
     __tablename__ = 'latesttokens'
 
@@ -26,7 +27,7 @@ class LatestTokens(db.Model):
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
 
 
-class Pod(db.Model):
+class Pod(Model):
 
     __tablename__ = 'pod'
 
@@ -34,12 +35,14 @@ class Pod(db.Model):
     name = db.Column(db.String(256), unique=False, index=True)
     namespace_id = db.Column(db.Integer, db.ForeignKey('namespace.id'),
                              index=True)
-    images = db.relationship('Image', secondary='podimage', back_populates='pods')
+    images = db.relationship(
+        'Image', secondary='podimage', back_populates='pods'
+        )
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'),
                          index=True)
 
 
-class Namespace(db.Model):
+class Namespace(Model):
 
     __tablename__ = 'namespace'
 
@@ -52,7 +55,7 @@ class Namespace(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='namespace')
 
 
-class Cluster(db.Model):
+class Cluster(Model):
 
     __tablename__ = 'cluster'
 
@@ -61,7 +64,7 @@ class Cluster(db.Model):
     namespaces = db.relationship('Namespace', backref='cluster')
 
 
-class Service(db.Model):
+class Service(Model):
 
     __tablename__ = 'service'
 
@@ -70,7 +73,7 @@ class Service(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='service')
 
 
-class ImageFeature(db.Model):
+class ImageFeature(Model):
 
     __tablename__ = 'imagefeature'
 
@@ -80,7 +83,7 @@ class ImageFeature(db.Model):
                            primary_key=True)
 
 
-class Image(db.Model):
+class Image(Model):
 
     __tablename__ = 'image'
 
@@ -89,7 +92,9 @@ class Image(db.Model):
     manifest = db.Column(db.String(1000), unique=False)
     features = db.relationship('Feature', secondary='imagefeature',
                                back_populates='images')
-    pods = db.relationship('Pod', secondary='podimage', back_populates='images')
+    pods = db.relationship(
+        'Pod', secondary='podimage', back_populates='images'
+        )
 
     # Indexes
     __table_args__ = (
@@ -97,7 +102,7 @@ class Image(db.Model):
     )
 
 
-class PodImage(db.Model):
+class PodImage(Model):
 
     __tablename__ = 'podimage'
 
@@ -107,7 +112,7 @@ class PodImage(db.Model):
                          primary_key=True)
 
 
-class Feature(db.Model):
+class Feature(Model):
 
     __tablename__ = 'feature'
 
@@ -125,7 +130,7 @@ class Feature(db.Model):
     )
 
 
-class Vulnerability(db.Model):
+class Vulnerability(Model):
 
     __tablename__ = 'vulnerability'
 
@@ -148,7 +153,7 @@ class Vulnerability(db.Model):
     # repeated often.
 
 
-class Severity(db.Model):
+class Severity(Model):
 
     __tablename__ = 'severity'
 
@@ -157,7 +162,7 @@ class Severity(db.Model):
     vulnerabilities = db.relationship('Vulnerability', backref='severity')
 
 
-class DeploymentValidation(db.Model):
+class DeploymentValidation(Model):
 
     __tablename__ = 'deploymentvalidation'
 
@@ -172,7 +177,7 @@ class DeploymentValidation(db.Model):
                               index=True)
 
 
-class Validation(db.Model):
+class Validation(Model):
 
     __tablename__ = 'validation'
 
@@ -183,7 +188,7 @@ class Validation(db.Model):
                                            backref='validation')
 
 
-class ObjectKind(db.Model):
+class ObjectKind(Model):
 
     __tablename__ = 'objectkind'
 
@@ -193,7 +198,7 @@ class ObjectKind(db.Model):
                                            backref='objectkind')
 
 
-class SLIType(db.Model):
+class SLIType(Model):
 
     __tablename__ = 'slitype'
 
@@ -202,7 +207,7 @@ class SLIType(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='slitype')
 
 
-class SLODoc(db.Model):
+class SLODoc(Model):
 
     __tablename__ = 'slodoc'
 
@@ -211,7 +216,7 @@ class SLODoc(db.Model):
     serviceslo = db.relationship('ServiceSLO', backref='slodoc')
 
 
-class ServiceSLO(db.Model):
+class ServiceSLO(Model):
 
     __tablename__ = 'serviceslo'
 
@@ -228,7 +233,7 @@ class ServiceSLO(db.Model):
                              index=True)
 
 
-class DORADeployment(db.Model):
+class DORADeployment(Model):
 
     __tablename__ = 'doradeployment'
     __table_args__ = (
@@ -254,7 +259,7 @@ class DORADeployment(db.Model):
     pipeline = db.Column(db.String(256), unique=False, index=True)
 
 
-class DORACommit(db.Model):
+class DORACommit(Model):
 
     __tablename__ = 'doracommit'
     __table_args__ = (db.UniqueConstraint('deployment_id', 'revision',
