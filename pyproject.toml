@@ -16,7 +16,7 @@ dependencies = [
   "openapi-schema-validator ~=0.6.2",
   "jsonschema ~=4.23",
   # Newer versions are not compatible with our Flask version
-  "markupsafe == 2.0.1",
+  "markupsafe ==3.0.2",
 ]
 license-files = [ "LICENSE" ]
 authors = [{ name = "Red Hat App-SRE Team", email = "sd-app-sre@redhat.com" }]
