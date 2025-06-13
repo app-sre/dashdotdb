@@ -1,6 +1,6 @@
-FROM        registry.access.redhat.com/ubi9/python-39:9.5-1739799514@sha256:9bbc4cfeac896544ab3eafa088c3d6995e82592362d374606f00d221f2986fe0 as prod
+FROM        registry.access.redhat.com/ubi9/python-39:9.6-1749743801@sha256:7d7dbfe4e208b4c71db010f2115d66aa6ba03034abe997ba274503f5283beb39 as prod
 
-COPY --from=ghcr.io/astral-sh/uv:0.6.11@sha256:fb91e82e8643382d5bce074ba0d167677d678faff4bd518dac670476d19b159c /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.7.13@sha256:6c1e19020ec221986a210027040044a5df8de762eb36d5240e382bc41d7a9043 /uv /bin/uv
 
 COPY --chown=1001:0 pyproject.toml uv.lock README.md /dashdotdb/
 COPY        LICENSE /licenses/LICENSE
@@ -22,7 +22,7 @@ COPY        --chown=1001:0 . ./
 
 ENTRYPOINT  ["./entrypoint.sh"]
 
-FROM        registry.access.redhat.com/ubi9/python-39:9.5-1739799514@sha256:9bbc4cfeac896544ab3eafa088c3d6995e82592362d374606f00d221f2986fe0 as test
+FROM        registry.access.redhat.com/ubi9/python-39:9.6-1749743801@sha256:7d7dbfe4e208b4c71db010f2115d66aa6ba03034abe997ba274503f5283beb39 as test
 COPY --from=prod /bin/uv /bin/uv
 
 USER        root
