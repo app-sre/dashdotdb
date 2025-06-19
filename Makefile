@@ -19,7 +19,7 @@ ifeq ($(UV_USE_ISOLATED),yes)
 endif
 
 
-include Makefile.devhelpers
+-include Makefile.devhelpers
 
 # Attempt to auto set LDFLAGS
 # MacOS needs to use homebrew to install openssl and then use these LDFLAGS.
