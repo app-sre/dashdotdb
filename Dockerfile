@@ -8,7 +8,7 @@ COPY        LICENSE /licenses/LICENSE
 #################
 # builder image #
 #################
-FROM base as builder
+FROM base AS builder
 
 ARG UV_SRC_IMAGE=ghcr.io/astral-sh/uv:0.7.13@sha256:6c1e19020ec221986a210027040044a5df8de762eb36d5240e382bc41d7a9043
 
@@ -54,7 +54,7 @@ RUN \
 ##############
 # test image #
 ##############
-FROM builder as test
+FROM builder AS test
 
 ENV \
   UV_COMPILE_BYTECODE="true" \

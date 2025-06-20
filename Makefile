@@ -61,7 +61,7 @@ install:
 check: flake8 pylint mypy
 
 .PHONY: flake8
-flake8: .venv
+flake8:
 	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
@@ -74,7 +74,7 @@ flake8: .venv
 		dashdotdb
 
 .PHONY: pylint
-pylint: .venv
+pylint:
 	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
@@ -88,7 +88,7 @@ pylint: .venv
 
 
 .PHONY: mypy
-mypy: .venv
+mypy:
 	@if [[ "xDarwin" == "x$(UNAME_S)" ]]; then \
 		export LDFLAGS=$(LDFLAGS) ;\
 	fi && \
