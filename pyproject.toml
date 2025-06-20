@@ -16,7 +16,7 @@ dependencies = [
   "openapi-schema-validator ~=0.6.2",
   "jsonschema ~=4.23",
   # Newer versions are not compatible with our Flask version
-  "markupsafe == 2.0.1",
+  "markupsafe ==2.1.5",
 ]
 license-files = [ "LICENSE" ]
 authors = [{ name = "Red Hat App-SRE Team", email = "sd-app-sre@redhat.com" }]
@@ -42,9 +42,9 @@ dev = [
   "types-pyOpenSSL",
   "types-setuptools",
   # from requirements-check.txt
-  "flake8==7.1.2",
+  "flake8==7.3.0",
   "pylint~=3.3",
-  "mypy==1.15.0",
+  "mypy==1.16.1",
   "setuptools>=80.9.0",
 ]
 
