@@ -90,14 +90,17 @@ ENV \
   UV_COMPILE_BYTECODE="true" \
   UV_NO_CACHE=true
 
-COPY --from=builder /opt/app-root /opt/app-root
+COPY --from=builder \
+    /opt/app-root     \
+  /opt/app-root
 COPY --chown=1001:0 \
-  /entrypoint.sh    \
-./bin/
+    entrypoint.sh    \
+  ./
+
 
 # Copy the database migrations for Flask-SQLAlchemy
 COPY --chown=1001:0 \
   migrations        \
 ./migrations/
 
-ENTRYPOINT [ "entrypoint.sh" ]
+ENTRYPOINT [ "/opt/app-root/src/entrypoint.sh" ]
