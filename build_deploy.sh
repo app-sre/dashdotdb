@@ -1,7 +1,6 @@
 #!/bin/bash
 
-make install-requirements
-make check
+make sync check
 
 IMAGE_NAME="quay.io/app-sre/dashdotdb"
 IMAGE_TAG=$(git rev-parse --short=7 HEAD)
