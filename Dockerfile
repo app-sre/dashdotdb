@@ -1,7 +1,7 @@
 ##############
 # base image #
 ##############
-FROM registry.access.redhat.com/ubi9/python-39:9.6-1749743801@sha256:7d7dbfe4e208b4c71db010f2115d66aa6ba03034abe997ba274503f5283beb39 AS base
+FROM registry.access.redhat.com/ubi9/python-312 AS base
 
 COPY        LICENSE /licenses/LICENSE
 
@@ -11,7 +11,7 @@ COPY        LICENSE /licenses/LICENSE
 FROM base AS builder
 
 # Get the uv binary from upstream
-COPY --from=ghcr.io/astral-sh/uv:0.7.13@sha256:6c1e19020ec221986a210027040044a5df8de762eb36d5240e382bc41d7a9043 /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.9.7@sha256:ba4857bf2a068e9bc0e64eed8563b065908a4cd6bfb66b531a9c424c8e25e142 /uv /bin/uv
 
 ENV \
   UV_COMPILE_BYTECODE="true" \
@@ -42,7 +42,7 @@ RUN \
     --no-group=dev \
     --frozen       \
     --no-install-project \
-    --python /usr/bin/python3
+    --python $(which python3)
 
 COPY --chown=1001:0 \
     dashdotdb \
@@ -52,7 +52,7 @@ RUN \
   uv sync \
     --frozen \
     --no-group dev \
-    --python /usr/bin/python3
+    --python $(which python3)
 
 ##############
 # test image #
