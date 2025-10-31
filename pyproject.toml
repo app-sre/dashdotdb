@@ -1,7 +1,7 @@
 [project]
 name = "dashdotdb"
 version = "0.1.0"
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 dependencies = [
   # from setup.py
   "connexion[swagger-ui] ~= 2.14",
