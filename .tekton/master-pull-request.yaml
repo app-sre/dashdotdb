@@ -39,7 +39,8 @@ spec:
       value: main
     - name: pathInRepo
       value: pipelines/multi-arch-build-pipeline.yaml
-  taskRunTemplate: {}
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-dashdotdb-master
   workspaces:
   - name: workspace
     volumeClaimTemplate:
