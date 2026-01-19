@@ -15,6 +15,7 @@ dependencies = [
   "gunicorn ~=23.0",
   "openapi-schema-validator ~=0.6.2",
   "jsonschema ~=4.23",
+  "setuptools>=80.9.0",
   # Newer versions are not compatible with our Flask version
   "markupsafe == 2.0.1",
 ]
@@ -45,7 +46,6 @@ dev = [
   "flake8==7.1.2",
   "pylint~=3.3",
   "mypy==1.15.0",
-  "setuptools>=80.9.0",
 ]
 
 [build-system]
