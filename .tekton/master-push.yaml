@@ -27,6 +27,8 @@ spec:
     value: .
   - name: target-stage
     value: prod
+  - name: goss-container-structure-test-file
+    value: goss.yml
   pipelineRef:
     resolver: git
     params:
