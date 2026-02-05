@@ -1,0 +1,3 @@
+command:
+  flask db upgrade --help:
+    exit-status: 0
