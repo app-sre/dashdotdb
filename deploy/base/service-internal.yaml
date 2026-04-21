@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dashdotdb
+  name: internal
+spec:
+  ports:
+  - name: dashdotdb
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: dashdotdb

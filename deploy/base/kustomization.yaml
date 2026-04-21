@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- serviceaccount.yaml
+- configmap-nginx-postsize.yaml
+- configmap-nginx-dynamic.yaml
+- deployment.yaml
+- service-dashdotdb.yaml
+- service-internal.yaml
+
+labels:
+- pairs:
+    app.kubernetes.io/name: dashdotdb
+    app.kubernetes.io/part-of: app-sre

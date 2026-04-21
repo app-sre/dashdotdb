@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    ignore-check.kube-linter.io/unset-cpu-requirements: no cpu limits
+  labels:
+    app: dashdotdb
+  name: dashdotdb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dashdotdb
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: dashdotdb
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - dashdotdb
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      containers:
+      - env:
+        - name: FORWARD_HOST
+          value: 0.0.0.0:8080
+        - name: LISTEN_PORT
+          value: "8000"
+        - name: BASIC_AUTH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: auth-proxy
+        - name: BASIC_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: auth-proxy
+        image: quay.io/app-sre/nginx-gate:latest
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: auth-proxy
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: auth-proxy
+        ports:
+        - containerPort: 8000
+          name: auth-proxy
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: auth-proxy
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            memory: 300Mi
+          requests:
+            cpu: 10m
+            memory: 200Mi
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-postsize
+        - mountPath: /nginx.conf
+          name: nginx-dynamic-conf
+          subPath: nginx.conf
+      - env:
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              key: db.host
+              name: dashdotdb-rds
+        - name: DATABASE_PORT
+          valueFrom:
+            secretKeyRef:
+              key: db.port
+              name: dashdotdb-rds
+        - name: DATABASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: db.user
+              name: dashdotdb-rds
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: db.password
+              name: dashdotdb-rds
+        - name: DATABASE_NAME
+          valueFrom:
+            secretKeyRef:
+              key: db.name
+              name: dashdotdb-rds
+        image: quay.io/app-sre/dashdotdb:latest
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /api/healthz/live
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        name: dashdotdb
+        ports:
+        - containerPort: 8080
+          name: dashdotdb
+        readinessProbe:
+          httpGet:
+            path: /api/healthz/ready
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        resources:
+          limits:
+            memory: 300Mi
+          requests:
+            cpu: 10m
+            memory: 200Mi
+      serviceAccountName: dashdotdb
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: nginx-postsize
+        name: nginx-postsize
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+          name: nginx-dynamic-conf
+        name: nginx-dynamic-conf
