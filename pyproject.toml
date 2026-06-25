@@ -6,7 +6,7 @@ dependencies = [
   # from setup.py
   "connexion[swagger-ui] ~= 2.14",
   "Flask ~= 1.1",
-  "flask-healthz ~= 0.0.3",
+  "flask-healthz ~=1.0.1",
   "Flask-Migrate ~= 2.7",
   "Flask-SQLAlchemy ~= 2.5",
   "SQLAlchemy ~= 1.4.48",
