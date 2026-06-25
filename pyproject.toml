@@ -17,7 +17,7 @@ dependencies = [
   "jsonschema ~=4.23",
   "setuptools>=80.9.0",
   # Newer versions are not compatible with our Flask version
-  "markupsafe == 2.0.1",
+  "markupsafe ==3.0.3",
 ]
 license-files = [ "LICENSE" ]
 authors = [{ name = "Red Hat App-SRE Team", email = "sd-app-sre@redhat.com" }]
