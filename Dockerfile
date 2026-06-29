@@ -3,6 +3,8 @@
 ##############
 FROM registry.access.redhat.com/ubi9/python-314 AS base
 
+ENV FLASK_APP=dashdotdb
+
 COPY        LICENSE /licenses/LICENSE
 
 #################
@@ -88,8 +90,6 @@ RUN \
 # Prod image #
 ##############
 FROM base AS prod
-
-ENV FLASK_APP=dashdotdb
 
 COPY --from=builder \
     /opt/app-root     \
