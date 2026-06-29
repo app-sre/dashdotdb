@@ -13,16 +13,23 @@ from dashdotdb.models import dashdotdb  # type: ignore  # noqa: F401
 
 DATABASE_URL = os.environ.get('DASHDOTDB_DATABASE_URL')
 if DATABASE_URL is None:
-    DATABASE_HOST = os.environ['DATABASE_HOST']
-    DATABASE_PORT = os.environ['DATABASE_PORT']
-    DATABASE_USERNAME = os.environ['DATABASE_USERNAME']
-    DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
-    DATABASE_NAME = os.environ['DATABASE_NAME']
-    DATABASE_URL = (f'postgresql://{DATABASE_USERNAME}:'
-                    f'{DATABASE_PASSWORD}@'
-                    f'{DATABASE_HOST}:'
-                    f'{DATABASE_PORT}/'
-                    f'{DATABASE_NAME}')
+    DATABASE_HOST = os.environ.get('DATABASE_HOST')
+    DATABASE_PORT = os.environ.get('DATABASE_PORT')
+    DATABASE_USERNAME = os.environ.get('DATABASE_USERNAME')
+    DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD')
+    DATABASE_NAME = os.environ.get('DATABASE_NAME')
+    if all((DATABASE_HOST, DATABASE_PORT,
+            DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME)):
+        DATABASE_URL = (f'postgresql://{DATABASE_USERNAME}:'
+                        f'{DATABASE_PASSWORD}@'
+                        f'{DATABASE_HOST}:'
+                        f'{DATABASE_PORT}/'
+                        f'{DATABASE_NAME}')
+
+# In-memory SQLite fallback: Flask 3.x imports the app module before
+# processing --help, so the module must not crash when no database is
+# configured. Real operations fail at connection time.
+DATABASE_URL = DATABASE_URL or 'sqlite://'
 
 
 class DashDotDb(App):
