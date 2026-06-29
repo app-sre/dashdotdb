@@ -1,23 +1,21 @@
 [project]
 name = "dashdotdb"
 version = "0.1.0"
-requires-python = ">=3.12"
+requires-python = ">=3.14"
 dependencies = [
-  # from setup.py
-  "connexion[swagger-ui] ~= 2.14",
-  "Flask ~= 1.1",
-  "flask-healthz ~= 0.0.3",
-  "Flask-Migrate ~= 2.7",
-  "Flask-SQLAlchemy ~= 2.5",
-  "SQLAlchemy ~= 1.4.48",
+  "connexion[swagger-ui] ~= 2.15",
+  "Flask ~= 3.1",
+  "flask-healthz",
+  "Flask-Migrate ~= 4.0",
+  "Flask-SQLAlchemy ~= 3.1",
+  "SQLAlchemy ~= 2.0",
+  "greenlet >= 3.4.0",
   "psycopg2-binary ~= 2.9",
   "prometheus-client ~= 0.14",
   "gunicorn ~=23.0",
   "openapi-schema-validator ~=0.6.2",
   "jsonschema ~=4.23",
   "setuptools>=80.9.0",
-  # Newer versions are not compatible with our Flask version
-  "markupsafe == 2.0.1",
 ]
 license-files = [ "LICENSE" ]
 authors = [{ name = "Red Hat App-SRE Team", email = "sd-app-sre@redhat.com" }]
@@ -31,14 +29,13 @@ classifiers = [
   "License :: OSI Approved :: ",
   "Natural Language :: English",
   "Operating System :: POSIX :: Linux",
-  "Programming Language :: Python :: 3.9"
+  "Programming Language :: Python :: 3.14"
 ]
 
 [dependency-groups]
 dev = [
   # required for mypy
   "types-psycopg2",
-  "types-Flask-Migrate",
   "types-gevent",
   "types-pyOpenSSL",
   "types-setuptools",

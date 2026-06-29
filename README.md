@@ -20,6 +20,12 @@ You can quickly run the app locally with docker-compose
 docker-compose up
 ```
 
+To expose the app on a different host port (default is 8080):
+
+```shell
+DASHDOTDB_FLASK_PORT=8081 docker-compose up
+```
+
 Test data can be generated via
 
 ```shell

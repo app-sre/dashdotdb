@@ -1,7 +1,9 @@
 ##############
 # base image #
 ##############
-FROM registry.access.redhat.com/ubi9/python-312 AS base
+FROM registry.access.redhat.com/ubi9/python-314 AS base
+
+ENV FLASK_APP=dashdotdb
 
 COPY        LICENSE /licenses/LICENSE
 
