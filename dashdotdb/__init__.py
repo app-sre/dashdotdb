@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_healthz import healthz, HealthError  # type: ignore  # noqa: F401
 from connexion import App
 from connexion.resolver import RestyResolver
+from sqlalchemy import text
 
 from dashdotdb.models.base import db
 from dashdotdb.models import dashdotdb  # type: ignore  # noqa: F401
@@ -32,7 +33,8 @@ class DashDotDb(App):
     @staticmethod
     def readiness():
         try:
-            db.engine.execute('SELECT 1')
+            with db.engine.connect() as conn:
+                conn.execute(text('SELECT 1'))
         except Exception as error:
             raise HealthError("Can't connect to the database") from error
 

@@ -88,7 +88,9 @@ class DORA:
 
         return stats
 
-    def get_latest_deployment(self, app_name, env_name) -> DORADeployment:
+    def get_latest_deployment(
+        self, app_name, env_name
+    ) -> DORADeployment | None:
         return (
             db.session.query(DORADeployment)
             .filter_by(
