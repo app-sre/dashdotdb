@@ -89,6 +89,8 @@ RUN \
 ##############
 FROM base AS prod
 
+ENV FLASK_APP=dashdotdb
+
 COPY --from=builder \
     /opt/app-root     \
   /opt/app-root
