@@ -63,5 +63,6 @@ class DashDotDb(App):
 
 conn_app = DashDotDb('dashdotdb', specification_dir='schemas')
 conn_app.add_api('swagger.yaml',
-                 resolver=RestyResolver('dashdotdb.controllers'))
+                 resolver=RestyResolver('dashdotdb.controllers'),
+                 options={"swagger_ui": False})
 app = conn_app.app  # pylint: disable=unused-variable
