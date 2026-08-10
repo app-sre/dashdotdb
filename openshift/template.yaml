@@ -8,6 +8,7 @@ objects:
   kind: ServiceAccount
   metadata:
     name: dashdotdb
+  automountServiceAccountToken: false
 - apiVersion: v1
   kind: ConfigMap
   metadata:
@@ -94,6 +95,9 @@ objects:
           app: dashdotdb
       spec:
         serviceAccountName: dashdotdb
+        automountServiceAccountToken: false
+        securityContext:
+          runAsNonRoot: true
         affinity:
           podAntiAffinity:
             preferredDuringSchedulingIgnoredDuringExecution:
@@ -110,6 +114,14 @@ objects:
         - image: ${IMAGE_GATE}:${IMAGE_GATE_TAG}
           imagePullPolicy: Always
           name: auth-proxy
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           env:
           - name: FORWARD_HOST
             value: "0.0.0.0:8080"
@@ -155,6 +167,8 @@ objects:
             timeoutSeconds: 1
             initialDelaySeconds: 10
           volumeMounts:
+          - mountPath: /tmp
+            name: tmp
           - mountPath: /etc/nginx/conf.d
             name: nginx-postsize
           - mountPath: /nginx.conf
@@ -163,6 +177,17 @@ objects:
         - image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: dashdotdb
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+          - mountPath: /tmp
+            name: tmp
           resources:
             requests:
               memory: 200Mi
@@ -211,6 +236,8 @@ objects:
             initialDelaySeconds: 5
             timeoutSeconds: 1
         volumes:
+        - emptyDir: {}
+          name: tmp
         - configMap:
             defaultMode: 420
             name: nginx-postsize
