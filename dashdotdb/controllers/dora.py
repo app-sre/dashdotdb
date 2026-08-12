@@ -3,7 +3,7 @@ from typing import Any, Union
 from dashdotdb.services.dora import DORA, DORAInsertStats
 
 
-def post(body) -> Union[tuple[str, int], tuple[DORAInsertStats, int]]:
+def post(_user, body) -> Union[tuple[str, int], tuple[DORAInsertStats, int]]:
     stats = DORA().insert(manifest=body)
 
     # if there's at least one entry created (or marked as duplicate), then
