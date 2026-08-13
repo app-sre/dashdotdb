@@ -169,6 +169,12 @@ objects:
           volumeMounts:
           - mountPath: /tmp
             name: tmp
+          - mountPath: /var/cache/nginx
+            name: nginx-cache
+          - mountPath: /var/log/nginx
+            name: nginx-log
+          - mountPath: /var/lib/nginx
+            name: nginx-lib
           - mountPath: /etc/nginx/conf.d
             name: nginx-postsize
           - mountPath: /nginx.conf
@@ -238,6 +244,12 @@ objects:
         volumes:
         - emptyDir: {}
           name: tmp
+        - emptyDir: {}
+          name: nginx-cache
+        - emptyDir: {}
+          name: nginx-log
+        - emptyDir: {}
+          name: nginx-lib
         - configMap:
             defaultMode: 420
             name: nginx-postsize
