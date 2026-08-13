@@ -173,7 +173,7 @@ objects:
             name: nginx-cache
           - mountPath: /var/log/nginx
             name: nginx-log
-          - mountPath: /var/lib/nginx
+          - mountPath: /var/lib/nginx/tmp
             name: nginx-lib
           - mountPath: /etc/nginx/conf.d
             name: nginx-postsize
