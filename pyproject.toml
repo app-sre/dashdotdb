@@ -41,7 +41,7 @@ dev = [
   "types-setuptools",
   # from requirements-check.txt
   "flake8==7.1.2",
-  "pylint~=3.3",
+  "pylint~=4.1",
   "mypy==2.1.0",
 ]
 
