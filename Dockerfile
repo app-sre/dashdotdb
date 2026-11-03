@@ -13,7 +13,7 @@ COPY        LICENSE /licenses/LICENSE
 FROM base AS builder
 
 # Get the uv binary from upstream
-COPY --from=ghcr.io/astral-sh/uv:0.11.13@sha256:841c8e6fe30a8b07b4478d12d0c608cba6de66102d29d65d1cc423af86051563 /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1334471a90c4a1d93bb490 /uv /bin/uv
 
 ENV \
   UV_COMPILE_BYTECODE="true" \
