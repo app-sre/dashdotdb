@@ -1,7 +1,7 @@
 ##############
 # base image #
 ##############
-FROM registry.access.redhat.com/ubi9/python-314@sha256:0390aa32a22acd8da70b09dda3049572d99ff1b1329abcce46fe1fa8093c45ee AS base
+FROM registry.access.redhat.com/ubi9/python-314@sha256:015ebf0ddb86cd25d28ac1c2c82ef4ef3c8c9a650dd1b217502534436087ea79 AS base
 
 ENV FLASK_APP=dashdotdb
 
